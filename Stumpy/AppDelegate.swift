@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Stumpy
 //
-//  Created by Stephen Beitzel on 12/22/20.
+//  Created by Stephen Beitzel on 12/21/20.
 //
 
 import Cocoa
@@ -12,11 +12,14 @@ import SwiftUI
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
+    var server: SMTPServer?
 
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view that provides the window contents.
+        server = SMTPServer(port: 4000)
         let contentView = ContentView()
+            .environmentObject(server!)
 
         // Create the window and set the content view.
         window = NSWindow(
@@ -32,8 +35,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
+        server?.shutdownServer()
     }
 
-
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        true
+    }
 }
 
