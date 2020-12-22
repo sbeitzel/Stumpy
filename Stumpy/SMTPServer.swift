@@ -25,12 +25,14 @@ class SMTPServer: ObservableObject {
         }
     }
     var listenSocket: Socket? = nil
-    var continueRunningValue = true
+    var continueRunningValue = false
     var connectedSockets = [Int32: Socket]()
     let socketLockQueue = DispatchQueue(label: "com.kitura.serverSwift.socketLockQueue")
     var continueRunning: Bool {
         set(newValue) {
+            objectWillChange.send()
             socketLockQueue.sync {
+                print("Setting SMTP continueRunning to \(newValue)")
                 self.continueRunningValue = newValue
             }
         }
@@ -54,6 +56,7 @@ class SMTPServer: ObservableObject {
     }
 
     func run() {
+        continueRunning = true
         let queue = DispatchQueue.global(qos: .userInteractive)
 
         queue.async { [unowned self] in
@@ -79,6 +82,7 @@ class SMTPServer: ObservableObject {
 
                     self.addNewConnection(socket: newSocket)
                 } while self.continueRunning
+                print("SMTP listening stopped")
             }
             catch let error {
                 guard let socketError = error as? Socket.Error else {
@@ -91,7 +95,7 @@ class SMTPServer: ObservableObject {
                 }
             }
         }
-        dispatchMain()
+//        dispatchMain()
     }
 
     func addNewConnection(socket: Socket) {
@@ -161,7 +165,8 @@ class SMTPServer: ObservableObject {
                 socket.close()
 
                 self.socketLockQueue.sync { [unowned self, socket] in
-                    self.connectedSockets[socket.socketfd] = nil
+//                    self.connectedSockets[socket.socketfd] = nil
+                    _ = self.connectedSockets.removeValue(forKey: socket.socketfd)
                 }
 
             }
@@ -178,7 +183,7 @@ class SMTPServer: ObservableObject {
     }
 
     func shutdownServer() {
-        print("\nShutdown in progress...")
+        print("\nSMTP shutdown in progress...")
 
         self.continueRunning = false
 
@@ -186,9 +191,10 @@ class SMTPServer: ObservableObject {
         for socket in connectedSockets.values {
 
             self.socketLockQueue.sync { [unowned self, socket] in
-                self.connectedSockets[socket.socketfd] = nil
+                self.connectedSockets.removeValue(forKey: socket.socketfd)
                 socket.close()
             }
         }
+        print("\nSMTP shutdown complete")
     }
 }
