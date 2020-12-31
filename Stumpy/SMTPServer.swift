@@ -23,16 +23,21 @@ class SMTPServer: ObservableObject {
             }
         }
     }
+    @Published var numberConnected: Int = 0
+    @Published var isRunning = false
+
     private var listenSocket: Socket? = nil
     private var continueRunningValue = false
     private var connectedSockets = [Int32: Socket]()
     private let socketLockQueue = DispatchQueue(label: "com.kitura.serverSwift.socketLockQueue")
     var continueRunning: Bool {
         set(newValue) {
-            objectWillChange.send()
             socketLockQueue.sync {
                 print("Setting SMTP continueRunning to \(newValue)")
-                self.continueRunningValue = newValue
+                continueRunningValue = newValue
+                DispatchQueue.main.async {
+                    self.isRunning = newValue
+                }
             }
         }
         get {
@@ -49,7 +54,7 @@ class SMTPServer: ObservableObject {
     deinit {
         // Close all open sockets...
         for socket in connectedSockets.values {
-            socket.close()
+            removeConnection(socket)
         }
         self.listenSocket?.close()
     }
@@ -97,13 +102,34 @@ class SMTPServer: ObservableObject {
                 }
             }
         }
-//        dispatchMain()
+        //        dispatchMain()
+    }
+
+    private func removeConnection(_ socket: Socket) {
+        print("Socket: \(socket.remoteHostname):\(socket.remotePort) closing...")
+        let socketKey = socket.socketfd
+        socket.close()
+        socketLockQueue.sync { [unowned self] in
+            print("Removing socket for key \(socketKey)")
+            connectedSockets.removeValue(forKey: socketKey)
+            DispatchQueue.main.async {
+                objectWillChange.send()
+                numberConnected -= 1
+                print("Connection count decremented to \(numberConnected)")
+            }
+        }
     }
 
     private func addNewConnection(socket: Socket) {
         // Add the new socket to the list of connected sockets...
         socketLockQueue.sync { [unowned self, socket] in
-            self.connectedSockets[socket.socketfd] = socket
+            print("New connection added to list")
+            connectedSockets[socket.socketfd] = socket
+            DispatchQueue.main.async {
+                objectWillChange.send()
+                numberConnected += 1
+                print("Connection count incremented to \(numberConnected)")
+            }
         }
 
         // Get the global concurrent queue...
@@ -153,14 +179,7 @@ class SMTPServer: ObservableObject {
 
                 } while shouldKeepRunning
 
-                print("Socket: \(socket.remoteHostname):\(socket.remotePort) closed...")
-                socket.close()
-
-                self?.socketLockQueue.sync { [weak self, socket] in
-//                    self.connectedSockets[socket.socketfd] = nil
-                    _ = self?.connectedSockets.removeValue(forKey: socket.socketfd)
-                }
-
+                self?.removeConnection(socket)
             }
             catch let error {
                 guard let socketError = error as? Socket.Error else {
@@ -177,17 +196,13 @@ class SMTPServer: ObservableObject {
     func shutdown() {
         print("\nSMTP shutdown in progress...")
 
-        self.continueRunning = false
+        continueRunning = false
 
         // Close all open sockets...
         for socket in connectedSockets.values {
-
-            self.socketLockQueue.sync { [weak self, socket] in
-                self?.connectedSockets.removeValue(forKey: socket.socketfd)
-                socket.close()
-            }
+            removeConnection(socket)
         }
-        self.listenSocket?.close()
+        listenSocket?.close()
         print("\nSMTP shutdown complete")
     }
 }

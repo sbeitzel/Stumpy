@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Servers: ObservableObject {
+class Servers {
     let smtpServer = SMTPServer(port: 4000)
 
     func shutdown() {

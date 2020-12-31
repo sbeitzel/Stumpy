@@ -8,27 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
-    let servers: Servers
-
-    @State private var mailRunning: Bool
+    @ObservedObject var smtpServer: SMTPServer
 
     init(_ theServers: Servers) {
-        servers = theServers
-        _mailRunning = State(wrappedValue: theServers.smtpServer.continueRunning)
+        smtpServer = theServers.smtpServer
     }
 
     var body: some View {
         VStack {
-            Toggle("SMTP Running", isOn: $mailRunning.onChange(update))
-        }
-    }
-
-    func update() {
-        servers.objectWillChange.send()
-        if (mailRunning == true) {
-            servers.smtpServer.run()
-        } else {
-            servers.smtpServer.shutdown()
+            HStack {
+                Button(action: {
+                    smtpServer.run()
+                }) {
+                    Text("Start SMTP")
+                }
+                    .disabled(smtpServer.isRunning)
+                Spacer()
+                Button(action: {
+                    smtpServer.shutdown()
+                }) {
+                    Text("Stop SMTP")
+                }
+                .disabled(!smtpServer.isRunning)
+            }
+            Text("Number of connections: \(smtpServer.numberConnected)")
+                .padding()
         }
     }
 }
