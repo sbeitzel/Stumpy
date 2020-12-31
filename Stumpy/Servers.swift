@@ -12,6 +12,6 @@ class Servers: ObservableObject {
 
     func shutdown() {
         print("\nAll servers shutting down")
-        smtpServer.shutdownServer()
+        smtpServer.shutdown()
     }
 }

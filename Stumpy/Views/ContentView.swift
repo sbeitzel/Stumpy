@@ -28,7 +28,7 @@ struct ContentView: View {
         if (mailRunning == true) {
             servers.smtpServer.run()
         } else {
-            servers.smtpServer.shutdownServer()
+            servers.smtpServer.shutdown()
         }
     }
 }

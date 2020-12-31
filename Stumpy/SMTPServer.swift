@@ -7,9 +7,8 @@ import Dispatch
 
 class SMTPServer: ObservableObject {
 
-    static let quitCommand: String = "QUIT"
-    static let shutdownCommand: String = "SHUTDOWN"
-    static let bufferSize = 4096
+    private static let quitCommand: String = "QUIT"
+    private static let bufferSize = 4096
 
     private var port: Int
     var serverPort: Int {
@@ -24,10 +23,10 @@ class SMTPServer: ObservableObject {
             }
         }
     }
-    var listenSocket: Socket? = nil
-    var continueRunningValue = false
-    var connectedSockets = [Int32: Socket]()
-    let socketLockQueue = DispatchQueue(label: "com.kitura.serverSwift.socketLockQueue")
+    private var listenSocket: Socket? = nil
+    private var continueRunningValue = false
+    private var connectedSockets = [Int32: Socket]()
+    private let socketLockQueue = DispatchQueue(label: "com.kitura.serverSwift.socketLockQueue")
     var continueRunning: Bool {
         set(newValue) {
             objectWillChange.send()
@@ -59,18 +58,21 @@ class SMTPServer: ObservableObject {
         continueRunning = true
         let queue = DispatchQueue.global(qos: .userInteractive)
 
-        queue.async { [unowned self] in
+        queue.async { [weak self] in
 
             do {
+                guard let myself :SMTPServer = self else {
+                    return
+                }
                 // Create an IPV4 socket...
-                try self.listenSocket = Socket.create(family: .inet)
+                try myself.listenSocket = Socket.create(family: .inet)
 
-                guard let socket = self.listenSocket else {
+                guard let socket = myself.listenSocket else {
                     print("Unable to unwrap socket...")
                     return
                 }
 
-                try socket.listen(on: self.port)
+                try socket.listen(on: myself.port)
 
                 print("Listening on port: \(socket.listeningPort)")
 
@@ -80,8 +82,8 @@ class SMTPServer: ObservableObject {
                     print("Accepted connection from: \(newSocket.remoteHostname) on port \(newSocket.remotePort)")
                     print("Socket Signature: \(String(describing: newSocket.signature?.description))")
 
-                    self.addNewConnection(socket: newSocket)
-                } while self.continueRunning
+                    myself.addNewConnection(socket: newSocket)
+                } while self?.continueRunning == true
                 print("SMTP listening stopped")
             }
             catch let error {
@@ -90,7 +92,7 @@ class SMTPServer: ObservableObject {
                     return
                 }
 
-                if self.continueRunning {
+                if self?.continueRunning == true {
                     print("Error reported:\n \(socketError.description)")
                 }
             }
@@ -98,7 +100,7 @@ class SMTPServer: ObservableObject {
 //        dispatchMain()
     }
 
-    func addNewConnection(socket: Socket) {
+    private func addNewConnection(socket: Socket) {
         // Add the new socket to the list of connected sockets...
         socketLockQueue.sync { [unowned self, socket] in
             self.connectedSockets[socket.socketfd] = socket
@@ -108,13 +110,13 @@ class SMTPServer: ObservableObject {
         let queue = DispatchQueue.global(qos: .default)
 
         // Create the run loop work item and dispatch to the default priority global queue...
-        queue.async { [unowned self, socket] in
+        queue.async { [weak self, socket] in
             var shouldKeepRunning = true
             var readData = Data(capacity: SMTPServer.bufferSize)
 
             do {
                 // Write the welcome string...
-                try socket.write(from: "Hello, type 'QUIT' to end session\nor 'SHUTDOWN' to stop server.\n")
+                try socket.write(from: "Hello, type 'QUIT' to end session\n")
 
                 repeat {
                     let bytesRead = try socket.read(into: &readData)
@@ -126,23 +128,13 @@ class SMTPServer: ObservableObject {
                             readData.count = 0
                             break
                         }
-                        if response.hasPrefix(SMTPServer.shutdownCommand) {
-
-                            print("Shutdown requested by connection at \(socket.remoteHostname):\(socket.remotePort)")
-
-                            // Shut things down...
-                            self.shutdownServer()
-
-                            return
-                        }
                         print("Server received from connection at \(socket.remoteHostname):\(socket.remotePort): \(response) ")
                         let reply = "Server response: \n\(response)\n"
                         try socket.write(from: reply)
 
-                        if (response.uppercased().hasPrefix(SMTPServer.quitCommand) || response.uppercased().hasPrefix(SMTPServer.shutdownCommand)) &&
-                            (!response.hasPrefix(SMTPServer.quitCommand) && !response.hasPrefix(SMTPServer.shutdownCommand)) {
+                        if response.uppercased().hasPrefix(SMTPServer.quitCommand) && !response.hasPrefix(SMTPServer.quitCommand) {
 
-                            try socket.write(from: "If you want to QUIT or SHUTDOWN, please type the name in all caps. 😃\n")
+                            try socket.write(from: "If you want to QUIT please type the name in all caps. 😃\n")
                         }
 
                         if response.hasPrefix(SMTPServer.quitCommand) || response.hasSuffix(SMTPServer.quitCommand) {
@@ -164,9 +156,9 @@ class SMTPServer: ObservableObject {
                 print("Socket: \(socket.remoteHostname):\(socket.remotePort) closed...")
                 socket.close()
 
-                self.socketLockQueue.sync { [unowned self, socket] in
+                self?.socketLockQueue.sync { [weak self, socket] in
 //                    self.connectedSockets[socket.socketfd] = nil
-                    _ = self.connectedSockets.removeValue(forKey: socket.socketfd)
+                    _ = self?.connectedSockets.removeValue(forKey: socket.socketfd)
                 }
 
             }
@@ -175,14 +167,14 @@ class SMTPServer: ObservableObject {
                     print("Unexpected error by connection at \(socket.remoteHostname):\(socket.remotePort)...")
                     return
                 }
-                if self.continueRunning {
+                if self?.continueRunning == true {
                     print("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
                 }
             }
         }
     }
 
-    func shutdownServer() {
+    func shutdown() {
         print("\nSMTP shutdown in progress...")
 
         self.continueRunning = false
@@ -190,11 +182,12 @@ class SMTPServer: ObservableObject {
         // Close all open sockets...
         for socket in connectedSockets.values {
 
-            self.socketLockQueue.sync { [unowned self, socket] in
-                self.connectedSockets.removeValue(forKey: socket.socketfd)
+            self.socketLockQueue.sync { [weak self, socket] in
+                self?.connectedSockets.removeValue(forKey: socket.socketfd)
                 socket.close()
             }
         }
+        self.listenSocket?.close()
         print("\nSMTP shutdown complete")
     }
 }
