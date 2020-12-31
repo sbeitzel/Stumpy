@@ -8,7 +8,14 @@
 import Foundation
 
 class Servers {
-    let smtpServer = SMTPServer(port: 4000)
+    let smtpServer: SMTPServer
+    
+    private var mailStore: MailStore
+
+    init() {
+        mailStore = FixedSizeMailStore(size: 100)
+        smtpServer = SMTPServer(port: 4000, store: mailStore)
+    }
 
     func shutdown() {
         print("\nAll servers shutting down")

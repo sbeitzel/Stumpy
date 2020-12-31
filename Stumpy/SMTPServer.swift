@@ -10,6 +10,9 @@ class SMTPServer: ObservableObject {
     private static let quitCommand: String = "QUIT"
     private static let bufferSize = 4096
 
+    @Published var numberConnected: Int = 0
+    @Published var isRunning = false
+
     private var port: Int
     var serverPort: Int {
         get {
@@ -23,14 +26,13 @@ class SMTPServer: ObservableObject {
             }
         }
     }
-    @Published var numberConnected: Int = 0
-    @Published var isRunning = false
 
+    private let mailStore: MailStore
     private var listenSocket: Socket? = nil
     private var continueRunningValue = false
     private var connectedSockets = [Int32: Socket]()
     private let socketLockQueue = DispatchQueue(label: "com.kitura.serverSwift.socketLockQueue")
-    var continueRunning: Bool {
+    private var continueRunning: Bool {
         set(newValue) {
             socketLockQueue.sync {
                 print("Setting SMTP continueRunning to \(newValue)")
@@ -47,8 +49,9 @@ class SMTPServer: ObservableObject {
         }
     }
 
-    init(port: Int) {
+    init(port: Int, store: MailStore = FixedSizeMailStore(size: 10)) {
         self.port = port
+        mailStore = store
     }
 
     deinit {

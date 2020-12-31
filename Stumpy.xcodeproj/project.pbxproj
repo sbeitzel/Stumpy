@@ -15,8 +15,23 @@
 		7C64345925926C5500DE1AC8 /* SMTPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C64345825926C5500DE1AC8 /* SMTPServer.swift */; };
 		7C64345D2592706F00DE1AC8 /* Binding-OnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C64345C2592706F00DE1AC8 /* Binding-OnChange.swift */; };
 		7C643462259270CB00DE1AC8 /* Servers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C643461259270CB00DE1AC8 /* Servers.swift */; };
+		7C815A3C259E53190031F3B3 /* MailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A3B259E53190031F3B3 /* MailStore.swift */; };
+		7C815A3F259E54EA0031F3B3 /* MailMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A3E259E54EA0031F3B3 /* MailMessage.swift */; };
+		7C815A42259E58D50031F3B3 /* FixedSizeMailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A41259E58D50031F3B3 /* FixedSizeMailStore.swift */; };
+		7C815A45259E69F70031F3B3 /* MemoryMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A44259E69F70031F3B3 /* MemoryMessage.swift */; };
+		7C815A4E259E79FF0031F3B3 /* MailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A4D259E79FF0031F3B3 /* MailTests.swift */; };
 		AF5CD03E83F16AD89E3DC0FA /* Pods_Stumpy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA739C998EDC305315886D47 /* Pods_Stumpy.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7C815A50259E79FF0031F3B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7C64343525926BAF00DE1AC8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7C64343C25926BAF00DE1AC8;
+			remoteInfo = Stumpy;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		7C64343D25926BAF00DE1AC8 /* Stumpy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stumpy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -30,6 +45,13 @@
 		7C64345825926C5500DE1AC8 /* SMTPServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPServer.swift; sourceTree = "<group>"; };
 		7C64345C2592706F00DE1AC8 /* Binding-OnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding-OnChange.swift"; sourceTree = "<group>"; };
 		7C643461259270CB00DE1AC8 /* Servers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Servers.swift; sourceTree = "<group>"; };
+		7C815A3B259E53190031F3B3 /* MailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailStore.swift; sourceTree = "<group>"; };
+		7C815A3E259E54EA0031F3B3 /* MailMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailMessage.swift; sourceTree = "<group>"; };
+		7C815A41259E58D50031F3B3 /* FixedSizeMailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedSizeMailStore.swift; sourceTree = "<group>"; };
+		7C815A44259E69F70031F3B3 /* MemoryMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryMessage.swift; sourceTree = "<group>"; };
+		7C815A4B259E79FE0031F3B3 /* MailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C815A4D259E79FF0031F3B3 /* MailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailTests.swift; sourceTree = "<group>"; };
+		7C815A4F259E79FF0031F3B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9279E744073CE98A15A5519A /* Pods-Stumpy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stumpy.debug.xcconfig"; path = "Target Support Files/Pods-Stumpy/Pods-Stumpy.debug.xcconfig"; sourceTree = "<group>"; };
 		A3C30BF5BE7A20ED3E54B478 /* Pods-Stumpy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stumpy.release.xcconfig"; path = "Target Support Files/Pods-Stumpy/Pods-Stumpy.release.xcconfig"; sourceTree = "<group>"; };
 		AA739C998EDC305315886D47 /* Pods_Stumpy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stumpy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +66,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7C815A48259E79FE0031F3B3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -51,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				7C64343F25926BAF00DE1AC8 /* Stumpy */,
+				7C815A4C259E79FF0031F3B3 /* MailTests */,
 				7C64343E25926BAF00DE1AC8 /* Products */,
 				F98B171F2A83DB90C93F56D6 /* Pods */,
 				81DC77A80D7077D3D0AE955A /* Frameworks */,
@@ -61,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				7C64343D25926BAF00DE1AC8 /* Stumpy.app */,
+				7C815A4B259E79FE0031F3B3 /* MailTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,6 +103,7 @@
 				7C64345B25926CE700DE1AC8 /* Views */,
 				7C64344025926BAF00DE1AC8 /* AppDelegate.swift */,
 				7C64345825926C5500DE1AC8 /* SMTPServer.swift */,
+				7C815A57259E84440031F3B3 /* Mail Model */,
 				7C643461259270CB00DE1AC8 /* Servers.swift */,
 				7C64344425926BB000DE1AC8 /* Assets.xcassets */,
 				7C64344925926BB000DE1AC8 /* Main.storyboard */,
@@ -104,6 +136,26 @@
 				7C64345C2592706F00DE1AC8 /* Binding-OnChange.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		7C815A4C259E79FF0031F3B3 /* MailTests */ = {
+			isa = PBXGroup;
+			children = (
+				7C815A4D259E79FF0031F3B3 /* MailTests.swift */,
+				7C815A4F259E79FF0031F3B3 /* Info.plist */,
+			);
+			path = MailTests;
+			sourceTree = "<group>";
+		};
+		7C815A57259E84440031F3B3 /* Mail Model */ = {
+			isa = PBXGroup;
+			children = (
+				7C815A44259E69F70031F3B3 /* MemoryMessage.swift */,
+				7C815A3B259E53190031F3B3 /* MailStore.swift */,
+				7C815A3E259E54EA0031F3B3 /* MailMessage.swift */,
+				7C815A41259E58D50031F3B3 /* FixedSizeMailStore.swift */,
+			);
+			path = "Mail Model";
 			sourceTree = "<group>";
 		};
 		81DC77A80D7077D3D0AE955A /* Frameworks */ = {
@@ -145,6 +197,24 @@
 			productReference = 7C64343D25926BAF00DE1AC8 /* Stumpy.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7C815A4A259E79FE0031F3B3 /* MailTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7C815A52259E79FF0031F3B3 /* Build configuration list for PBXNativeTarget "MailTests" */;
+			buildPhases = (
+				7C815A47259E79FE0031F3B3 /* Sources */,
+				7C815A48259E79FE0031F3B3 /* Frameworks */,
+				7C815A49259E79FE0031F3B3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7C815A51259E79FF0031F3B3 /* PBXTargetDependency */,
+			);
+			name = MailTests;
+			productName = MailTests;
+			productReference = 7C815A4B259E79FE0031F3B3 /* MailTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -156,6 +226,10 @@
 				TargetAttributes = {
 					7C64343C25926BAF00DE1AC8 = {
 						CreatedOnToolsVersion = 12.3;
+					};
+					7C815A4A259E79FE0031F3B3 = {
+						CreatedOnToolsVersion = 12.3;
+						TestTargetID = 7C64343C25926BAF00DE1AC8;
 					};
 				};
 			};
@@ -173,6 +247,7 @@
 			projectRoot = "";
 			targets = (
 				7C64343C25926BAF00DE1AC8 /* Stumpy */,
+				7C815A4A259E79FE0031F3B3 /* MailTests */,
 			);
 		};
 /* End PBXProject section */
@@ -185,6 +260,13 @@
 				7C64344B25926BB000DE1AC8 /* Main.storyboard in Resources */,
 				7C64344825926BB000DE1AC8 /* Preview Assets.xcassets in Resources */,
 				7C64344525926BB000DE1AC8 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7C815A49259E79FE0031F3B3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,15 +319,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C815A45259E69F70031F3B3 /* MemoryMessage.swift in Sources */,
 				7C64345D2592706F00DE1AC8 /* Binding-OnChange.swift in Sources */,
 				7C64344325926BAF00DE1AC8 /* ContentView.swift in Sources */,
+				7C815A3F259E54EA0031F3B3 /* MailMessage.swift in Sources */,
 				7C64345925926C5500DE1AC8 /* SMTPServer.swift in Sources */,
 				7C643462259270CB00DE1AC8 /* Servers.swift in Sources */,
+				7C815A3C259E53190031F3B3 /* MailStore.swift in Sources */,
+				7C815A42259E58D50031F3B3 /* FixedSizeMailStore.swift in Sources */,
 				7C64344125926BAF00DE1AC8 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7C815A47259E79FE0031F3B3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7C815A4E259E79FF0031F3B3 /* MailTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7C815A51259E79FF0031F3B3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7C64343C25926BAF00DE1AC8 /* Stumpy */;
+			targetProxy = 7C815A50259E79FF0031F3B3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7C64344925926BB000DE1AC8 /* Main.storyboard */ = {
@@ -424,6 +526,46 @@
 			};
 			name = Release;
 		};
+		7C815A53259E79FF0031F3B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = D3DPVGA48J;
+				INFOPLIST_FILE = MailTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.qbcps.MailTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Stumpy.app/Contents/MacOS/Stumpy";
+			};
+			name = Debug;
+		};
+		7C815A54259E79FF0031F3B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = D3DPVGA48J;
+				INFOPLIST_FILE = MailTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.qbcps.MailTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Stumpy.app/Contents/MacOS/Stumpy";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -441,6 +583,15 @@
 			buildConfigurations = (
 				7C64345125926BB000DE1AC8 /* Debug */,
 				7C64345225926BB000DE1AC8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7C815A52259E79FF0031F3B3 /* Build configuration list for PBXNativeTarget "MailTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7C815A53259E79FF0031F3B3 /* Debug */,
+				7C815A54259E79FF0031F3B3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
