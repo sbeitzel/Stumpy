@@ -8,7 +8,7 @@
 import Foundation
 
 /// Protocol declaring how a mail storage implementation must behave.
-protocol MailStore {
+public protocol MailStore {
     /// The number of messages currently held in the mail store
     var messageCount: Int { get }
 

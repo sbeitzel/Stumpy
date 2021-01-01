@@ -20,6 +20,7 @@
 		7C815A42259E58D50031F3B3 /* FixedSizeMailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A41259E58D50031F3B3 /* FixedSizeMailStore.swift */; };
 		7C815A45259E69F70031F3B3 /* MemoryMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A44259E69F70031F3B3 /* MemoryMessage.swift */; };
 		7C815A4E259E79FF0031F3B3 /* MailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A4D259E79FF0031F3B3 /* MailTests.swift */; };
+		7C815A5B259EE2D10031F3B3 /* MailStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A5A259EE2D10031F3B3 /* MailStoreTests.swift */; };
 		AF5CD03E83F16AD89E3DC0FA /* Pods_Stumpy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA739C998EDC305315886D47 /* Pods_Stumpy.framework */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 		7C815A4B259E79FE0031F3B3 /* MailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C815A4D259E79FF0031F3B3 /* MailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailTests.swift; sourceTree = "<group>"; };
 		7C815A4F259E79FF0031F3B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C815A5A259EE2D10031F3B3 /* MailStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailStoreTests.swift; sourceTree = "<group>"; };
 		9279E744073CE98A15A5519A /* Pods-Stumpy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stumpy.debug.xcconfig"; path = "Target Support Files/Pods-Stumpy/Pods-Stumpy.debug.xcconfig"; sourceTree = "<group>"; };
 		A3C30BF5BE7A20ED3E54B478 /* Pods-Stumpy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stumpy.release.xcconfig"; path = "Target Support Files/Pods-Stumpy/Pods-Stumpy.release.xcconfig"; sourceTree = "<group>"; };
 		AA739C998EDC305315886D47 /* Pods_Stumpy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stumpy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +145,7 @@
 			children = (
 				7C815A4D259E79FF0031F3B3 /* MailTests.swift */,
 				7C815A4F259E79FF0031F3B3 /* Info.plist */,
+				7C815A5A259EE2D10031F3B3 /* MailStoreTests.swift */,
 			);
 			path = MailTests;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C815A5B259EE2D10031F3B3 /* MailStoreTests.swift in Sources */,
 				7C815A4E259E79FF0031F3B3 /* MailTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
