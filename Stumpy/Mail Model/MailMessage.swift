@@ -44,6 +44,9 @@ public protocol MailMessage {
     /// The POP3 protocol requires that the message body be 'byte stuffed'
     /// to escape the termination sequence: `\r\n.\r\n`
     func byteStuff() -> String
+
+    /// Render the message as a string, with no special escaping.
+    func toString() -> String
 }
 
 extension MailMessage {
@@ -67,5 +70,19 @@ extension MailMessage {
         // finally, the termination sequence
         messageString += "\r\n.\r\n";
         return messageString
+    }
+
+    public func toString() -> String {
+        var msg: String = headers.map { key, values in
+            let valueString = values.joined(separator: ", ")
+            return "\(key): \(valueString)"
+        }
+        .joined(separator: "\n")
+
+        msg.append("\n");
+        msg.append(body);
+        msg.append("\n");
+
+        return msg
     }
 }

@@ -5,10 +5,10 @@ import Foundation
 import Socket
 import Dispatch
 
+/// The server part of the SMTP server that we implement.
 class SMTPServer: ObservableObject {
 
     private static let quitCommand: String = "QUIT"
-    private static let bufferSize = 4096
 
     @Published var numberConnected: Int = 0
     @Published var isRunning = false
@@ -141,7 +141,7 @@ class SMTPServer: ObservableObject {
         // Create the run loop work item and dispatch to the default priority global queue...
         queue.async { [weak self, socket] in
             var shouldKeepRunning = true
-            var readData = Data(capacity: SMTPServer.bufferSize)
+            var readData = Data(capacity: 4096)
 
             do {
                 // Write the welcome string...
