@@ -11,9 +11,9 @@ import Socket
 class SMTPSession {
     private static let bufferSize = 4096
 
-    let socket: Socket
-    let store: MailStore
-    let message: MailMessage
+    private let socket: Socket
+    private let store: MailStore
+    private let message: MailMessage
 
     var shouldContinue = true
     var readData: Data = Data(capacity: bufferSize)

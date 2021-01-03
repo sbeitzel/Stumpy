@@ -5,8 +5,8 @@ import Foundation
 import Socket
 import Dispatch
 
-/// The server part of the SMTP server that we implement.
-class SMTPServer: ObservableObject {
+/// The server part of the POP3 server that we implement.
+class POPServer: ObservableObject {
 
     @Published var numberConnected: Int = 0
     @Published var isRunning = false
@@ -29,11 +29,11 @@ class SMTPServer: ObservableObject {
     private var listenSocket: Socket? = nil
     private var continueRunningValue = false
     private var connectedSockets = [Int32: Socket]()
-    private let socketLockQueue = DispatchQueue(label: "com.qbcps.Stumpy.smtpSocketQ")
+    private let socketLockQueue = DispatchQueue(label: "com.qbcps.Stumpy.popSocketQ")
     private var continueRunning: Bool {
         set(newValue) {
             socketLockQueue.sync {
-                print("Setting SMTP continueRunning to \(newValue)")
+                print("Setting POP continueRunning to \(newValue)")
                 continueRunningValue = newValue
                 DispatchQueue.main.async {
                     self.isRunning = newValue
@@ -67,7 +67,7 @@ class SMTPServer: ObservableObject {
         queue.async { [weak self] in
 
             do {
-                guard let myself :SMTPServer = self else {
+                guard let myself :POPServer = self else {
                     return
                 }
                 // Create an IPV4 socket...
@@ -80,7 +80,7 @@ class SMTPServer: ObservableObject {
 
                 try socket.listen(on: myself.port)
 
-                print("Listening on port: \(socket.listeningPort)")
+                print("Stumpy POP3 listening on port: \(socket.listeningPort)")
 
                 repeat {
                     let newSocket = try socket.acceptClientConnection()
@@ -90,7 +90,7 @@ class SMTPServer: ObservableObject {
 
                     myself.addNewConnection(socket: newSocket)
                 } while self?.continueRunning == true
-                print("SMTP listening stopped")
+                print("POP listening stopped")
             }
             catch let error {
                 guard let socketError = error as? Socket.Error else {
@@ -141,14 +141,14 @@ class SMTPServer: ObservableObject {
             guard let store = self?.mailStore else {
                 return
             }
-            let clientSession = SMTPSession(socket: socket, mailStore: store)
+            let clientSession = POPSession(socket: socket, mailStore: store)
             clientSession.run()
             self?.removeConnection(socket)
         }
     }
 
     func shutdown() {
-        print("\nSMTP shutdown in progress...")
+        print("\nPOP3 shutdown in progress...")
 
         continueRunning = false
 
@@ -157,6 +157,6 @@ class SMTPServer: ObservableObject {
             removeConnection(socket)
         }
         listenSocket?.close()
-        print("\nSMTP shutdown complete")
+        print("\nPOP3 shutdown complete")
     }
 }
