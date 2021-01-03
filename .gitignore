@@ -1,3 +1,5 @@
-Pods/*
-
 Stumpy.xcworkspace/xcuserdata
+Pods/
+xcuserdata/
+.build/
+
