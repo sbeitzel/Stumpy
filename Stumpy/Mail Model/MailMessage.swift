@@ -28,6 +28,14 @@ public protocol MailMessage {
     ///   - header: the header
     func add(value: String, to header: String) -> Void
 
+    /// If a header already has value(s), then the provided value will be appended to the last
+    /// value the header contains. If the header has no values, then the one provided will
+    /// be the first.
+    /// - Parameters:
+    ///   - value: the value to append to the header's last value
+    ///   - header: the header to modify
+    func appendHeader(value: String, to header: String) -> Void
+
     /// The body of the message
     var body: String { get }
 
@@ -49,6 +57,7 @@ public protocol MailMessage {
     func toString() -> String
 }
 
+// MARK: Rendering the complete message to text
 extension MailMessage {
     public func byteStuff() -> String {
         // start off with the headers, each header separated by CRLF

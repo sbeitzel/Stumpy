@@ -51,6 +51,31 @@ public class MemoryMessage: MailMessage {
         }
     }
 
+    public func appendHeader(value: String, to header: String) -> Void {
+        if var values = headerDict[header] {
+            // this test is dumb, because if values exists, then there's at least one element in it
+            // however, the contract of popLast says that it returns an optional. Tried using
+            // removeLast, but Xcode was getting very confused about whether or not updatedValues
+            // should be modifiable. This code, while ugly and unnecessarily verbose, at least
+            // builds. Fundamentally, all we want to do is remove the last value from the list,
+            // concatenate it with the incoming value, and put that concatenated value back at the
+            // end of the list.
+            if let oldValue = values.popLast() {
+                let newValue = oldValue + value
+                var updatedValues = [String]()
+                for v in values {
+                    updatedValues.append(v)
+                }
+                updatedValues.append(newValue)
+                headerDict[header] = updatedValues
+            } else {
+                set(value: value, for: header)
+            }
+        } else {
+            set(value: value, for: header)
+        }
+    }
+
     public func append(line: String) {
         if (!messageBody.isEmpty && !line.isEmpty && line != "\n") {
             messageBody += "\n"

@@ -140,59 +140,12 @@ class SMTPServer: ObservableObject {
 
         // Create the run loop work item and dispatch to the default priority global queue...
         queue.async { [weak self, socket] in
-            var shouldKeepRunning = true
-            var readData = Data(capacity: 4096)
-
-            do {
-                // Write the welcome string...
-                try socket.write(from: "Hello, type 'QUIT' to end session\n")
-
-                repeat {
-                    let bytesRead = try socket.read(into: &readData)
-
-                    if bytesRead > 0 {
-                        guard let response = String(data: readData, encoding: .utf8) else {
-
-                            print("Error decoding response...")
-                            readData.count = 0
-                            break
-                        }
-                        print("Server received from connection at \(socket.remoteHostname):\(socket.remotePort): \(response) ")
-                        let reply = "Server response: \n\(response)\n"
-                        try socket.write(from: reply)
-
-                        if response.uppercased().hasPrefix(SMTPServer.quitCommand) && !response.hasPrefix(SMTPServer.quitCommand) {
-
-                            try socket.write(from: "If you want to QUIT please type the name in all caps. 😃\n")
-                        }
-
-                        if response.hasPrefix(SMTPServer.quitCommand) || response.hasSuffix(SMTPServer.quitCommand) {
-
-                            shouldKeepRunning = false
-                        }
-                    }
-
-                    if bytesRead == 0 {
-
-                        shouldKeepRunning = false
-                        break
-                    }
-
-                    readData.count = 0
-
-                } while shouldKeepRunning
-
-                self?.removeConnection(socket)
+            guard let store = self?.mailStore else {
+                return
             }
-            catch let error {
-                guard let socketError = error as? Socket.Error else {
-                    print("Unexpected error by connection at \(socket.remoteHostname):\(socket.remotePort)...")
-                    return
-                }
-                if self?.continueRunning == true {
-                    print("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
-                }
-            }
+            let clientSession = SMTPSession(socket: socket, mailStore: store)
+            clientSession.run()
+            self?.removeConnection(socket)
         }
     }
 
