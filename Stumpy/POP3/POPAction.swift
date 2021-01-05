@@ -7,6 +7,10 @@
 
 import Foundation
 
+/// Protocol defining how any POP action must behave. Specific actions may involve more behaviors.
+/// See [RFC 1939](https://tools.ietf.org/html/rfc1939) for the basic commands, as
+/// well as [RFC 2449](https://tools.ietf.org/html/rfc2449) for the extension mechanism (including the CAPA command)
+/// and [RFC 5034](https://tools.ietf.org/html/rfc5034) for discussion of authentication.
 protocol POPAction {
     var command: String { get }
 
@@ -28,7 +32,7 @@ struct PCapabilityAction: POPAction {
     var command: String { "CAPA" }
 
     func getResponse(state: POPState, store: MailStore) -> POPResponse {
-        let message = "List of capabilities follows\r\nUSER\r\nUIDL\r\nIMPLEMENTATION Stumpy POP3 v1\r\n.\r\n"
+        let message = "List of capabilities follows\r\nUSER PASS\r\nUIDL\r\nIMPLEMENTATION Stumpy POP3 v1\r\n.\r\n"
         return POPResponse(code: POPResponse.OK, message: message, nextState: state)
     }
 }
@@ -49,7 +53,7 @@ struct PConnectAction: POPAction {
 
     let hostname: String
 
-    var command: String
+    var command: String { "" }
 
     func getResponse(state: POPState, store: MailStore) -> POPResponse {
         if state == POPState.AUTHORIZATION {
@@ -200,6 +204,19 @@ struct PStatusAction: POPAction {
     }
 }
 
+/*
+ If the POP3 server issues a positive response, then the
+              response given is multi-line.  After the initial +OK, the
+              POP3 server sends the headers of the message, the blank
+              line separating the headers from the body, and then the
+              number of lines of the indicated message's body, being
+              careful to byte-stuff the termination character (as with
+              all multi-line responses).
+
+              Note that if the number of lines requested by the POP3
+              client is greater than than the number of lines in the
+              body, then the POP3 server sends the entire message.
+ */
 struct PTopAction: POPAction {
     var command: String { "TOP" }
 
