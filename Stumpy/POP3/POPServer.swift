@@ -7,6 +7,9 @@ import Dispatch
 
 /// The server part of the POP3 server that we implement.
 class POPServer: ObservableObject {
+    static func log(_ message: String) -> Void {
+        print("[POP] \(message)")
+    }
 
     @Published var numberConnected: Int = 0
     @Published var isRunning = false
@@ -20,7 +23,7 @@ class POPServer: ObservableObject {
             if continueRunning == false {
                 port = newPort
             } else {
-                print("Attempted to change port while server is running! Port not changed.")
+                POPServer.log("Attempted to change port while server is running! Port not changed.")
             }
         }
     }
@@ -33,7 +36,7 @@ class POPServer: ObservableObject {
     private var continueRunning: Bool {
         set(newValue) {
             socketLockQueue.sync {
-                print("Setting POP continueRunning to \(newValue)")
+                POPServer.log("Setting POP continueRunning to \(newValue)")
                 continueRunningValue = newValue
                 DispatchQueue.main.async {
                     self.isRunning = newValue
@@ -74,32 +77,32 @@ class POPServer: ObservableObject {
                 try myself.listenSocket = Socket.create(family: .inet)
 
                 guard let socket = myself.listenSocket else {
-                    print("Unable to unwrap socket...")
+                    POPServer.log("Unable to unwrap socket...")
                     return
                 }
 
                 try socket.listen(on: myself.port)
 
-                print("Stumpy POP3 listening on port: \(socket.listeningPort)")
+                POPServer.log("Stumpy POP3 listening on port: \(socket.listeningPort)")
 
                 repeat {
                     let newSocket = try socket.acceptClientConnection()
 
-                    print("Accepted connection from: \(newSocket.remoteHostname) on port \(newSocket.remotePort)")
-                    print("Socket Signature: \(String(describing: newSocket.signature?.description))")
+                    POPServer.log("Accepted connection from: \(newSocket.remoteHostname) on port \(newSocket.remotePort)")
+                    POPServer.log("Socket Signature: \(String(describing: newSocket.signature?.description))")
 
                     myself.addNewConnection(socket: newSocket)
                 } while self?.continueRunning == true
-                print("POP listening stopped")
+                POPServer.log("POP listening stopped")
             }
             catch let error {
                 guard let socketError = error as? Socket.Error else {
-                    print("Unexpected error...")
+                    POPServer.log("Unexpected error...")
                     return
                 }
 
                 if self?.continueRunning == true {
-                    print("Error reported:\n \(socketError.description)")
+                    POPServer.log("Error reported:\n \(socketError.description)")
                 }
             }
         }
@@ -107,16 +110,16 @@ class POPServer: ObservableObject {
     }
 
     private func removeConnection(_ socket: Socket) {
-        print("Socket: \(socket.remoteHostname):\(socket.remotePort) closing...")
+        POPServer.log("Socket: \(socket.remoteHostname):\(socket.remotePort) closing...")
         let socketKey = socket.socketfd
         socket.close()
         socketLockQueue.sync { [unowned self] in
-            print("Removing socket for key \(socketKey)")
+            POPServer.log("Removing socket for key \(socketKey)")
             connectedSockets.removeValue(forKey: socketKey)
             DispatchQueue.main.async {
                 objectWillChange.send()
                 numberConnected -= 1
-                print("Connection count decremented to \(numberConnected)")
+                POPServer.log("Connection count decremented to \(numberConnected)")
             }
         }
     }
@@ -124,12 +127,12 @@ class POPServer: ObservableObject {
     private func addNewConnection(socket: Socket) {
         // Add the new socket to the list of connected sockets...
         socketLockQueue.sync { [unowned self, socket] in
-            print("New connection added to list")
+            POPServer.log("New connection added to list")
             connectedSockets[socket.socketfd] = socket
             DispatchQueue.main.async {
                 objectWillChange.send()
                 numberConnected += 1
-                print("Connection count incremented to \(numberConnected)")
+                POPServer.log("Connection count incremented to \(numberConnected)")
             }
         }
 
@@ -148,7 +151,7 @@ class POPServer: ObservableObject {
     }
 
     func shutdown() {
-        print("\nPOP3 shutdown in progress...")
+        POPServer.log("\nPOP3 shutdown in progress...")
 
         continueRunning = false
 
@@ -157,6 +160,6 @@ class POPServer: ObservableObject {
             removeConnection(socket)
         }
         listenSocket?.close()
-        print("\nPOP3 shutdown complete")
+        POPServer.log("\nPOP3 shutdown complete")
     }
 }

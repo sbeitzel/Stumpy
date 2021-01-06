@@ -7,6 +7,9 @@ import Dispatch
 
 /// The server part of the SMTP server that we implement.
 class SMTPServer: ObservableObject {
+    private static func log(_ message: String) -> Void {
+        print("[SMTP] \(message)")
+    }
 
     @Published var numberConnected: Int = 0
     @Published var isRunning = false
@@ -20,7 +23,7 @@ class SMTPServer: ObservableObject {
             if continueRunning == false {
                 port = newPort
             } else {
-                print("Attempted to change port while server is running! Port not changed.")
+                SMTPServer.log("Attempted to change port while server is running! Port not changed.")
             }
         }
     }
@@ -33,7 +36,7 @@ class SMTPServer: ObservableObject {
     private var continueRunning: Bool {
         set(newValue) {
             socketLockQueue.sync {
-                print("Setting SMTP continueRunning to \(newValue)")
+                SMTPServer.log("Setting SMTP continueRunning to \(newValue)")
                 continueRunningValue = newValue
                 DispatchQueue.main.async {
                     self.isRunning = newValue
@@ -74,32 +77,32 @@ class SMTPServer: ObservableObject {
                 try myself.listenSocket = Socket.create(family: .inet)
 
                 guard let socket = myself.listenSocket else {
-                    print("Unable to unwrap socket...")
+                    SMTPServer.log("Unable to unwrap socket...")
                     return
                 }
 
                 try socket.listen(on: myself.port)
 
-                print("Listening on port: \(socket.listeningPort)")
+                SMTPServer.log("Listening on port: \(socket.listeningPort)")
 
                 repeat {
                     let newSocket = try socket.acceptClientConnection()
 
-                    print("Accepted connection from: \(newSocket.remoteHostname) on port \(newSocket.remotePort)")
-                    print("Socket Signature: \(String(describing: newSocket.signature?.description))")
+                    SMTPServer.log("Accepted connection from: \(newSocket.remoteHostname) on port \(newSocket.remotePort)")
+                    SMTPServer.log("Socket Signature: \(String(describing: newSocket.signature?.description))")
 
                     myself.addNewConnection(socket: newSocket)
                 } while self?.continueRunning == true
-                print("SMTP listening stopped")
+                SMTPServer.log("SMTP listening stopped")
             }
             catch let error {
                 guard let socketError = error as? Socket.Error else {
-                    print("Unexpected error...")
+                    SMTPServer.log("Unexpected error...")
                     return
                 }
 
                 if self?.continueRunning == true {
-                    print("Error reported:\n \(socketError.description)")
+                    SMTPServer.log("Error reported:\n \(socketError.description)")
                 }
             }
         }
@@ -107,16 +110,16 @@ class SMTPServer: ObservableObject {
     }
 
     private func removeConnection(_ socket: Socket) {
-        print("Socket: \(socket.remoteHostname):\(socket.remotePort) closing...")
+        SMTPServer.log("Socket: \(socket.remoteHostname):\(socket.remotePort) closing...")
         let socketKey = socket.socketfd
         socket.close()
         socketLockQueue.sync { [unowned self] in
-            print("Removing socket for key \(socketKey)")
+            SMTPServer.log("Removing socket for key \(socketKey)")
             connectedSockets.removeValue(forKey: socketKey)
             DispatchQueue.main.async {
                 objectWillChange.send()
                 numberConnected -= 1
-                print("Connection count decremented to \(numberConnected)")
+                SMTPServer.log("Connection count decremented to \(numberConnected)")
             }
         }
     }
@@ -124,12 +127,12 @@ class SMTPServer: ObservableObject {
     private func addNewConnection(socket: Socket) {
         // Add the new socket to the list of connected sockets...
         socketLockQueue.sync { [unowned self, socket] in
-            print("New connection added to list")
+            SMTPServer.log("New connection added to list")
             connectedSockets[socket.socketfd] = socket
             DispatchQueue.main.async {
                 objectWillChange.send()
                 numberConnected += 1
-                print("Connection count incremented to \(numberConnected)")
+                SMTPServer.log("Connection count incremented to \(numberConnected)")
             }
         }
 
@@ -148,7 +151,7 @@ class SMTPServer: ObservableObject {
     }
 
     func shutdown() {
-        print("\nSMTP shutdown in progress...")
+        SMTPServer.log("\nSMTP shutdown in progress...")
 
         continueRunning = false
 
@@ -157,6 +160,6 @@ class SMTPServer: ObservableObject {
             removeConnection(socket)
         }
         listenSocket?.close()
-        print("\nSMTP shutdown complete")
+        SMTPServer.log("\nSMTP shutdown complete")
     }
 }

@@ -176,11 +176,16 @@ struct PRetrieveAction: POPAction {
             return PInvalidAction(message: "Not allowed in this state").getResponse(state: state, store: store)
         }
         if let mi = messageIndex {
-            let message = store.get(message: mi)
-            let messageString = message.byteStuff()
-            let bytes = messageString.maximumLengthOfBytes(using: .utf8)
-            let responseString = "\(bytes) octets\r\n\(messageString)"
-            return POPResponse(code: POPResponse.OK, message: responseString, nextState: POPState.TRANSACTION)
+            // do some range checking
+            if mi > 0 && mi <= store.messageCount {
+                let message = store.get(message: mi - 1)
+                let messageString = message.byteStuff()
+                let bytes = messageString.maximumLengthOfBytes(using: .utf8)
+                let responseString = "\(bytes) octets\r\n\(messageString)"
+                return POPResponse(code: POPResponse.OK, message: responseString, nextState: POPState.TRANSACTION)
+            } else {
+                return POPResponse(code: POPResponse.ERROR, message: "No message at index \(mi)", nextState: POPState.TRANSACTION)
+            }
         } else {
             return POPResponse(code: POPResponse.ERROR, message: "No such message", nextState: POPState.TRANSACTION)
         }
@@ -254,7 +259,7 @@ struct PUIDLAction: POPAction {
             var responseMessage = "\r\n"
             for index in 0 ..< messages.count {
                 let message = messages[index]
-                responseMessage.append("\(index + 1) \(message.uid)")
+                responseMessage.append("\(index + 1) \(message.uid)\r\n")
             }
             responseMessage.append(".\r\n")
             return POPResponse(code: POPResponse.OK, message: responseMessage, nextState: POPState.TRANSACTION)

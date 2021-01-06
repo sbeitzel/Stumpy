@@ -32,6 +32,8 @@
 		7C815AD725A280BC0031F3B3 /* POPState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815AD625A280BC0031F3B3 /* POPState.swift */; };
 		7C815ADB25A38D480031F3B3 /* POPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815ADA25A38D480031F3B3 /* POPResponse.swift */; };
 		7C815ADF25A38E350031F3B3 /* POPAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815ADE25A38E350031F3B3 /* POPAction.swift */; };
+		7CCB86F425A530EA00C9FB6F /* DataExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB86F325A530EA00C9FB6F /* DataExtensionTest.swift */; };
+		7CCB86F825A5340600C9FB6F /* Data-Lines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB86F725A5340600C9FB6F /* Data-Lines.swift */; };
 		7CDBFA3325A42A0200F7F093 /* POPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDBFA3225A42A0200F7F093 /* POPRequest.swift */; };
 		AF5CD03E83F16AD89E3DC0FA /* Pods_Stumpy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA739C998EDC305315886D47 /* Pods_Stumpy.framework */; };
 /* End PBXBuildFile section */
@@ -78,6 +80,8 @@
 		7C815AD625A280BC0031F3B3 /* POPState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPState.swift; sourceTree = "<group>"; };
 		7C815ADA25A38D480031F3B3 /* POPResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPResponse.swift; sourceTree = "<group>"; };
 		7C815ADE25A38E350031F3B3 /* POPAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POPAction.swift; sourceTree = "<group>"; };
+		7CCB86F325A530EA00C9FB6F /* DataExtensionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtensionTest.swift; sourceTree = "<group>"; };
+		7CCB86F725A5340600C9FB6F /* Data-Lines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data-Lines.swift"; sourceTree = "<group>"; };
 		7CDBFA3225A42A0200F7F093 /* POPRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPRequest.swift; sourceTree = "<group>"; };
 		9279E744073CE98A15A5519A /* Pods-Stumpy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stumpy.debug.xcconfig"; path = "Target Support Files/Pods-Stumpy/Pods-Stumpy.debug.xcconfig"; sourceTree = "<group>"; };
 		A3C30BF5BE7A20ED3E54B478 /* Pods-Stumpy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stumpy.release.xcconfig"; path = "Target Support Files/Pods-Stumpy/Pods-Stumpy.release.xcconfig"; sourceTree = "<group>"; };
@@ -163,6 +167,7 @@
 			children = (
 				7C64345C2592706F00DE1AC8 /* Binding-Validate.swift */,
 				7C815A8925A25D540031F3B3 /* Binding-OnChange.swift */,
+				7CCB86F725A5340600C9FB6F /* Data-Lines.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -171,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				7C815A4D259E79FF0031F3B3 /* MailTests.swift */,
+				7CCB86F325A530EA00C9FB6F /* DataExtensionTest.swift */,
 				7C815A4F259E79FF0031F3B3 /* Info.plist */,
 				7C815A5A259EE2D10031F3B3 /* MailStoreTests.swift */,
 			);
@@ -393,6 +399,7 @@
 				7C815A3C259E53190031F3B3 /* MailStore.swift in Sources */,
 				7C815A42259E58D50031F3B3 /* FixedSizeMailStore.swift in Sources */,
 				7C815A63259FF9370031F3B3 /* SMTPSession.swift in Sources */,
+				7CCB86F825A5340600C9FB6F /* Data-Lines.swift in Sources */,
 				7CDBFA3325A42A0200F7F093 /* POPRequest.swift in Sources */,
 				7C815A8425A24DC80031F3B3 /* POPSession.swift in Sources */,
 				7C64344125926BAF00DE1AC8 /* AppDelegate.swift in Sources */,
@@ -406,6 +413,7 @@
 			files = (
 				7C815A5B259EE2D10031F3B3 /* MailStoreTests.swift in Sources */,
 				7C815A4E259E79FF0031F3B3 /* MailTests.swift in Sources */,
+				7CCB86F425A530EA00C9FB6F /* DataExtensionTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,13 +13,17 @@ class SMTPSession {
 
     private let socket: Socket
     private let store: MailStore
-    private let message: MailMessage
+    private var message: MailMessage
 
     var shouldContinue = true
     var readData: Data = Data(capacity: bufferSize)
     private var response: SMTPResponse
     private var state: SMTPState
     private var lastHeader: String
+
+    private func log(_ message: String) -> Void {
+        print("[SMTPSession] \(message)")
+    }
 
     init(socket: Socket, mailStore: MailStore) {
         self.socket = socket
@@ -34,17 +38,17 @@ class SMTPSession {
     private func sendResponse() -> Void {
         if response.code > 0 {
             let responseMessage = "\(response.code) \(response.message)\r\n"
-
+            log("Sending response: \(responseMessage)")
             do {
                 try socket.write(from: responseMessage)
             }
             catch let error {
                 guard let socketError = error as? Socket.Error else {
-                    print("Unexpected error by connection at \(socket.remoteHostname):\(socket.remotePort)...")
+                    log("Unexpected error by connection at \(socket.remoteHostname):\(socket.remotePort)...")
                     shouldContinue = false
                     return
                 }
-                print("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
+                log("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
                 shouldContinue = false
             }
         }
@@ -63,18 +67,17 @@ class SMTPSession {
                 // read a line from the client
                 let bytesRead = try socket.read(into: &readData)
                 if bytesRead > 0 {
-                    guard let line = String(data: readData, encoding: .utf8) else {
-                        print("Error decoding client request.")
-                        readData.count = 0
-                        break
-                    }
-                    // after we read the line, we need to clear the buffer
+                    let lines = readData.lines()
+                    // after we read the lines, we need to clear the buffer
                     readData.removeAll(keepingCapacity: true)
-                    let request = SMTPRequest.parseClientRequest(state: state, message: line)
-                    response = request.execute(with: message, on: store)
-                    store(input: request.params, message: message)
-                    sendResponse()
-                    state = response.nextState
+                    for line in lines {
+                        let request = SMTPRequest.parseClientRequest(state: state, message: line)
+                        response = request.execute(with: message, on: store)
+                        store(input: request.params, message: message)
+                        sendResponse()
+                        state = response.nextState
+                        maybeSaveMessage()
+                    }
                 } else {
                     shouldContinue = false
                 }
@@ -82,23 +85,36 @@ class SMTPSession {
         }
         catch let error {
             guard let socketError = error as? Socket.Error else {
-                print("Unexpected error by connection at \(socket.remoteHostname):\(socket.remotePort)...")
+                log("Unexpected error by connection at \(socket.remoteHostname):\(socket.remotePort)...")
                 shouldContinue = false
                 return
             }
-            print("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
+            log("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
             shouldContinue = false
+        }
+    }
+
+    private func maybeSaveMessage() -> Void {
+        if state == SMTPState.QUIT {
+            guard message.headers["Message-ID"] != nil else {
+                return
+            }
+            store.add(message: message)
+            message = MemoryMessage() // TODO: use a factory to construct new messages and pass the factory to the session initializer
         }
     }
 
     private func store(input: String, message: MailMessage) -> Void {
         if !input.isEmpty {
+            log("storing input to message: \(input)")
             if response.nextState == SMTPState.DATA_HDR {
+                log("storing a header")
                 // this is either a header ('X-Sender: foo@mx.place') or it's
                 // a header continuation (that is, it's a second value that we should add
                 // to the last header we processed)
                 let isNewHeader = input.contains(":")
                 if isNewHeader {
+                    log("new header")
                     let start = input.firstIndex(of: ":")
                     let header = String(input[input.startIndex ..< start!])
                     var value: String
@@ -111,8 +127,11 @@ class SMTPSession {
                     message.appendHeader(value: value, to: lastHeader)
                 }
             } else if response.nextState == SMTPState.DATA_BODY {
+                log("appending line to message")
                 message.append(line: input)
             }
+        } else {
+            log("no input stored to message")
         }
     }
 

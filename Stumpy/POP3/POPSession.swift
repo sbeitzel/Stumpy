@@ -28,6 +28,7 @@ class POPSession {
         if !line.hasSuffix("\r\n") {
             line.append("\r\n")
         }
+        print("POP server sending response: \(line)")
         do {
             try socket.write(from: line)
         }
