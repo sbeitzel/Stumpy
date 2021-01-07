@@ -16,7 +16,7 @@ extension Data {
         var lines = [String]()
         var line = ""
 
-        for (_, c) in buffer.enumerated() { // swiftlint:disable:this identifier_name
+        for c in buffer { // swiftlint:disable:this identifier_name
             if c == "\r\n" {
                 lines.append(line)
                 line = ""

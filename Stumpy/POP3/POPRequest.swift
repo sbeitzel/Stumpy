@@ -13,7 +13,9 @@ struct POPRequest {
     let state: POPState
 
     static func initialRequest(sessionID: String, hostname: String) -> POPRequest {
-        return POPRequest(action: PConnectAction(sessionID: sessionID, hostname: hostname), state: POPState.AUTHORIZATION)
+        return POPRequest(action: PConnectAction(sessionID: sessionID,
+                                                 hostname: hostname),
+                          state: POPState.AUTHORIZATION)
     }
 
     static func parseClientRequest(state: POPState, line: String) -> POPRequest {
@@ -21,6 +23,7 @@ struct POPRequest {
         return POPRequest(action: action, state: state)
     }
 
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     private static func parseInput(state: POPState, line: String) -> POPAction {
         print("POP server received request: \(line)")
         let ucLine = line.uppercased()

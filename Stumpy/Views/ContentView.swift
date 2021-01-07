@@ -24,21 +24,21 @@ struct ContentView: View {
     var body: some View {
         VStack {
             HStack {
-                Button(action: { smtpServer.run() }) { Text("Start SMTP") }
+                Button(action: smtpServer.run) { Text("Start SMTP") }
                     .disabled(smtpServer.isRunning)
                 TextField("SMTP Port:", text: $smtpPortString.onChange(setSMTPPort).validate(validateSMTPPort))
                 Spacer()
-                Button(action: { smtpServer.shutdown() }) { Text("Stop SMTP") }
+                Button(action: smtpServer.shutdown) { Text("Stop SMTP") }
                     .disabled(!smtpServer.isRunning)
             }
             Text("Number of SMTP connections: \(smtpServer.numberConnected)")
                 .padding()
             HStack {
-                Button(action: { popServer.run()}) { Text("Start POP3") }
+                Button(action: popServer.run) { Text("Start POP3") }
                     .disabled(popServer.isRunning)
                 TextField("POP3 Port:", text: $popPortString.onChange(setPOPPort).validate(validatePOPPort))
                 Spacer()
-                Button(action: { popServer.shutdown()}) { Text("Stop POP3") }
+                Button(action: popServer.shutdown) { Text("Stop POP3") }
                     .disabled(!popServer.isRunning)
             }
             Text("Number of POP conections: \(popServer.numberConnected)")

@@ -7,7 +7,7 @@ import Dispatch
 
 /// The server part of the SMTP server that we implement.
 class SMTPServer: ObservableObject {
-    private static func log(_ message: String) -> Void {
+    private static func log(_ message: String) {
         print("[SMTP] \(message)")
     }
 
@@ -88,6 +88,7 @@ class SMTPServer: ObservableObject {
                 repeat {
                     let newSocket = try socket.acceptClientConnection()
 
+                    // swiftlint:disable:next line_length
                     SMTPServer.log("Accepted connection from: \(newSocket.remoteHostname) on port \(newSocket.remotePort)")
                     SMTPServer.log("Socket Signature: \(String(describing: newSocket.signature?.description))")
 

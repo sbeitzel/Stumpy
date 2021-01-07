@@ -20,7 +20,9 @@ class POPSession {
         self.socket = socket
         self.store = mailStore
         self.state = POPState.AUTHORIZATION
-        self.response = POPRequest.initialRequest(sessionID: self.sessionID, hostname: "stumpy.local").action.getResponse(state: state, store: store)
+        self.response = POPRequest.initialRequest(sessionID: self.sessionID,
+                                                  hostname: "stumpy.local")
+            .action.getResponse(state: state, store: store)
     }
 
     private func sendResponse() {
@@ -37,6 +39,7 @@ class POPSession {
                 state = POPState.QUIT
                 return
             }
+            // swiftlint:disable:next line_length
             print("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
             state = POPState.QUIT
         }
@@ -73,6 +76,7 @@ class POPSession {
                 state = POPState.QUIT
                 return
             }
+            // swiftlint:disable:next line_length
             print("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
             state = POPState.QUIT
         }

@@ -24,25 +24,35 @@ struct SMTPRequest {
         SMTPRequest(action: ConnectAction(), state: SMTPState.CONNECT, params: "")
     }
 
+    private static func processDataHeaderMessage(state: SMTPState, message: String) -> SMTPRequest {
+        if message == "." {
+            return SMTPRequest(action: DataEndAction(), state: state, params: "")
+        } else if message.isEmpty {
+            return SMTPRequest(action: BlankLineAction(), state: state, params: "")
+        } else {
+            return SMTPRequest(action: UnrecognizedAction(), state: state, params: message)
+        }
+    }
+
+    private static func processDataBodyMessage(state: SMTPState, message: String) -> SMTPRequest {
+        if message == "." {
+            return SMTPRequest(action: DataEndAction(), state: state, params: "")
+        } else if message.isEmpty {
+            return SMTPRequest(action: UnrecognizedAction(), state: state, params: "\n")
+        } else {
+            return SMTPRequest(action: UnrecognizedAction(), state: state, params: message)
+        }
+    }
+
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     static func parseClientRequest(state: SMTPState, message: String) -> SMTPRequest {
         switch state {
         case .DATA_HDR:
-            if message == "." {
-                return SMTPRequest(action: DataEndAction(), state: state, params: "")
-            } else if message.isEmpty {
-                return SMTPRequest(action: BlankLineAction(), state: state, params: "")
-            } else {
-                return SMTPRequest(action: UnrecognizedAction(), state: state, params: message)
-            }
+            return processDataHeaderMessage(state: state, message: message)
         case .DATA_BODY:
-            if message == "." {
-                return SMTPRequest(action: DataEndAction(), state: state, params: "")
-            } else if message.isEmpty {
-                return SMTPRequest(action: UnrecognizedAction(), state: state, params: "\n")
-            } else {
-                return SMTPRequest(action: UnrecognizedAction(), state: state, params: message)
-            }
+            return processDataBodyMessage(state: state, message: message)
         default:
+            // swiftlint:disable:next identifier_name
             let su = message.uppercased()
             var action: SMTPAction
             var params = ""

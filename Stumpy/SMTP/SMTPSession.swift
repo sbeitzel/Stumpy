@@ -47,6 +47,7 @@ class SMTPSession {
                     shouldContinue = false
                     return
                 }
+                // swiftlint:disable:next line_length
                 log("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
                 shouldContinue = false
             }
@@ -87,6 +88,7 @@ class SMTPSession {
                 shouldContinue = false
                 return
             }
+            // swiftlint:disable:next line_length
             log("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
             shouldContinue = false
         }
@@ -94,11 +96,13 @@ class SMTPSession {
 
     private func maybeSaveMessage() {
         if state == SMTPState.QUIT {
-            guard message.headers["Message-ID"] != nil else {
+            guard message.headers["Message-Id"] != nil else {
+                log("no Message-Id header, so not saving message")
                 return
             }
             store.add(message: message)
-            message = MemoryMessage() // TODO: use a factory to construct new messages and pass the factory to the session initializer
+            // TODO: use a factory to construct new messages and pass the factory to the session initializer
+            message = MemoryMessage()
         }
     }
 
@@ -127,9 +131,11 @@ class SMTPSession {
             } else if response.nextState == SMTPState.DATA_BODY {
                 log("appending line to message")
                 message.append(line: input)
+            } else {
+                log("next state is: \(response.nextState.description); no input stored to message")
             }
         } else {
-            log("no input stored to message")
+            log("input line is empty, not writing to message")
         }
     }
 

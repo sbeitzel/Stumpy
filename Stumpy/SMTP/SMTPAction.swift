@@ -13,8 +13,9 @@ protocol SMTPAction {
     /// The representation of this action
     var asString: String { get }
 
-    /// The state machine logic of this action. Given the parameters of the existing state, the mail store, and the current message,
-    /// returns the appropriate response for the server to send to the client.
+    /// The state machine logic of this action. Given the parameters of the existing state,
+    /// the mail store, and the current message, returns the appropriate response for the
+    /// server to send to the client.
     /// - Parameters:
     ///   - state: the current state of the session
     ///   - store: the mail store on which we're operating
@@ -30,8 +31,9 @@ struct BlankLineAction: SMTPAction {
         "Blank line"
     }
 
-    /// The client has sent a blank line. This could be the separator between message header and body, or it might be a blank line
-    /// in the middle of the message body. In any other situation, this is not an expected command.
+    /// The client has sent a blank line. This could be the separator between message header and body,
+    /// or it might be a blank line in the middle of the message body. In any other situation, this is not
+    /// an expected command.
     /// - Parameters:
     ///   - state: current session state
     ///   - store: the mail store
@@ -152,6 +154,7 @@ struct ListAction: SMTPAction {
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         var result = ""
         let messages = store.list()
+        // swiftlint:disable:next identifier_name
         if let mi = messageIndex {
             if mi > -1 && mi < messages.count-1 {
                 result.append("\n-------------------------------------------\n")

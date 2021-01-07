@@ -8,6 +8,7 @@
 import Foundation
 
 struct POPResponse {
+    // swiftlint:disable:next identifier_name
     static let OK = "+OK"
     static let ERROR = "-ERR"
 

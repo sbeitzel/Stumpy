@@ -66,7 +66,7 @@ extension MailMessage {
         .joined(separator: "\r\n")
 
         // the headers are separated from the body by a CRLF
-        messageString += "\r\n"
+        messageString += "\r\n\r\n"
 
         // POP3 says we're supposed to "byte stuff" any termination sequence (CRLF.CRLF) that appears in the message
         // but when we do that then Apple's Mail doesn't un-stuff the dots. It may be that Mail is broken, but
@@ -86,9 +86,7 @@ extension MailMessage {
         }
         .joined(separator: "\n")
 
-        msg.append("\n");
-        msg.append(body);
-        msg.append("\n");
+        msg.append("\n\n\(body)\n")
 
         return msg
     }
