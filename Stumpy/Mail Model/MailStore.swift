@@ -14,7 +14,7 @@ public protocol MailStore {
 
     /// Add a message to the mail store. The location within the store is
     /// up to the implementation.
-    func add(message: MailMessage) -> Void
+    func add(message: MailMessage)
 
     /// Retrieve all messages currently in the store as an array. The order
     /// of the items within the array is stable over time.
@@ -27,8 +27,8 @@ public protocol MailStore {
     func get(message: Int) -> MailMessage
 
     /// Remove all messages from the mail store
-    func clear() -> Void
+    func clear()
 
     /// Remove a single message from the mail store, specified by a particular index.
-    func delete(message: Int) -> Void
+    func delete(message: Int)
 }

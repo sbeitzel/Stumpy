@@ -21,7 +21,7 @@ class SMTPSession {
     private var state: SMTPState
     private var lastHeader: String
 
-    private func log(_ message: String) -> Void {
+    private func log(_ message: String) {
         print("[SMTPSession] \(message)")
     }
 
@@ -35,14 +35,13 @@ class SMTPSession {
         lastHeader = ""
     }
 
-    private func sendResponse() -> Void {
+    private func sendResponse() {
         if response.code > 0 {
             let responseMessage = "\(response.code) \(response.message)\r\n"
             log("Sending response: \(responseMessage)")
             do {
                 try socket.write(from: responseMessage)
-            }
-            catch let error {
+            } catch let error {
                 guard let socketError = error as? Socket.Error else {
                     log("Unexpected error by connection at \(socket.remoteHostname):\(socket.remotePort)...")
                     shouldContinue = false
@@ -54,14 +53,14 @@ class SMTPSession {
         }
     }
 
-    private func prepareSessionLoop() -> Void {
+    private func prepareSessionLoop() {
         shouldContinue = true
         readData.removeAll(keepingCapacity: true)
         sendResponse()
         state = response.nextState
     }
 
-    private func sessionLoop() -> Void {
+    private func sessionLoop() {
         do {
             while state != SMTPState.CONNECT && shouldContinue {
                 // read a line from the client
@@ -82,8 +81,7 @@ class SMTPSession {
                     shouldContinue = false
                 }
             }
-        }
-        catch let error {
+        } catch let error {
             guard let socketError = error as? Socket.Error else {
                 log("Unexpected error by connection at \(socket.remoteHostname):\(socket.remotePort)...")
                 shouldContinue = false
@@ -94,7 +92,7 @@ class SMTPSession {
         }
     }
 
-    private func maybeSaveMessage() -> Void {
+    private func maybeSaveMessage() {
         if state == SMTPState.QUIT {
             guard message.headers["Message-ID"] != nil else {
                 return
@@ -104,7 +102,7 @@ class SMTPSession {
         }
     }
 
-    private func store(input: String, message: MailMessage) -> Void {
+    private func store(input: String, message: MailMessage) {
         if !input.isEmpty {
             log("storing input to message: \(input)")
             if response.nextState == SMTPState.DATA_HDR {
@@ -135,7 +133,7 @@ class SMTPSession {
         }
     }
 
-    func run() -> Void {
+    func run() {
         prepareSessionLoop()
         sessionLoop()
     }

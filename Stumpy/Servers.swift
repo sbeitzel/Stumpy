@@ -10,7 +10,7 @@ import Foundation
 class Servers {
     let smtpServer: SMTPServer
     let popServer: POPServer
-    
+
     private var mailStore: MailStore
 
     init() {

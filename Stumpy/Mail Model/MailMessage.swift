@@ -12,13 +12,11 @@ public protocol MailMessage {
     /// Dictionary of header name to list of one or more values
     var headers: [String: [String]] { get }
 
-
     /// Set the value of the specified header
     /// - Parameters:
     ///   - value: the value to set
     ///   - header: the header to set
-    func set(value: String, for header: String) -> Void
-
+    func set(value: String, for header: String)
 
     /// Add a given value to the specified header. If the header already has
     /// a value, the new value will be added; if the header does not have a value,
@@ -26,7 +24,7 @@ public protocol MailMessage {
     /// - Parameters:
     ///   - value: the value to set
     ///   - header: the header
-    func add(value: String, to header: String) -> Void
+    func add(value: String, to header: String)
 
     /// If a header already has value(s), then the provided value will be appended to the last
     /// value the header contains. If the header has no values, then the one provided will
@@ -34,14 +32,14 @@ public protocol MailMessage {
     /// - Parameters:
     ///   - value: the value to append to the header's last value
     ///   - header: the header to modify
-    func appendHeader(value: String, to header: String) -> Void
+    func appendHeader(value: String, to header: String)
 
     /// The body of the message
     var body: String { get }
 
     /// Append a line of text to the message body.
     /// - Parameter line: the line to add
-    func append(line: String) -> Void
+    func append(line: String)
 
     /// Message UUID. This is required by the POP3 protocol.
     var uid: String { get }
@@ -77,7 +75,7 @@ extension MailMessage {
         messageString += body.replacingOccurrences(of: "\r\n.\r\n", with: "\r\n..\r\n")
 
         // finally, the termination sequence
-        messageString += "\r\n.\r\n";
+        messageString += "\r\n.\r\n"
         return messageString
     }
 

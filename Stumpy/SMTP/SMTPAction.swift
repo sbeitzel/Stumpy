@@ -38,15 +38,15 @@ struct BlankLineAction: SMTPAction {
     ///   - message: current message
     /// - Returns: the response to send to the client
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
-        if (SMTPState.DATA_HDR == state) {
-            return SMTPResponse(code: -1, message: "", nextState: SMTPState.DATA_BODY);
-        } else if (SMTPState.DATA_BODY == state) {
-            return SMTPResponse(code: -1, message: "", nextState: state);
+        if SMTPState.DATA_HDR == state {
+            return SMTPResponse(code: -1, message: "", nextState: SMTPState.DATA_BODY)
+        } else if SMTPState.DATA_BODY == state {
+            return SMTPResponse(code: -1, message: "", nextState: state)
         } else {
             return SMTPResponse(
                 code: 503,
                 message: "Bad sequence of commands: " + asString,
-                nextState: state);
+                nextState: state)
         }
     }
 }
@@ -58,21 +58,21 @@ struct ConnectAction: SMTPAction {
     }
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
-        if (SMTPState.CONNECT == state) {
+        if SMTPState.CONNECT == state {
             return SMTPResponse(code: 220,
                                 message: "Stumpy SMTP service ready",
-                                nextState: SMTPState.GREET);
+                                nextState: SMTPState.GREET)
         } else {
             return SMTPResponse(code: 503,
                                 message: "Bad sequence of commands: " + asString,
-                                nextState: state);
+                                nextState: state)
         }
     }
 }
 
 struct DataAction: SMTPAction {
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
-        if (SMTPState.RCPT == state) {
+        if SMTPState.RCPT == state {
             return SMTPResponse(code: 354,
                                 message: "Start mail input; end with <CRLF>.<CRLF>",
                                 nextState: SMTPState.DATA_HDR)
@@ -91,14 +91,14 @@ struct DataEndAction: SMTPAction {
     var asString: String { "." }
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
-        if (SMTPState.DATA_HDR == state || SMTPState.DATA_BODY == state) {
+        if SMTPState.DATA_HDR == state || SMTPState.DATA_BODY == state {
             return SMTPResponse(code: 250,
                                 message: "OK",
-                                nextState: SMTPState.QUIT);
+                                nextState: SMTPState.QUIT)
         } else {
             return SMTPResponse(code: 503,
                                 message: "Bad sequence of commands: " + asString,
-                                nextState: state);
+                                nextState: state)
         }
     }
 }
@@ -107,14 +107,14 @@ struct EhloAction: SMTPAction {
     var asString: String { "EHLO" }
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
-        if (SMTPState.GREET == state) {
+        if SMTPState.GREET == state {
             return SMTPResponse(code: 250,
                                 message: "OK",
-                                nextState: SMTPState.MAIL);
+                                nextState: SMTPState.MAIL)
         } else {
             return SMTPResponse(code: 503,
                                 message: "Bad sequence of commands: " + asString,
-                                nextState: state);
+                                nextState: state)
         }
     }
 }
@@ -154,8 +154,8 @@ struct ListAction: SMTPAction {
         let messages = store.list()
         if let mi = messageIndex {
             if mi > -1 && mi < messages.count-1 {
-                result.append("\n-------------------------------------------\n");
-                result.append(messages[mi].toString());
+                result.append("\n-------------------------------------------\n")
+                result.append(messages[mi].toString())
             }
         }
         result.append("There are \(messages.count) messages")
@@ -169,14 +169,14 @@ struct MailAction: SMTPAction {
     var asString: String { "MAIL" }
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
-        if (SMTPState.MAIL == state || SMTPState.QUIT == state) {
+        if SMTPState.MAIL == state || SMTPState.QUIT == state {
             return SMTPResponse(code: 250,
                                 message: "OK",
-                                nextState: SMTPState.RCPT);
+                                nextState: SMTPState.RCPT)
         } else {
             return SMTPResponse(code: 503,
                                 message: "Bad sequence of commands: " + asString,
-                                nextState: state);
+                                nextState: state)
         }
     }
 }
@@ -187,7 +187,7 @@ struct NoOpAction: SMTPAction {
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         return SMTPResponse(code: 250,
                             message: "OK",
-                            nextState: state);
+                            nextState: state)
     }
 }
 
@@ -197,7 +197,7 @@ struct QuitAction: SMTPAction {
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         return SMTPResponse(code: 221,
                             message: "Stumpy SMTP service closing transmission channel",
-                            nextState: SMTPState.CONNECT);
+                            nextState: SMTPState.CONNECT)
     }
 }
 
@@ -205,14 +205,14 @@ struct RcptAction: SMTPAction {
     var asString: String { "RCPT" }
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
-        if (SMTPState.RCPT == state) {
+        if SMTPState.RCPT == state {
             return SMTPResponse(code: 250,
                                 message: "OK",
-                                nextState: state);
+                                nextState: state)
         } else {
             return SMTPResponse(code: 503,
                                 message: "Bad sequence of commands: " + asString,
-                                nextState: state);
+                                nextState: state)
         }
     }
 }
@@ -223,7 +223,7 @@ struct RsetAction: SMTPAction {
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         return SMTPResponse(code: 250,
                             message: "OK",
-                            nextState: SMTPState.GREET);
+                            nextState: SMTPState.GREET)
     }
 }
 
@@ -234,11 +234,11 @@ struct UnrecognizedAction: SMTPAction {
         if SMTPState.DATA_HDR == state || SMTPState.DATA_BODY == state {
             return SMTPResponse(code: -1,
                                 message: "",
-                                nextState: state);
+                                nextState: state)
         } else {
             return SMTPResponse(code: 500,
                                 message: "Command not recognized",
-                                nextState: state);
+                                nextState: state)
         }
     }
 }
@@ -249,7 +249,6 @@ struct VrfyAction: SMTPAction {
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         return SMTPResponse(code: 252,
                             message: "Not Supported",
-                            nextState: state);
+                            nextState: state)
     }
 }
-

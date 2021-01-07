@@ -80,7 +80,7 @@ struct PDeleteAction: POPAction {
             return PInvalidAction(message: "Not allowed in this state").getResponse(state: state, store: store)
         }
         if let mi = messageIndex {
-            if (mi > 0 && mi <= store.messageCount) {
+            if mi > 0 && mi <= store.messageCount {
                 store.delete(message: mi-1)
             } // TODO: should this return an error if the index is not okay? Check the RFC.
         }
@@ -277,4 +277,3 @@ struct PUserAction: POPAction {
         return PInvalidAction(message: "Not allowed in this state").getResponse(state: state, store: store)
     }
 }
-

@@ -14,26 +14,14 @@ public class MemoryMessage: MailMessage {
     private var headerDict = [String: [String]]()
     private var messageBody = ""
 
-    public var uid: String {
-        get {
-            uuid.uuidString
-        }
-    }
+    public var uid: String { uuid.uuidString }
 
-    public var headers: [String : [String]] {
-        get {
-            headerDict
-        }
-    }
+    public var headers: [String: [String]] { headerDict }
 
-    public var body: String {
-        get {
-            messageBody
-        }
-    }
+    public var body: String { messageBody }
 
     public init() {}
-    
+
     public func set(value: String, for header: String) {
         var valueArray = [String]()
         valueArray.append(value)
@@ -51,7 +39,7 @@ public class MemoryMessage: MailMessage {
         }
     }
 
-    public func appendHeader(value: String, to header: String) -> Void {
+    public func appendHeader(value: String, to header: String) {
         if var values = headerDict[header] {
             // this test is dumb, because if values exists, then there's at least one element in it
             // however, the contract of popLast says that it returns an optional. Tried using
@@ -63,7 +51,7 @@ public class MemoryMessage: MailMessage {
             if let oldValue = values.popLast() {
                 let newValue = oldValue + value
                 var updatedValues = [String]()
-                for v in values {
+                for v in values { // swiftlint:disable:this identifier_name
                     updatedValues.append(v)
                 }
                 updatedValues.append(newValue)
@@ -77,7 +65,7 @@ public class MemoryMessage: MailMessage {
     }
 
     public func append(line: String) {
-        if (!messageBody.isEmpty && !line.isEmpty && line != "\n") {
+        if !messageBody.isEmpty && !line.isEmpty && line != "\n" {
             messageBody += "\n"
         }
         messageBody += line

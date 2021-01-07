@@ -14,7 +14,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow!
     let servers = Servers()
 
-
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView(servers)
@@ -39,4 +38,3 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         true
     }
 }
-

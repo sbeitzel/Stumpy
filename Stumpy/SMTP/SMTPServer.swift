@@ -29,11 +29,16 @@ class SMTPServer: ObservableObject {
     }
 
     private let mailStore: MailStore
-    private var listenSocket: Socket? = nil
+    private var listenSocket: Socket?
     private var continueRunningValue = false
     private var connectedSockets = [Int32: Socket]()
     private let socketLockQueue = DispatchQueue(label: "com.qbcps.Stumpy.smtpSocketQ")
     private var continueRunning: Bool {
+        get {
+            return socketLockQueue.sync {
+                self.continueRunningValue
+            }
+        }
         set(newValue) {
             socketLockQueue.sync {
                 SMTPServer.log("Setting SMTP continueRunning to \(newValue)")
@@ -41,11 +46,6 @@ class SMTPServer: ObservableObject {
                 DispatchQueue.main.async {
                     self.isRunning = newValue
                 }
-            }
-        }
-        get {
-            return socketLockQueue.sync {
-                self.continueRunningValue
             }
         }
     }
@@ -70,7 +70,7 @@ class SMTPServer: ObservableObject {
         queue.async { [weak self] in
 
             do {
-                guard let myself :SMTPServer = self else {
+                guard let myself: SMTPServer = self else {
                     return
                 }
                 // Create an IPV4 socket...
@@ -94,8 +94,7 @@ class SMTPServer: ObservableObject {
                     myself.addNewConnection(socket: newSocket)
                 } while self?.continueRunning == true
                 SMTPServer.log("SMTP listening stopped")
-            }
-            catch let error {
+            } catch let error {
                 guard let socketError = error as? Socket.Error else {
                     SMTPServer.log("Unexpected error...")
                     return

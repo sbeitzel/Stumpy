@@ -46,14 +46,14 @@ struct ContentView: View {
         }
     }
 
-    private func setSMTPPort() -> Void {
+    private func setSMTPPort() {
         guard let portNum = Int(smtpPortString) else {
             return
         }
         smtpServer.serverPort = portNum
     }
 
-    private func setPOPPort() -> Void {
+    private func setPOPPort() {
         guard let portNum = Int(popPortString) else {
             return
         }
@@ -68,7 +68,6 @@ struct ContentView: View {
         return (Int(value) != nil && !popServer.isRunning)
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

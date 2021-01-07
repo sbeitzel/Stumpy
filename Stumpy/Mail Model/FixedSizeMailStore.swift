@@ -22,10 +22,8 @@ public class FixedSizeMailStore: MailStore {
     }
 
     public var messageCount: Int {
-        get {
-            messagesQueue.sync {
-                return messages.count
-            }
+        messagesQueue.sync {
+            return messages.count
         }
     }
 

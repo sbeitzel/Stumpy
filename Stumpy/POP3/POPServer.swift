@@ -70,7 +70,7 @@ class POPServer: ObservableObject {
         queue.async { [weak self] in
 
             do {
-                guard let myself :POPServer = self else {
+                guard let myself: POPServer = self else {
                     return
                 }
                 // Create an IPV4 socket...
@@ -94,8 +94,7 @@ class POPServer: ObservableObject {
                     myself.addNewConnection(socket: newSocket)
                 } while self?.continueRunning == true
                 POPServer.log("POP listening stopped")
-            }
-            catch let error {
+            } catch let error {
                 guard let socketError = error as? Socket.Error else {
                     POPServer.log("Unexpected error...")
                     return
