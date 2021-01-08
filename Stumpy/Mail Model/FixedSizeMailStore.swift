@@ -21,9 +21,9 @@ public class FixedSizeMailStore: MailStore, ObservableObject, Identifiable {
 
     /// Creates a FixedSizeMailStore configured to hold up to the given number of messages.
     /// - Parameter size: the maximum number of messages this store will contain
-    public init(size: Int) {
+    public init(size: Int, id: String = UUID().uuidString) {
         maxSize = size
-        id = UUID().uuidString
+        self.id = id
     }
 
     public var messageCount: Int {
@@ -38,12 +38,17 @@ public class FixedSizeMailStore: MailStore, ObservableObject, Identifiable {
     /// - Parameter message: the new message to add to the store
     public func add(message: MailMessage) {
         messagesQueue.sync {
-            objectWillChange.send()
             messages.append(message)
             while messages.count > maxSize {
                 messages.remove(at: 0)
             }
-            numberOfMessages = messages.count
+            DispatchQueue.main.async { [weak self] in
+                guard let myself = self else {
+                    return
+                }
+                myself.objectWillChange.send()
+                myself.numberOfMessages = myself.messages.count
+            }
         }
     }
 
@@ -70,9 +75,14 @@ public class FixedSizeMailStore: MailStore, ObservableObject, Identifiable {
 
     public func delete(message: Int) {
         messagesQueue.sync {
-            objectWillChange.send()
             _ = messages.remove(at: message)
-            numberOfMessages = messages.count
+            DispatchQueue.main.async { [weak self] in
+                guard let myself = self else {
+                    return
+                }
+                myself.objectWillChange.send()
+                myself.numberOfMessages = myself.messages.count
+            }
         }
     }
 

@@ -17,12 +17,12 @@ class DataController: ObservableObject {
     ///
     /// Defaults to permanent storage
     /// - Parameter inMemory: Whether data should be memory-only or not
-    init(inMemory: Bool = false) {
+    init(inMemory: Bool = false, container: NSPersistentCloudKitContainer) {
+        self.container = container
+
         // For testing and previewing purposes, we create a
         // temporary, in-memory database by writing to /dev/null
         // so our data is destroyed after the app finishes running.
-        container = NSPersistentCloudKitContainer(name: "Stumpy")
-
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
         }
@@ -35,7 +35,8 @@ class DataController: ObservableObject {
     }
 
     static var preview: DataController = {
-        let dataController = DataController(inMemory: true)
+        let container = NSPersistentCloudKitContainer(name: "Stumpy")
+        let dataController = DataController(inMemory: true, container: container)
 
         do {
             try dataController.createSampleData()
@@ -45,6 +46,15 @@ class DataController: ObservableObject {
 
         return dataController
     }()
+
+    func createNewSpec(capacity: Int32 = 100, smtpPort: Int16 = 1080, popPort: Int16 = 9090) -> ServerSpec {
+        let spec = ServerSpec(context: container.viewContext)
+        spec.specID = UUID()
+        spec.mailSlots = capacity
+        spec.smtpPort = smtpPort
+        spec.popPort = popPort
+        return spec
+    }
 
     /// Create sample ServerSpec for testing
     ///

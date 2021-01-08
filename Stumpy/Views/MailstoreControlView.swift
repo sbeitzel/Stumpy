@@ -11,16 +11,21 @@ struct MailstoreControlView: View {
     @ObservedObject var mailStore: FixedSizeMailStore
     @ObservedObject var smtpServer: SMTPServer
     @ObservedObject var popServer: POPServer
+    @ObservedObject var serverSpec: ServerSpec
 
     @State private var smtpPortString: String
     @State private var popPortString: String
 
-    init(store: FixedSizeMailStore, smtpServer: SMTPServer, popServer: POPServer) {
+    init(store: FixedSizeMailStore,
+         smtpServer: SMTPServer,
+         popServer: POPServer,
+         serverSpec: ServerSpec) {
         mailStore = store
         self.smtpServer = smtpServer
         self.popServer = popServer
         _smtpPortString = State(wrappedValue: String(smtpServer.serverPort))
         _popPortString = State(wrappedValue: String(popServer.serverPort))
+        self.serverSpec = serverSpec
     }
 
     var body: some View {
@@ -83,6 +88,7 @@ struct MailstoreControlView: View {
             return
         }
         smtpServer.serverPort = portNum
+        serverSpec.smtpPort = Int16(portNum)
     }
 
     private func setPOPPort() {
@@ -90,14 +96,33 @@ struct MailstoreControlView: View {
             return
         }
         popServer.serverPort = portNum
+        serverSpec.popPort = Int16(portNum)
     }
 
     private func validateSMTPPort(_ value: String) -> Bool {
-        return (Int(value) != nil && !smtpServer.isRunning)
+        guard let port: Int = Int(value) else {
+            // not a number
+            return false
+        }
+        guard port <= Int16.max else {
+            // number is too big
+            return false
+        }
+        // only allowed to change ports when the server is stopped
+        return !smtpServer.isRunning
     }
 
     private func validatePOPPort(_ value: String) -> Bool {
-        return (Int(value) != nil && !popServer.isRunning)
+        guard let port: Int = Int(value) else {
+            // not a number
+            return false
+        }
+        guard port <= Int16.max else {
+            // number is too big
+            return false
+        }
+        // only allowed to change ports when the server is stopped
+        return !popServer.isRunning
     }
 
     private func buttonAction() {
@@ -120,7 +145,11 @@ struct MailstoreControlView: View {
 
 struct MailstoreControlView_Previews: PreviewProvider {
     static var previews: some View {
-        let triad = Servers.example()
-        MailstoreControlView(store: triad.mailStore, smtpServer: triad.smtpServer, popServer: triad.popServer)
+        let controller = DataController.preview
+        let triad = Servers.example(controller)
+        MailstoreControlView(store: triad.mailStore,
+                             smtpServer: triad.smtpServer,
+                             popServer: triad.popServer,
+                             serverSpec: triad.spec)
     }
 }
