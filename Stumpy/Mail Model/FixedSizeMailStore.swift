@@ -10,7 +10,11 @@ import Foundation
 /// A `MailStore` implementation that holds up to a specified number of messages
 /// in memory. Once the limit is reached, adding a new message will evict the oldest
 /// message.
-public class FixedSizeMailStore: MailStore {
+public class FixedSizeMailStore: MailStore, ObservableObject, Identifiable {
+    public let id: String
+
+    @Published public var numberOfMessages: Int = 0
+
     private let maxSize: Int
     private var messages = [MailMessage]()
     private let messagesQueue = DispatchQueue(label: "com.qbcps.Stumpy.fixedSizeMailStore")
@@ -19,6 +23,7 @@ public class FixedSizeMailStore: MailStore {
     /// - Parameter size: the maximum number of messages this store will contain
     public init(size: Int) {
         maxSize = size
+        id = UUID().uuidString
     }
 
     public var messageCount: Int {
@@ -33,10 +38,12 @@ public class FixedSizeMailStore: MailStore {
     /// - Parameter message: the new message to add to the store
     public func add(message: MailMessage) {
         messagesQueue.sync {
+            objectWillChange.send()
             messages.append(message)
             while messages.count > maxSize {
                 messages.remove(at: 0)
             }
+            numberOfMessages = messages.count
         }
     }
 
@@ -55,13 +62,17 @@ public class FixedSizeMailStore: MailStore {
 
     public func clear() {
         messagesQueue.sync {
+            objectWillChange.send()
             messages.removeAll()
+            numberOfMessages = messages.count
         }
     }
 
     public func delete(message: Int) {
         messagesQueue.sync {
+            objectWillChange.send()
             _ = messages.remove(at: message)
+            numberOfMessages = messages.count
         }
     }
 

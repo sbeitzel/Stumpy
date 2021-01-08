@@ -30,7 +30,7 @@ class MailTests: XCTestCase {
         message.append(line: "\r\n.\r\n")
         message.append(line: "Second line")
         let stuffed = message.byteStuff()
-        XCTAssert(stuffed == "Sender: test@localhost\r\nHello, world!\n\r\n..\r\n\nSecond line\r\n.\r\n")
+        XCTAssert(stuffed == "Sender: test@localhost\r\n\r\nHello, world!\n\r\n..\r\n\nSecond line\r\n.\r\n")
     }
 
     /// Be sure that setting a header value actually stores that value

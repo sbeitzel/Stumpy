@@ -7,21 +7,46 @@
 
 import Foundation
 
-class Servers {
-    let smtpServer: SMTPServer
-    let popServer: POPServer
-
-    private var mailStore: MailStore
+class Servers: ObservableObject {
+    @Published var stores: [ServiceTriad]
+    let dataController: DataController = DataController()
 
     init() {
-        mailStore = FixedSizeMailStore(size: 100)
-        smtpServer = SMTPServer(port: 4000, store: mailStore)
-        popServer = POPServer(port: 4001, store: mailStore)
+        stores = [ServiceTriad]()
+        let store = FixedSizeMailStore(size: 100)
+        stores.append(ServiceTriad(smtpServer: SMTPServer(port: 1081, store: store),
+                                   popServer: POPServer(port: 9191, store: store),
+                                   mailStore: store))
+        let store2 = FixedSizeMailStore(size: 100)
+        stores.append(ServiceTriad(smtpServer: SMTPServer(port: 1082, store: store2),
+                                   popServer: POPServer(port: 9192, store: store2),
+                                   mailStore: store2))
     }
 
     func shutdown() {
+        dataController.save()
         print("\nAll servers shutting down")
-        smtpServer.shutdown()
-        popServer.shutdown()
+        for triad in stores {
+            triad.smtpServer.shutdown()
+            triad.popServer.shutdown()
+        }
     }
+
+    static public func example() -> ServiceTriad {
+        let store = FixedSizeMailStore(size: 10)
+        let smtpServer = SMTPServer(port: 1082, store: store)
+        let popServer = POPServer(port: 9191, store: store)
+        store.add(message: MemoryMessage.example())
+        return ServiceTriad(smtpServer: smtpServer, popServer: popServer, mailStore: store)
+    }
+}
+
+struct ServiceTriad: Identifiable {
+    public var id: String {
+        mailStore.id
+    }
+
+    let smtpServer: SMTPServer
+    let popServer: POPServer
+    let mailStore: FixedSizeMailStore
 }
