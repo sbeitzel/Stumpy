@@ -96,7 +96,7 @@ class SMTPSession {
 
     private func maybeSaveMessage() {
         if state == SMTPState.QUIT {
-            guard message.headers["Message-Id"] != nil else {
+            guard hasMessageIDHeader() else {
                 log("no Message-Id header, so not saving message")
                 return
             }
@@ -104,6 +104,22 @@ class SMTPSession {
             // TODO: use a factory to construct new messages and pass the factory to the session initializer
             message = MemoryMessage()
         }
+    }
+
+    /// The RFC states that there should be a message-id header, but it neglects to
+    /// specify the capitalization. Apple Mail creates "Message-Id" while Thunderbird
+    /// creates "Message-ID". So this method just uppercases all the headers and
+    /// returns true if any of them are "MESSAGE-ID", since apparently the Internet
+    /// doesn't care.
+    /// - Returns: true if there's a message ID
+    private func hasMessageIDHeader() -> Bool {
+        for header in message.headers.keys {
+            if header.uppercased() == "MESSAGE-ID" {
+                log("Found a message ID header: \(header)")
+                return true
+            }
+        }
+        return false
     }
 
     private func store(input: String, message: MailMessage) {
