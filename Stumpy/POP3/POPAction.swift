@@ -62,6 +62,7 @@ struct PConnectAction: POPAction {
             // If we were writing a server that actually implemented multi-mailbox and user security
             // then we'd care more about this. The one thing we should care about is that this string
             // is different for each request.
+            // swiftlint:disable:next line_length
             let message = "Stumpy POP3 server ready <\(sessionID).\(now.timeIntervalSinceReferenceDate)@\(hostname)>\r\n"
             return POPResponse(code: POPResponse.OK, message: message, nextState: state)
         } else {
@@ -79,6 +80,7 @@ struct PDeleteAction: POPAction {
         if state != POPState.TRANSACTION {
             return PInvalidAction(message: "Not allowed in this state").getResponse(state: state, store: store)
         }
+        // swiftlint:disable:next identifier_name
         if let mi = messageIndex {
             if mi > 0 && mi <= store.messageCount {
                 store.delete(message: mi-1)
@@ -98,12 +100,17 @@ struct PListAction: POPAction {
         if state != POPState.TRANSACTION {
             return PInvalidAction(message: "Not allowed in this state").getResponse(state: state, store: store)
         }
+        // swiftlint:disable:next identifier_name
         if let mi = messageIndex {
             if mi < store.messageCount {
                 let message = store.get(message: mi)
-                return POPResponse(code: POPResponse.OK, message: scanListing(mi + 1, message), nextState: POPState.TRANSACTION)
+                return POPResponse(code: POPResponse.OK,
+                                   message: scanListing(mi + 1, message),
+                                   nextState: POPState.TRANSACTION)
             } else {
-                return POPResponse(code: POPResponse.ERROR, message: "No such message", nextState: POPState.TRANSACTION)
+                return POPResponse(code: POPResponse.ERROR,
+                                   message: "No such message",
+                                   nextState: POPState.TRANSACTION)
             }
         } else {
             // build a scan listing for all the messages in the store
@@ -114,7 +121,9 @@ struct PListAction: POPAction {
                 allListings.append(scanListing(index + 1, messages[index]))
             }
             allListings.append(".\r\n")
-            return POPResponse(code: POPResponse.OK, message: allListings, nextState: POPState.TRANSACTION)
+            return POPResponse(code: POPResponse.OK,
+                               message: allListings,
+                               nextState: POPState.TRANSACTION)
         }
     }
 
@@ -161,7 +170,9 @@ struct PResetAction: POPAction {
         if state != POPState.TRANSACTION {
             return PInvalidAction(message: "Not allowed in this state").getResponse(state: state, store: store)
         }
-        return POPResponse(code: POPResponse.OK, message: "Stumpy doesn't really undelete", nextState: POPState.TRANSACTION)
+        return POPResponse(code: POPResponse.OK,
+                           message: "Stumpy doesn't really undelete",
+                           nextState: POPState.TRANSACTION)
     }
 }
 
@@ -175,6 +186,7 @@ struct PRetrieveAction: POPAction {
         if state != POPState.TRANSACTION {
             return PInvalidAction(message: "Not allowed in this state").getResponse(state: state, store: store)
         }
+        // swiftlint:disable:next identifier_name
         if let mi = messageIndex {
             // do some range checking
             if mi > 0 && mi <= store.messageCount {
@@ -184,10 +196,14 @@ struct PRetrieveAction: POPAction {
                 let responseString = "\(bytes) octets\r\n\(messageString)"
                 return POPResponse(code: POPResponse.OK, message: responseString, nextState: POPState.TRANSACTION)
             } else {
-                return POPResponse(code: POPResponse.ERROR, message: "No message at index \(mi)", nextState: POPState.TRANSACTION)
+                return POPResponse(code: POPResponse.ERROR,
+                                   message: "No message at index \(mi)",
+                                   nextState: POPState.TRANSACTION)
             }
         } else {
-            return POPResponse(code: POPResponse.ERROR, message: "No such message", nextState: POPState.TRANSACTION)
+            return POPResponse(code: POPResponse.ERROR,
+                               message: "No such message",
+                               nextState: POPState.TRANSACTION)
         }
     }
 }
@@ -243,6 +259,7 @@ struct PUIDLAction: POPAction {
         if state != POPState.TRANSACTION {
             return PInvalidAction(message: "Not allowed in this state").getResponse(state: state, store: store)
         }
+        // swiftlint:disable:next identifier_name
         if let mi = messageIndex {
             // one message
             if mi < store.messageCount {

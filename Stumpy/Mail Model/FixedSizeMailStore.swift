@@ -10,15 +10,20 @@ import Foundation
 /// A `MailStore` implementation that holds up to a specified number of messages
 /// in memory. Once the limit is reached, adding a new message will evict the oldest
 /// message.
-public class FixedSizeMailStore: MailStore {
+public class FixedSizeMailStore: MailStore, ObservableObject, Identifiable {
+    public let id: String
+
+    @Published public var numberOfMessages: Int = 0
+
     private let maxSize: Int
     private var messages = [MailMessage]()
     private let messagesQueue = DispatchQueue(label: "com.qbcps.Stumpy.fixedSizeMailStore")
 
     /// Creates a FixedSizeMailStore configured to hold up to the given number of messages.
     /// - Parameter size: the maximum number of messages this store will contain
-    public init(size: Int) {
+    public init(size: Int, id: String = UUID().uuidString) {
         maxSize = size
+        self.id = id
     }
 
     public var messageCount: Int {
@@ -36,6 +41,13 @@ public class FixedSizeMailStore: MailStore {
             messages.append(message)
             while messages.count > maxSize {
                 messages.remove(at: 0)
+            }
+            DispatchQueue.main.async { [weak self] in
+                guard let myself = self else {
+                    return
+                }
+                myself.objectWillChange.send()
+                myself.numberOfMessages = myself.messages.count
             }
         }
     }
@@ -55,13 +67,22 @@ public class FixedSizeMailStore: MailStore {
 
     public func clear() {
         messagesQueue.sync {
+            objectWillChange.send()
             messages.removeAll()
+            numberOfMessages = messages.count
         }
     }
 
     public func delete(message: Int) {
         messagesQueue.sync {
             _ = messages.remove(at: message)
+            DispatchQueue.main.async { [weak self] in
+                guard let myself = self else {
+                    return
+                }
+                myself.objectWillChange.send()
+                myself.numberOfMessages = myself.messages.count
+            }
         }
     }
 

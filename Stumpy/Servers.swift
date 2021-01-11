@@ -5,23 +5,56 @@
 //  Created by Stephen Beitzel on 12/22/20.
 //
 
-import Foundation
+import SwiftUI
+import CoreData
 
-class Servers {
-    let smtpServer: SMTPServer
-    let popServer: POPServer
+class Servers: ObservableObject {
+    @Published var stores: [ServiceTriad]
 
-    private var mailStore: MailStore
+    var dataController: DataController?
 
     init() {
-        mailStore = FixedSizeMailStore(size: 100)
-        smtpServer = SMTPServer(port: 4000, store: mailStore)
-        popServer = POPServer(port: 4001, store: mailStore)
+        stores = [ServiceTriad]()
+    }
+
+    func addTriad(from spec: ServerSpec) {
+        objectWillChange.send()
+        let store = FixedSizeMailStore(size: Int(spec.mailSlots), id: spec.idString)
+        stores.append(ServiceTriad(smtpServer: SMTPServer(port: Int(spec.smtpPort),
+                                                          store: store),
+                                   popServer: POPServer(port: Int(spec.popPort),
+                                                        store: store),
+                                   mailStore: store,
+                                   spec: spec)
+        )
     }
 
     func shutdown() {
         print("\nAll servers shutting down")
-        smtpServer.shutdown()
-        popServer.shutdown()
+        for triad in stores {
+            triad.smtpServer.shutdown()
+            triad.popServer.shutdown()
+        }
+        dataController?.save()
     }
+
+    static public func example(_ controller: DataController) -> ServiceTriad {
+        let serverSpec = controller.createNewSpec()
+        let store = FixedSizeMailStore(size: Int(serverSpec.mailSlots), id: serverSpec.idString)
+        let smtpServer = SMTPServer(port: Int(serverSpec.smtpPort), store: store)
+        let popServer = POPServer(port: Int(serverSpec.popPort), store: store)
+        store.add(message: MemoryMessage.example())
+        return ServiceTriad(smtpServer: smtpServer, popServer: popServer, mailStore: store, spec: serverSpec)
+    }
+}
+
+struct ServiceTriad: Identifiable {
+    public var id: String {
+        mailStore.id
+    }
+
+    let smtpServer: SMTPServer
+    let popServer: POPServer
+    let mailStore: FixedSizeMailStore
+    let spec: ServerSpec
 }

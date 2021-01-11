@@ -47,6 +47,7 @@ class SMTPSession {
                     shouldContinue = false
                     return
                 }
+                // swiftlint:disable:next line_length
                 log("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
                 shouldContinue = false
             }
@@ -87,6 +88,7 @@ class SMTPSession {
                 shouldContinue = false
                 return
             }
+            // swiftlint:disable:next line_length
             log("Error reported by connection at \(socket.remoteHostname):\(socket.remotePort):\n \(socketError.description)")
             shouldContinue = false
         }
@@ -94,12 +96,30 @@ class SMTPSession {
 
     private func maybeSaveMessage() {
         if state == SMTPState.QUIT {
-            guard message.headers["Message-ID"] != nil else {
+            guard hasMessageIDHeader() else {
+                log("no Message-Id header, so not saving message")
                 return
             }
             store.add(message: message)
-            message = MemoryMessage() // TODO: use a factory to construct new messages and pass the factory to the session initializer
+            // TODO: use a factory to construct new messages and pass the factory to the session initializer
+            message = MemoryMessage()
         }
+    }
+
+    /// The RFC states that there should be a message-id header, but it neglects to
+    /// specify the capitalization. Apple Mail creates "Message-Id" while Thunderbird
+    /// creates "Message-ID". So this method just uppercases all the headers and
+    /// returns true if any of them are "MESSAGE-ID", since apparently the Internet
+    /// doesn't care.
+    /// - Returns: true if there's a message ID
+    private func hasMessageIDHeader() -> Bool {
+        for header in message.headers.keys {
+            if header.uppercased() == "MESSAGE-ID" {
+                log("Found a message ID header: \(header)")
+                return true
+            }
+        }
+        return false
     }
 
     private func store(input: String, message: MailMessage) {
@@ -127,9 +147,11 @@ class SMTPSession {
             } else if response.nextState == SMTPState.DATA_BODY {
                 log("appending line to message")
                 message.append(line: input)
+            } else {
+                log("next state is: \(response.nextState.description); no input stored to message")
             }
         } else {
-            log("no input stored to message")
+            log("input line is empty, not writing to message")
         }
     }
 

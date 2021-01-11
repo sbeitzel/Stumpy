@@ -10,7 +10,7 @@ import Stumpy
 
 class MailStoreTests: XCTestCase {
 
-    var store: MailStore = FixedSizeMailStore(size: 10)
+    var store: FixedSizeMailStore = FixedSizeMailStore(size: 10)
 
     override func setUpWithError() throws {
         store.clear()
@@ -39,6 +39,7 @@ class MailStoreTests: XCTestCase {
         message.append(line: body)
         message.add(value: "test@localhost", to: "Sender")
         message.add(value: "Test message", to: "Subject")
+        message.add(value: "<\(message.uid)@localhost>", to: "Message-Id")
         return message
     }
 
@@ -47,5 +48,6 @@ class MailStoreTests: XCTestCase {
             store.add(message: createMessage("Message number \(i)"))
         }
         XCTAssert(store.messageCount == 10)
+        XCTAssert(store.numberOfMessages == 10)
     }
 }

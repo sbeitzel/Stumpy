@@ -8,64 +8,69 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var smtpServer: SMTPServer
-    @ObservedObject var popServer: POPServer
+    @EnvironmentObject var dataController: DataController
 
-    @State private var smtpPortString: String
-    @State private var popPortString: String
+    @ObservedObject var servers: Servers
+
+    @FetchRequest(entity: ServerSpec.entity(),
+                  sortDescriptors: [NSSortDescriptor(keyPath: \ServerSpec.smtpPort, ascending: true)])
+    var serverSpecs: FetchedResults<ServerSpec>
+
+    @State var isLoaded: Bool = false
 
     init(_ theServers: Servers) {
-        smtpServer = theServers.smtpServer
-        popServer = theServers.popServer
-        _smtpPortString = State(wrappedValue: String(theServers.smtpServer.serverPort))
-        _popPortString = State(wrappedValue: String(theServers.popServer.serverPort))
+        servers = theServers
+    }
+
+    func loadFromCoreData() {
+        if !isLoaded {
+            for spec in serverSpecs {
+                servers.addTriad(from: spec)
+            }
+        }
+        isLoaded = true
+    }
+
+    func clear() {
+        dataController.deleteAll()
+        servers.shutdown()
+        servers.stores.removeAll()
+        isLoaded = false
     }
 
     var body: some View {
         VStack {
             HStack {
-                Button(action: { smtpServer.run() }) { Text("Start SMTP") }
-                    .disabled(smtpServer.isRunning)
-                TextField("SMTP Port:", text: $smtpPortString.onChange(setSMTPPort).validate(validateSMTPPort))
+                Button(action: addStoreTriplet) {
+                    Text("New Store")
+                }
+                Button(action: loadFromCoreData) {
+                    Text("Load Saved")
+                }
+                    .disabled(isLoaded)
+                Button(action: clear) {
+                    Text("Delete Them All")
+                }
+                .disabled(servers.stores.isEmpty)
                 Spacer()
-                Button(action: { smtpServer.shutdown() }) { Text("Stop SMTP") }
-                    .disabled(!smtpServer.isRunning)
             }
-            Text("Number of SMTP connections: \(smtpServer.numberConnected)")
-                .padding()
-            HStack {
-                Button(action: { popServer.run()}) { Text("Start POP3") }
-                    .disabled(popServer.isRunning)
-                TextField("POP3 Port:", text: $popPortString.onChange(setPOPPort).validate(validatePOPPort))
-                Spacer()
-                Button(action: { popServer.shutdown()}) { Text("Stop POP3") }
-                    .disabled(!popServer.isRunning)
+            .padding()
+            // So, check it out, if you wrap this in a List,
+            // then the TextFields stop being editable.
+            ForEach(servers.stores) { triad in
+                MailstoreControlView(store: triad.mailStore,
+                                     smtpServer: triad.smtpServer,
+                                     popServer: triad.popServer,
+                                     serverSpec: triad.spec)
             }
-            Text("Number of POP conections: \(popServer.numberConnected)")
-                .padding()
         }
     }
 
-    private func setSMTPPort() {
-        guard let portNum = Int(smtpPortString) else {
-            return
-        }
-        smtpServer.serverPort = portNum
-    }
-
-    private func setPOPPort() {
-        guard let portNum = Int(popPortString) else {
-            return
-        }
-        popServer.serverPort = portNum
-    }
-
-    private func validateSMTPPort(_ value: String) -> Bool {
-        return (Int(value) != nil && !smtpServer.isRunning)
-    }
-
-    private func validatePOPPort(_ value: String) -> Bool {
-        return (Int(value) != nil && !popServer.isRunning)
+    func addStoreTriplet() {
+        // first, we need a new record from the data controller
+        let spec = dataController.createNewSpec()
+        // now we can use that to create a new mail store & servers
+        servers.addTriad(from: spec)
     }
 }
 

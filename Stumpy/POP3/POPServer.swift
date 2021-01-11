@@ -7,7 +7,7 @@ import Dispatch
 
 /// The server part of the POP3 server that we implement.
 class POPServer: ObservableObject {
-    static func log(_ message: String) -> Void {
+    static func log(_ message: String) {
         print("[POP] \(message)")
     }
 
@@ -29,11 +29,16 @@ class POPServer: ObservableObject {
     }
 
     private let mailStore: MailStore
-    private var listenSocket: Socket? = nil
+    private var listenSocket: Socket?
     private var continueRunningValue = false
     private var connectedSockets = [Int32: Socket]()
     private let socketLockQueue = DispatchQueue(label: "com.qbcps.Stumpy.popSocketQ")
     private var continueRunning: Bool {
+        get {
+            return socketLockQueue.sync {
+                self.continueRunningValue
+            }
+        }
         set(newValue) {
             socketLockQueue.sync {
                 POPServer.log("Setting POP continueRunning to \(newValue)")
@@ -41,11 +46,6 @@ class POPServer: ObservableObject {
                 DispatchQueue.main.async {
                     self.isRunning = newValue
                 }
-            }
-        }
-        get {
-            return socketLockQueue.sync {
-                self.continueRunningValue
             }
         }
     }
@@ -88,6 +88,7 @@ class POPServer: ObservableObject {
                 repeat {
                     let newSocket = try socket.acceptClientConnection()
 
+                    // swiftlint:disable:next line_length
                     POPServer.log("Accepted connection from: \(newSocket.remoteHostname) on port \(newSocket.remotePort)")
                     POPServer.log("Socket Signature: \(String(describing: newSocket.signature?.description))")
 

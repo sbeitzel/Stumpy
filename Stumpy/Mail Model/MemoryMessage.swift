@@ -71,4 +71,12 @@ public class MemoryMessage: MailMessage {
         messageBody += line
     }
 
+    public static func example() -> MailMessage {
+        let message = MemoryMessage()
+        message.append(line: "Sample message for preview purposes.")
+        message.add(value: "test@localhost", to: "Sender")
+        message.add(value: "Sample message", to: "Subject")
+        message.add(value: "<\(message.uid)@localhost>", to: "Message-Id")
+        return message
+    }
 }
