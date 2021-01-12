@@ -29,6 +29,15 @@ class Servers: ObservableObject {
         )
     }
 
+    func remove(triad: ServiceTriad) {
+        DispatchQueue.main.async { [weak self] in
+            self?.objectWillChange.send()
+            triad.smtpServer.shutdown()
+            triad.popServer.shutdown()
+            self?.stores.removeAll(where: { $0.id == triad.id })
+        }
+    }
+
     func shutdown() {
         print("\nAll servers shutting down")
         for triad in stores {
