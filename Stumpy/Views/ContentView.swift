@@ -32,9 +32,9 @@ struct ContentView: View {
     }
 
     func clear() {
-        dataController.deleteAll()
         servers.shutdown()
         servers.stores.removeAll()
+        dataController.deleteAll()
         isLoaded = false
     }
 
@@ -58,10 +58,22 @@ struct ContentView: View {
             // So, check it out, if you wrap this in a List,
             // then the TextFields stop being editable.
             ForEach(servers.stores) { triad in
-                MailstoreControlView(store: triad.mailStore,
-                                     smtpServer: triad.smtpServer,
-                                     popServer: triad.popServer,
-                                     serverSpec: triad.spec)
+                HStack {
+                    MailstoreControlView(store: triad.mailStore,
+                                         smtpServer: triad.smtpServer,
+                                         popServer: triad.popServer,
+                                         serverSpec: triad.spec)
+                    VStack {
+                        Button(action: {
+                            servers.remove(triad: triad)
+                            dataController.delete(triad.spec)
+                        }, label: {
+                            Text("Delete")
+                        })
+                        .padding(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+                        Spacer()
+                    }
+                }
             }
         }
     }
