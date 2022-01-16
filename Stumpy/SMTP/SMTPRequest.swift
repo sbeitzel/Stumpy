@@ -58,11 +58,19 @@ struct SMTPRequest {
             var params = ""
             if su.hasPrefix("EHLO ") {
                 params = message
-                params.removeFirst(5)
+                if params.count > 5 {
+                    params.removeFirst(5)
+                } else {
+                    params = ""
+                }
                 action = EhloAction(args: params)
             } else if su.hasPrefix("HELO") {
                 params = message
-                params.removeFirst(5)
+                if params.count > 5 {
+                    params.removeFirst(5)
+                } else {
+                    params = ""
+                }
                 action = HeloAction(args: params)
             } else if su.hasPrefix("MAIL FROM:") {
                 action = MailAction()
