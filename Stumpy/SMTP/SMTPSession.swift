@@ -37,7 +37,7 @@ class SMTPSession {
 
     private func sendResponse() {
         if response.code > 0 {
-            let responseMessage = "\(response.code) \(response.message)\r\n"
+            let responseMessage = "\(response.message)\r\n"
             log("Sending response: \(responseMessage)")
             do {
                 try socket.write(from: responseMessage)

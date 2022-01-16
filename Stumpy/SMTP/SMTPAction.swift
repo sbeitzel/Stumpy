@@ -47,7 +47,7 @@ struct BlankLineAction: SMTPAction {
         } else {
             return SMTPResponse(
                 code: 503,
-                message: "Bad sequence of commands: " + asString,
+                message: "503 Bad sequence of commands: " + asString,
                 nextState: state)
         }
     }
@@ -62,11 +62,11 @@ struct ConnectAction: SMTPAction {
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         if SMTPState.CONNECT == state {
             return SMTPResponse(code: 220,
-                                message: "Stumpy SMTP service ready",
+                                message: "220 Stumpy SMTP service ready",
                                 nextState: SMTPState.GREET)
         } else {
             return SMTPResponse(code: 503,
-                                message: "Bad sequence of commands: " + asString,
+                                message: "503 Bad sequence of commands: " + asString,
                                 nextState: state)
         }
     }
@@ -76,11 +76,11 @@ struct DataAction: SMTPAction {
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         if SMTPState.RCPT == state {
             return SMTPResponse(code: 354,
-                                message: "Start mail input; end with <CRLF>.<CRLF>",
+                                message: "354 Start mail input; end with <CRLF>.<CRLF>",
                                 nextState: SMTPState.DATA_HDR)
         } else {
             return SMTPResponse(code: 503,
-                                message: "Bad sequence of commands: " + asString,
+                                message: "503 Bad sequence of commands: " + asString,
                                 nextState: state)
         }
 
@@ -95,11 +95,28 @@ struct DataEndAction: SMTPAction {
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         if SMTPState.DATA_HDR == state || SMTPState.DATA_BODY == state {
             return SMTPResponse(code: 250,
-                                message: "OK",
+                                message: "250 OK",
                                 nextState: SMTPState.QUIT)
         } else {
             return SMTPResponse(code: 503,
-                                message: "Bad sequence of commands: " + asString,
+                                message: "503 Bad sequence of commands: " + asString,
+                                nextState: state)
+        }
+    }
+}
+
+struct HeloAction: SMTPAction {
+    var asString: String { "HELO" }
+    let args: String
+
+    func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
+        if SMTPState.GREET == state {
+            return SMTPResponse(code: 250,
+                                message: "250 Hello \(args)",
+                                nextState: SMTPState.MAIL)
+        } else {
+            return SMTPResponse(code: 503,
+                                message: "503 Bad sequence of commands: " + asString,
                                 nextState: state)
         }
     }
@@ -107,15 +124,16 @@ struct DataEndAction: SMTPAction {
 
 struct EhloAction: SMTPAction {
     var asString: String { "EHLO" }
+    let args: String
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         if SMTPState.GREET == state {
             return SMTPResponse(code: 250,
-                                message: "OK",
+                                message: "250-local.stumpy Hello \(args)\r\n250 OK",
                                 nextState: SMTPState.MAIL)
         } else {
             return SMTPResponse(code: 503,
-                                message: "Bad sequence of commands: " + asString,
+                                message: "503 Bad sequence of commands: " + asString,
                                 nextState: state)
         }
     }
@@ -126,7 +144,7 @@ struct ExpnAction: SMTPAction {
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         SMTPResponse(code: 252,
-                     message: "Not supported",
+                     message: "252 Not supported",
                      nextState: state)
     }
 }
@@ -136,7 +154,7 @@ struct HelpAction: SMTPAction {
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         SMTPResponse(code: 211,
-                     message: "No help available",
+                     message: "211 No help available",
                      nextState: state)
     }
 }
@@ -152,7 +170,7 @@ struct ListAction: SMTPAction {
     }
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
-        var result = ""
+        var result = "250 "
         let messages = store.list()
         // swiftlint:disable:next identifier_name
         if let mi = messageIndex {
@@ -174,11 +192,11 @@ struct MailAction: SMTPAction {
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         if SMTPState.MAIL == state || SMTPState.QUIT == state {
             return SMTPResponse(code: 250,
-                                message: "OK",
+                                message: "250 OK",
                                 nextState: SMTPState.RCPT)
         } else {
             return SMTPResponse(code: 503,
-                                message: "Bad sequence of commands: " + asString,
+                                message: "503 Bad sequence of commands: " + asString,
                                 nextState: state)
         }
     }
@@ -189,7 +207,7 @@ struct NoOpAction: SMTPAction {
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         return SMTPResponse(code: 250,
-                            message: "OK",
+                            message: "250 OK",
                             nextState: state)
     }
 }
@@ -199,7 +217,7 @@ struct QuitAction: SMTPAction {
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         return SMTPResponse(code: 221,
-                            message: "Stumpy SMTP service closing transmission channel",
+                            message: "221 Stumpy SMTP service closing transmission channel",
                             nextState: SMTPState.CONNECT)
     }
 }
@@ -210,11 +228,11 @@ struct RcptAction: SMTPAction {
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         if SMTPState.RCPT == state {
             return SMTPResponse(code: 250,
-                                message: "OK",
+                                message: "250 OK",
                                 nextState: state)
         } else {
             return SMTPResponse(code: 503,
-                                message: "Bad sequence of commands: " + asString,
+                                message: "503 Bad sequence of commands: " + asString,
                                 nextState: state)
         }
     }
@@ -225,7 +243,7 @@ struct RsetAction: SMTPAction {
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         return SMTPResponse(code: 250,
-                            message: "OK",
+                            message: "250 OK",
                             nextState: SMTPState.GREET)
     }
 }
@@ -240,7 +258,7 @@ struct UnrecognizedAction: SMTPAction {
                                 nextState: state)
         } else {
             return SMTPResponse(code: 500,
-                                message: "Command not recognized",
+                                message: "500 Command not recognized",
                                 nextState: state)
         }
     }
@@ -251,7 +269,7 @@ struct VrfyAction: SMTPAction {
 
     func getResponse(state: SMTPState, store: MailStore, message: MailMessage) -> SMTPResponse {
         return SMTPResponse(code: 252,
-                            message: "Not Supported",
+                            message: "252 Not Supported",
                             nextState: state)
     }
 }
