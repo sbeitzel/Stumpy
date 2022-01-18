@@ -2,164 +2,74 @@
 //
 
 import Foundation
-import Socket
-import Dispatch
+import Logging
+import NIO
 
-/// The server part of the SMTP server that we implement.
-class SMTPServer: ObservableObject {
-    private static func log(_ message: String) {
-        print("[SMTP] \(message)")
-    }
-
-    @Published var numberConnected: Int = 0
-    @Published var isRunning = false
-
+class NSMTPServer: ObservableObject {
+    private var logger: Logger
+    private let mailStore: MailStore
     private var port: Int
     var serverPort: Int {
         get {
             port
         }
         set(newPort) {
-            if continueRunning == false {
+            if isRunning == false {
                 port = newPort
             } else {
-                SMTPServer.log("Attempted to change port while server is running! Port not changed.")
+                logger.warning("Attempted to change port while server is running! Port not changed.")
             }
         }
     }
+    private let bootstrap: ServerBootstrap
+    private var serverChannel: Channel?
 
-    private let mailStore: MailStore
-    private var listenSocket: Socket?
-    private var continueRunningValue = false
-    private var connectedSockets = [Int32: Socket]()
-    private let socketLockQueue = DispatchQueue(label: "com.qbcps.Stumpy.smtpSocketQ")
-    private var continueRunning: Bool {
-        get {
-            return socketLockQueue.sync {
-                self.continueRunningValue
-            }
-        }
-        set(newValue) {
-            socketLockQueue.sync {
-                SMTPServer.log("Setting SMTP continueRunning to \(newValue)")
-                continueRunningValue = newValue
-                DispatchQueue.main.async {
-                    self.isRunning = newValue
-                }
-            }
-        }
-    }
+    @Published var isRunning: Bool = false
 
-    init(port: Int, store: MailStore = FixedSizeMailStore(size: 10)) {
+    init(group: EventLoopGroup, port: Int, store: MailStore = FixedSizeMailStore(size: 10)) {
+        logger = Logger(label: "SMTPServer")
+        logger[metadataKey: "origin"] = "[SMTP]"
         self.port = port
-        mailStore = store
-    }
-
-    deinit {
-        // Close all open sockets...
-        for socket in connectedSockets.values {
-            removeConnection(socket)
-        }
-        self.listenSocket?.close()
+        self.mailStore = store
+        self.bootstrap = ServerBootstrap(group: group)
+            .serverChannelOption(ChannelOptions.backlog, value: 256)
+            .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
+            .childChannelInitializer { channel in
+                channel.pipeline.addHandlers([
+                    BackPressureHandler(),
+                    SMTPSessionHandler(with: store),
+                    SMTPParseHandler(),
+                    SMTPActionHandler
+                ])
+            }
+            .childChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
+            .childChannelOption(ChannelOptions.maxMessagesPerRead, value: 16)
+            .childChannelOption(ChannelOptions.recvAllocator, value: AdaptiveRecvByteBufferAllocator())
     }
 
     func run() {
-        continueRunning = true
-        let queue = DispatchQueue.global(qos: .userInteractive)
-
-        queue.async { [weak self] in
-
-            do {
-                guard let myself: SMTPServer = self else {
-                    return
+        if !isRunning {
+            objectWillChange.send()
+            isRunning = true
+            Task {
+                do {
+                    serverChannel = try bootstrap.bind(host: "::1", port: port).wait()
+                    logger.info("Server started, listening on address: \(serverChannel!.localAddress!.description)")
+                    try serverChannel!.closeFuture.wait()
+                    logger.info("Server stopped.")
+                    isRunning = false
+                } catch {
+                    logger.critical("Error running SMTP server: \(error.localizedDescription)")
                 }
-                // Create an IPV4 socket...
-                try myself.listenSocket = Socket.create(family: .inet)
-
-                guard let socket = myself.listenSocket else {
-                    SMTPServer.log("Unable to unwrap socket...")
-                    return
-                }
-
-                try socket.listen(on: myself.port)
-
-                SMTPServer.log("Listening on port: \(socket.listeningPort)")
-
-                repeat {
-                    let newSocket = try socket.acceptClientConnection()
-
-                    // swiftlint:disable:next line_length
-                    SMTPServer.log("Accepted connection from: \(newSocket.remoteHostname) on port \(newSocket.remotePort)")
-                    SMTPServer.log("Socket Signature: \(String(describing: newSocket.signature?.description))")
-
-                    myself.addNewConnection(socket: newSocket)
-                } while self?.continueRunning == true
-                SMTPServer.log("SMTP listening stopped")
-            } catch let error {
-                guard let socketError = error as? Socket.Error else {
-                    SMTPServer.log("Unexpected error...")
-                    return
-                }
-
-                if self?.continueRunning == true {
-                    SMTPServer.log("Error reported:\n \(socketError.description)")
-                }
-            }
-        }
-        //        dispatchMain()
-    }
-
-    private func removeConnection(_ socket: Socket) {
-        SMTPServer.log("Socket: \(socket.remoteHostname):\(socket.remotePort) closing...")
-        let socketKey = socket.socketfd
-        socket.close()
-        socketLockQueue.sync { [unowned self] in
-            SMTPServer.log("Removing socket for key \(socketKey)")
-            connectedSockets.removeValue(forKey: socketKey)
-            DispatchQueue.main.async {
-                objectWillChange.send()
-                numberConnected -= 1
-                SMTPServer.log("Connection count decremented to \(numberConnected)")
             }
         }
     }
 
-    private func addNewConnection(socket: Socket) {
-        // Add the new socket to the list of connected sockets...
-        socketLockQueue.sync { [unowned self, socket] in
-            SMTPServer.log("New connection added to list")
-            connectedSockets[socket.socketfd] = socket
-            DispatchQueue.main.async {
-                objectWillChange.send()
-                numberConnected += 1
-                SMTPServer.log("Connection count incremented to \(numberConnected)")
-            }
+    func stop() {
+        if let channel = serverChannel {
+            logger.info("SMTP server shutting down")
+            _ = channel.close(mode: CloseMode.all)
+            self.serverChannel = nil
         }
-
-        // Get the global concurrent queue...
-        let queue = DispatchQueue.global(qos: .default)
-
-        // Create the run loop work item and dispatch to the default priority global queue...
-        queue.async { [weak self, socket] in
-            guard let store = self?.mailStore else {
-                return
-            }
-            let clientSession = SMTPSession(socket: socket, mailStore: store)
-            clientSession.run()
-            self?.removeConnection(socket)
-        }
-    }
-
-    func shutdown() {
-        SMTPServer.log("\nSMTP shutdown in progress...")
-
-        continueRunning = false
-
-        // Close all open sockets...
-        for socket in connectedSockets.values {
-            removeConnection(socket)
-        }
-        listenSocket?.close()
-        SMTPServer.log("\nSMTP shutdown complete")
     }
 }

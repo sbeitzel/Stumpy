@@ -47,7 +47,6 @@ class MailStoreTests: XCTestCase {
         for i in 0...11 { // swiftlint:disable:this identifier_name
             store.add(message: createMessage("Message number \(i)"))
         }
-        XCTAssert(store.messageCount == 10)
-        XCTAssert(store.numberOfMessages == 10)
+        XCTAssertEqual(store.messageCount, 10)
     }
 }
