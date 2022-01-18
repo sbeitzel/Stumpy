@@ -29,7 +29,6 @@
 		7C815AD725A280BC0031F3B3 /* POPState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815AD625A280BC0031F3B3 /* POPState.swift */; };
 		7C815ADB25A38D480031F3B3 /* POPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815ADA25A38D480031F3B3 /* POPResponse.swift */; };
 		7C815ADF25A38E350031F3B3 /* POPAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815ADE25A38E350031F3B3 /* POPAction.swift */; };
-		7CB6B17F2793B9C900530A04 /* Socket in Frameworks */ = {isa = PBXBuildFile; productRef = 7CB6B17E2793B9C900530A04 /* Socket */; };
 		7CB6B1822793E95B00530A04 /* NIO in Frameworks */ = {isa = PBXBuildFile; productRef = 7CB6B1812793E95B00530A04 /* NIO */; };
 		7CB6B18527948CBB00530A04 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 7CB6B18427948CBB00530A04 /* Logging */; };
 		7CB6B1872795292E00530A04 /* SMTPSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B1862795292E00530A04 /* SMTPSessionState.swift */; };
@@ -110,7 +109,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7CB6B18527948CBB00530A04 /* Logging in Frameworks */,
-				7CB6B17F2793B9C900530A04 /* Socket in Frameworks */,
 				7CB6B1822793E95B00530A04 /* NIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -272,7 +270,6 @@
 			);
 			name = Stumpy;
 			packageProductDependencies = (
-				7CB6B17E2793B9C900530A04 /* Socket */,
 				7CB6B1812793E95B00530A04 /* NIO */,
 				7CB6B18427948CBB00530A04 /* Logging */,
 			);
@@ -326,7 +323,6 @@
 			);
 			mainGroup = 7C64343425926BAF00DE1AC8;
 			packageReferences = (
-				7CB6B17D2793B9C900530A04 /* XCRemoteSwiftPackageReference "BlueSocket" */,
 				7CB6B1802793E95B00530A04 /* XCRemoteSwiftPackageReference "swift-nio" */,
 				7CB6B18327948CBB00530A04 /* XCRemoteSwiftPackageReference "swift-log" */,
 			);
@@ -693,14 +689,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		7CB6B17D2793B9C900530A04 /* XCRemoteSwiftPackageReference "BlueSocket" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Kitura/BlueSocket";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		7CB6B1802793E95B00530A04 /* XCRemoteSwiftPackageReference "swift-nio" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-nio.git";
@@ -720,11 +708,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7CB6B17E2793B9C900530A04 /* Socket */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7CB6B17D2793B9C900530A04 /* XCRemoteSwiftPackageReference "BlueSocket" */;
-			productName = Socket;
-		};
 		7CB6B1812793E95B00530A04 /* NIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7CB6B1802793E95B00530A04 /* XCRemoteSwiftPackageReference "swift-nio" */;
