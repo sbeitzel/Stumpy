@@ -5,3 +5,5 @@ identifier_name:
   excluded:
     - id
 
+disabled_rules:
+  - cyclomatic_complexity

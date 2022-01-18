@@ -28,7 +28,8 @@ class Servers: ObservableObject {
         stores.append(ServiceTriad(smtpServer: NSMTPServer(group: dataController.smtpGroup,
                                                            port: Int(spec.smtpPort),
                                                            store: store),
-                                   popServer: POPServer(port: Int(spec.popPort),
+                                   popServer: NPOPServer(group: dataController.popGroup,
+                                                         port: Int(spec.popPort),
                                                         store: store),
                                    mailStore: store,
                                    spec: spec)
@@ -39,7 +40,7 @@ class Servers: ObservableObject {
         DispatchQueue.main.async { [weak self] in
             self?.objectWillChange.send()
             triad.smtpServer.stop()
-            triad.popServer.shutdown()
+            triad.popServer.stop()
             self?.stores.removeAll(where: { $0.id == triad.id })
         }
     }
@@ -48,7 +49,7 @@ class Servers: ObservableObject {
         print("\nAll servers shutting down")
         for triad in stores {
             triad.smtpServer.stop()
-            triad.popServer.shutdown()
+            triad.popServer.stop()
         }
         dataController?.save()
     }
@@ -57,7 +58,7 @@ class Servers: ObservableObject {
         let serverSpec = controller.createNewSpec()
         let store = FixedSizeMailStore(size: Int(serverSpec.mailSlots), id: serverSpec.idString)
         let smtpServer = NSMTPServer(group: controller.smtpGroup, port: Int(serverSpec.smtpPort), store: store)
-        let popServer = POPServer(port: Int(serverSpec.popPort), store: store)
+        let popServer = NPOPServer(group: controller.popGroup, port: Int(serverSpec.popPort), store: store)
         Task {
             await store.add(message: MemoryMessage.example())
         }
@@ -71,7 +72,7 @@ struct ServiceTriad: Identifiable {
     }
 
     let smtpServer: NSMTPServer
-    let popServer: POPServer
+    let popServer: NPOPServer
     let mailStore: FixedSizeMailStore
     let spec: ServerSpec
 }

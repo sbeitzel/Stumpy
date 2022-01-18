@@ -8,5 +8,5 @@
 import Foundation
 
 enum SMTPState {
-    case connect, greet, mail, rcpt, data_hdr, data_body, quit
+    case connect, greet, mail, rcpt, dataHeader, dataBody, quit
 }

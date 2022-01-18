@@ -23,14 +23,14 @@ final class SMTPSessionHandler: ChannelInboundHandler {
         // first, get the buffer -- unwrapInboundIn does typecasting
         let inBuffer = unwrapInboundIn(data)
         let inString = inBuffer.getString(at: 0, length: inBuffer.readableBytes) ?? ""
-        
+
         sessionState.inputLine = inString
 
         context.fireChannelRead(wrapInboundOut(sessionState))
     }
 
     func channelActive(context: ChannelHandlerContext) {
-        let banner = "220 Stumpy SMTP service ready"
+        let banner = "220 Stumpy SMTP service ready\r\n"
         var outBuff = context.channel.allocator.buffer(capacity: banner.count)
         outBuff.writeString(banner)
 

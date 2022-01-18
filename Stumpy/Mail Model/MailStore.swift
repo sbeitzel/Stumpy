@@ -33,7 +33,6 @@ public protocol MailStore {
     func delete(message: Int) async throws
 }
 
-
 enum MailStoreError: Error {
     case invalidIndex
 }

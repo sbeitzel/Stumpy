@@ -39,7 +39,7 @@ class NSMTPServer: ObservableObject {
                     BackPressureHandler(),
                     SMTPSessionHandler(with: store),
                     SMTPParseHandler(),
-                    SMTPActionHandler
+                    SMTPActionHandler()
                 ])
             }
             .childChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
@@ -57,7 +57,9 @@ class NSMTPServer: ObservableObject {
                     logger.info("Server started, listening on address: \(serverChannel!.localAddress!.description)")
                     try serverChannel!.closeFuture.wait()
                     logger.info("Server stopped.")
-                    isRunning = false
+                    DispatchQueue.main.async {
+                        self.isRunning = false
+                    }
                 } catch {
                     logger.critical("Error running SMTP server: \(error.localizedDescription)")
                 }

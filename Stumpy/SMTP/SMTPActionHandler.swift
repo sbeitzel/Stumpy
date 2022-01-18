@@ -54,9 +54,17 @@ final class SMTPActionHandler: ChannelInboundHandler {
                 // data for a mail message
                 respMessage.append("\(response.code) \(response.message)")
             }
-            var outBuffer = context.channel.allocator.buffer(capacity: respMessage.count)
-            outBuffer.writeString(respMessage)
-            context.writeAndFlush(wrapInboundOut(outBuffer), promise: nil)
+            if !respMessage.hasSuffix("\r\n") {
+                respMessage.append("\r\n")
+            }
+            context.eventLoop.execute {
+                var outBuffer = context.channel.allocator.buffer(capacity: respMessage.count)
+                outBuffer.writeString(respMessage)
+                context.writeAndFlush(self.wrapInboundOut(outBuffer), promise: nil)
+                if currentState.smtpState == .quit {
+                    _ = context.close()
+                }
+            }
         }
     }
 
@@ -80,7 +88,7 @@ final class SMTPActionHandler: ChannelInboundHandler {
         if let input = state.command?.parameters {
             if !input.isEmpty {
                 logger.trace("storing input to message", metadata: ["input": "\(input)"])
-                if state.smtpState == .data_hdr {
+                if state.smtpState == .dataHeader {
                     logger.trace("storing a header")
                     // this is either a header ('X-Sender: foo@mx.place') or it's
                     // a header continuation (that is, it's a second value that we should add
@@ -99,7 +107,7 @@ final class SMTPActionHandler: ChannelInboundHandler {
                         let value = input.trimmingCharacters(in: .whitespacesAndNewlines)
                         state.workingMessage.appendHeader(value: value, to: state.lastHeader)
                     }
-                } else if state.smtpState == .data_body {
+                } else if state.smtpState == .dataBody {
                     logger.trace("appending line to message")
                     state.workingMessage.append(line: input)
                 } else {
@@ -114,16 +122,16 @@ final class SMTPActionHandler: ChannelInboundHandler {
         }
     }
 
-
+    // swiftlint:disable:next function_body_length
     func computeResponse(_ state: SMTPSessionState) async -> SMTPResponse {
         if let command = state.command {
             switch command.action {
             case .blankLine:
-                if state.smtpState == .data_hdr {
+                if state.smtpState == .dataHeader {
                     // blank line separates headers from body
-                    state.smtpState = .data_body
+                    state.smtpState = .dataBody
                     return SMTPResponse(code: -1, message: "")
-                } else if state.smtpState == .data_body {
+                } else if state.smtpState == .dataBody {
                     return SMTPResponse(code: -1, message: "")
                 } else {
                     return .badSequence
@@ -138,7 +146,7 @@ final class SMTPActionHandler: ChannelInboundHandler {
                 }
 
             case .dataEnd:
-                if state.smtpState == .data_body || state.smtpState == .data_hdr {
+                if state.smtpState == .dataBody || state.smtpState == .dataHeader {
                     state.smtpState = .quit
                     return SMTPResponse(code: 250,
                                         message: "OK")
@@ -203,6 +211,7 @@ final class SMTPActionHandler: ChannelInboundHandler {
                 return SMTPResponse(code: 250, message: "OK")
 
             case .quit:
+                state.smtpState = .quit
                 return SMTPResponse(code: 221,
                                     message: "Stumpy SMTP service closing transmission channel")
 
@@ -223,7 +232,7 @@ final class SMTPActionHandler: ChannelInboundHandler {
                 return SMTPResponse(code: 252, message: "Not Supported")
 
             case .unknown:
-                if state.smtpState == .data_hdr || state.smtpState == .data_body {
+                if state.smtpState == .dataHeader || state.smtpState == .dataBody {
                     return SMTPResponse(code: -1, message: "")
                 } else {
                     return SMTPResponse(code: 500, message: "Command not recognized")

@@ -7,12 +7,6 @@
 
 import Foundation
 
-struct POPState: Equatable {
-    let description: String
-}
-
-extension POPState {
-    static let AUTHORIZATION = POPState(description: "AUTHORIZATION")
-    static let TRANSACTION = POPState(description: "TRANSACTION")
-    static let QUIT = POPState(description: "QUIT")
+enum POPState {
+    case authorization, transaction, quit
 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct MailstoreControlView: View {
     @ObservedObject var mailStore: FixedSizeMailStore
     @ObservedObject var smtpServer: NSMTPServer
-    @ObservedObject var popServer: POPServer
+    @ObservedObject var popServer: NPOPServer
     @ObservedObject var serverSpec: ServerSpec
 
     @State private var smtpPortString: String
@@ -19,7 +19,7 @@ struct MailstoreControlView: View {
 
     init(store: FixedSizeMailStore,
          smtpServer: NSMTPServer,
-         popServer: POPServer,
+         popServer: NPOPServer,
          serverSpec: ServerSpec) {
         mailStore = store
         self.smtpServer = smtpServer
@@ -130,7 +130,7 @@ struct MailstoreControlView: View {
     private func buttonAction() {
         if smtpServer.isRunning {
             smtpServer.stop()
-            popServer.shutdown()
+            popServer.stop()
         } else {
             smtpServer.run()
             popServer.run()

@@ -17,9 +17,9 @@ final class SMTPParseHandler: ChannelInboundHandler {
 
         // now, we look at the line that came in and turn it into an action
         switch currentState.smtpState {
-        case .data_hdr:
+        case .dataHeader:
             processDataHeaderMessage(currentState)
-        case .data_body:
+        case .dataBody:
             processDataBodyMessage(currentState)
         default:
             processMessage(currentState)
@@ -29,6 +29,7 @@ final class SMTPParseHandler: ChannelInboundHandler {
         context.fireChannelRead(wrapInboundOut(currentState))
     }
 
+    // swiftlint:disable:next function_body_length
     private func processMessage(_ state: SMTPSessionState) {
         let allCaps = state.inputLine.uppercased()
         var params = state.inputLine
