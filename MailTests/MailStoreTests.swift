@@ -6,32 +6,30 @@
 //
 
 import XCTest
-import Stumpy
+@testable import Stumpy
 
 class MailStoreTests: XCTestCase {
 
     var store: FixedSizeMailStore = FixedSizeMailStore(size: 10)
 
     override func setUpWithError() throws {
-        store.clear()
+        store = FixedSizeMailStore(size: 10)
     }
 
-    override func tearDownWithError() throws {
-        store.clear()
+    func testInitialStoreIsEmpty() async {
+        let count = await store.messageCount()
+        XCTAssertEqual(count, 0)
     }
 
-    func testInitialStoreIsEmpty() {
-        XCTAssert(store.messageCount == 0)
-    }
-
-    func testAddActuallyAdds() {
+    func testAddActuallyAdds() async throws {
         let message = createMessage("Test message body")
-        store.add(message: message)
+        await store.add(message: message)
 
-        XCTAssert(store.messageCount == 1)
-        let retrievedMessage = store.get(message: 0)
-        XCTAssert(message.uid == retrievedMessage.uid)
-        XCTAssert(message.byteStuff() == retrievedMessage.byteStuff())
+        let count = await store.messageCount()
+        XCTAssertEqual(count, 1)
+        let retrievedMessage = try await store.get(message: 0)
+        XCTAssertEqual(message.uid, retrievedMessage.uid)
+        XCTAssertEqual(message.byteStuff(), retrievedMessage.byteStuff())
     }
 
     func createMessage(_ body: String, subject: String = "Test subject") -> MailMessage {
@@ -43,11 +41,11 @@ class MailStoreTests: XCTestCase {
         return message
     }
 
-    func testAddElevenYieldsTen() {
+    func testAddElevenYieldsTen() async throws {
         for i in 0...11 { // swiftlint:disable:this identifier_name
-            store.add(message: createMessage("Message number \(i)"))
+            await store.add(message: createMessage("Message number \(i)"))
         }
-        XCTAssert(store.messageCount == 10)
-        XCTAssert(store.numberOfMessages == 10)
+        let count = await store.messageCount()
+        XCTAssertEqual(count, 10)
     }
 }

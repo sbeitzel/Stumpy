@@ -19,6 +19,5 @@ struct SMTPResponse {
     /// Human readable message describing the response
     let message: String
 
-    /// The next state that the session will be in, upon client's receipt of this response
-    let nextState: SMTPState
+    static let badSequence = SMTPResponse(code: 503, message: "Bad sequence of commands")
 }
