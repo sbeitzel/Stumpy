@@ -4,7 +4,7 @@ An SMTP and POP3 server for local testing of email services.
 
 ## Installation
 
-You may build the application from source, but the [releases section](https://github.com/sbeitzel/Stumpy/releases) of the repository also has a built and signed application available as a downloadable DMG.
+You may build the application from source, or download a pre-built version from the App Store.
 
 ## Operation
 

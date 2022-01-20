@@ -95,6 +95,9 @@
 		7CB6B1902797359100530A04 /* POPSessionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPSessionHandler.swift; sourceTree = "<group>"; };
 		7CB6B19227973C2400530A04 /* POPParseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPParseHandler.swift; sourceTree = "<group>"; };
 		7CB6B194279741AB00530A04 /* POPActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPActionHandler.swift; sourceTree = "<group>"; };
+		7CB88B822798DD6600C930E8 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		7CB88B832798DD6D00C930E8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		7CB88B852798DDD500C930E8 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		7CCB86F325A530EA00C9FB6F /* DataExtensionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtensionTest.swift; sourceTree = "<group>"; };
 		7CCB86F725A5340600C9FB6F /* Data-Lines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data-Lines.swift"; sourceTree = "<group>"; };
 		7CF76EAA25A7D05100CA9238 /* MailstoreControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailstoreControlView.swift; sourceTree = "<group>"; };
@@ -126,6 +129,9 @@
 		7C64343425926BAF00DE1AC8 = {
 			isa = PBXGroup;
 			children = (
+				7CB88B852798DDD500C930E8 /* CHANGELOG.md */,
+				7CB88B822798DD6600C930E8 /* LICENSE */,
+				7CB88B832798DD6D00C930E8 /* README.md */,
 				7C0349AC25E03FC000EBA2FF /* .swiftlint.yml */,
 				7C64343F25926BAF00DE1AC8 /* Stumpy */,
 				7C815A4C259E79FF0031F3B3 /* MailTests */,
