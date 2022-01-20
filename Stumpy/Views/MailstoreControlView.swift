@@ -9,22 +9,24 @@ import SwiftUI
 
 struct MailstoreControlView: View {
     @ObservedObject var mailStore: FixedSizeMailStore
-    @ObservedObject var smtpServer: SMTPServer
-    @ObservedObject var popServer: POPServer
+    @ObservedObject var smtpServer: NSMTPServer
+    @ObservedObject var popServer: NPOPServer
     @ObservedObject var serverSpec: ServerSpec
 
     @State private var smtpPortString: String
     @State private var popPortString: String
+    @State private var messageCountString: String
 
     init(store: FixedSizeMailStore,
-         smtpServer: SMTPServer,
-         popServer: POPServer,
+         smtpServer: NSMTPServer,
+         popServer: NPOPServer,
          serverSpec: ServerSpec) {
         mailStore = store
         self.smtpServer = smtpServer
         self.popServer = popServer
         _smtpPortString = State(wrappedValue: String(smtpServer.serverPort))
         _popPortString = State(wrappedValue: String(popServer.serverPort))
+        _messageCountString = State(wrappedValue: "0")
         self.serverSpec = serverSpec
     }
 
@@ -61,24 +63,24 @@ struct MailstoreControlView: View {
                 }
             }
             .padding(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 0))
-            VStack(alignment: .leading) {
-                Text("\(smtpServer.numberConnected) SMTP connections")
-                    .padding(EdgeInsets(top: 0,
-                                        leading: 0,
-                                        bottom: 5,
-                                        trailing: 5))
-                Text("\(popServer.numberConnected) POP3 connections")
-                    .padding(EdgeInsets(top: 0,
-                                        leading: 0,
-                                        bottom: 5,
-                                        trailing: 5))
-                Text("\(mailStore.numberOfMessages) messages")
-                    .padding(EdgeInsets(top: 0,
-                                        leading: 0,
-                                        bottom: 5,
-                                        trailing: 5))
-            }
-            .padding()
+//            VStack(alignment: .leading) {
+//                Text("\(smtpServer.numberConnected) SMTP connections")
+//                    .padding(EdgeInsets(top: 0,
+//                                        leading: 0,
+//                                        bottom: 5,
+//                                        trailing: 5))
+//                Text("\(popServer.numberConnected) POP3 connections")
+//                    .padding(EdgeInsets(top: 0,
+//                                        leading: 0,
+//                                        bottom: 5,
+//                                        trailing: 5))
+//                Text("\(messageCountString) messages")
+//                    .padding(EdgeInsets(top: 0,
+//                                        leading: 0,
+//                                        bottom: 5,
+//                                        trailing: 5))
+//            }
+//            .padding()
             Spacer()
         }
     }
@@ -127,8 +129,8 @@ struct MailstoreControlView: View {
 
     private func buttonAction() {
         if smtpServer.isRunning {
-            smtpServer.shutdown()
-            popServer.shutdown()
+            smtpServer.stop()
+            popServer.stop()
         } else {
             smtpServer.run()
             popServer.run()

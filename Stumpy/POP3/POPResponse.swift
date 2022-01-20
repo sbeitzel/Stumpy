@@ -14,5 +14,4 @@ struct POPResponse {
 
     let code: String
     let message: String
-    let nextState: POPState
 }

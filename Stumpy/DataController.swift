@@ -5,11 +5,15 @@
 //  Created by Stephen Beitzel on 1/7/21.
 //
 
-import Foundation
 import CoreData
+import Foundation
+import NIO
 
 /// An environment singleton for managing the Core Data stack and dealing with sample data
 class DataController: ObservableObject {
+    let smtpGroup = MultiThreadedEventLoopGroup(numberOfThreads: min(System.coreCount / 2, 2))
+    let popGroup = MultiThreadedEventLoopGroup(numberOfThreads: min(System.coreCount / 2, 2))
+
     /// The container for CloudKit, in which all the data gets stored
     let container: NSPersistentCloudKitContainer
 
