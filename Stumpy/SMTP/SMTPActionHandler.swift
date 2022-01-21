@@ -21,6 +21,7 @@ final class SMTPActionHandler: ChannelInboundHandler {
 
     init() {
         logger = Logger(label: "SMTPActionHandler")
+        logger.logLevel = .info
         logger[metadataKey: "origin"] = "[SMTP]"
     }
 
@@ -54,10 +55,10 @@ final class SMTPActionHandler: ChannelInboundHandler {
                 // data for a mail message
                 respMessage.append("\(response.code) \(response.message)")
             }
-            if !respMessage.hasSuffix("\r\n") {
-                respMessage.append("\r\n")
-            }
             context.eventLoop.execute {
+                if !(respMessage.hasSuffix("\r\n") || respMessage.hasSuffix("\n") || respMessage.isEmpty) {
+                    respMessage.append("\n")
+                }
                 var outBuffer = context.channel.allocator.buffer(capacity: respMessage.count)
                 outBuffer.writeString(respMessage)
                 context.writeAndFlush(self.wrapInboundOut(outBuffer), promise: nil)
@@ -139,6 +140,7 @@ final class SMTPActionHandler: ChannelInboundHandler {
 
             case .data:
                 if state.smtpState == .rcpt {
+                    state.smtpState = .dataHeader
                     return SMTPResponse(code: 354,
                                         message: "Start mail input; end with <CRLF>.<CRLF>")
                 } else {
@@ -147,7 +149,7 @@ final class SMTPActionHandler: ChannelInboundHandler {
 
             case .dataEnd:
                 if state.smtpState == .dataBody || state.smtpState == .dataHeader {
-                    state.smtpState = .quit
+                    state.smtpState = .mail
                     return SMTPResponse(code: 250,
                                         message: "OK")
                 } else {
@@ -173,7 +175,6 @@ final class SMTPActionHandler: ChannelInboundHandler {
                 }
 
             case .expn:
-                // TODO: probably, we should just come back with the same email that was provided.
                 return SMTPResponse(code: 252,
                                     message: "Not supported")
 
@@ -228,7 +229,6 @@ final class SMTPActionHandler: ChannelInboundHandler {
                 return SMTPResponse(code: 250, message: "OK")
 
             case .vrfy:
-                // TODO: again, it would be trivial to say sure, that's our guy
                 return SMTPResponse(code: 252, message: "Not Supported")
 
             case .unknown:

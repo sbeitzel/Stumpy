@@ -53,7 +53,7 @@ class NSMTPServer: ObservableObject {
             isRunning = true
             Task {
                 do {
-                    serverChannel = try bootstrap.bind(host: "::1", port: port).wait()
+                    serverChannel = try bootstrap.bind(host: "localhost", port: port).wait()
                     logger.info("Server started, listening on address: \(serverChannel!.localAddress!.description)")
                     try serverChannel!.closeFuture.wait()
                     logger.info("Server stopped.")

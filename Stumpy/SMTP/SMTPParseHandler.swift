@@ -6,11 +6,20 @@
 //
 
 import Foundation
+import Logging
 import NIO
 
 final class SMTPParseHandler: ChannelInboundHandler {
     typealias InboundIn = SMTPSessionState
     typealias InboundOut = SMTPSessionState
+
+    var logger: Logger
+
+    init() {
+        logger = Logger(label: "SMTPParseHandler")
+        logger.logLevel = .trace
+        logger[metadataKey: "origin"] = "[SMTP]"
+    }
 
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
         let currentState = unwrapInboundIn(data)
@@ -24,6 +33,9 @@ final class SMTPParseHandler: ChannelInboundHandler {
         default:
             processMessage(currentState)
         }
+
+        logger.trace("Input: \(currentState.inputLine)",
+                     metadata: ["command": "\(String(describing: currentState.command?.action))"])
 
         // and pass it along for further handling
         context.fireChannelRead(wrapInboundOut(currentState))

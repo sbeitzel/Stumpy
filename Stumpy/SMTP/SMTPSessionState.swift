@@ -8,7 +8,14 @@
 import Foundation
 
 class SMTPSessionState {
-    var smtpState: SMTPState
+    var smtpState: SMTPState {
+        get { theState }
+        set {
+            print("State set to \(newValue)")
+            theState = newValue
+        }
+    }
+    private var theState: SMTPState
     var workingMessage: MailMessage
     var lastHeader: String = ""
     let mailstore: MailStore
@@ -19,7 +26,7 @@ class SMTPSessionState {
         inputLine = ""
         mailstore = store
         workingMessage = MemoryMessage()
-        smtpState = .connect
+        theState = .connect
     }
 }
 
