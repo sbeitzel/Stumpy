@@ -37,8 +37,8 @@ class NSMTPServer: ObservableObject {
             .childChannelInitializer { channel in
                 channel.pipeline.addHandlers([
                     BackPressureHandler(),
+                    DebugLoggingHandler(),
                     SMTPSessionHandler(with: store),
-                    SMTPParseHandler(),
                     SMTPActionHandler()
                 ])
             }

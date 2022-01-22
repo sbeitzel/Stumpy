@@ -6,12 +6,15 @@
 //
 
 import Foundation
+import Logging
 
 class SMTPSessionState {
+    private var logger: Logger
+
     var smtpState: SMTPState {
         get { theState }
         set {
-            print("State set to \(newValue)")
+            logger.trace("State set to \(newValue)")
             theState = newValue
         }
     }
@@ -21,8 +24,12 @@ class SMTPSessionState {
     let mailstore: MailStore
     var inputLine: String
     var command: SMTPCommand?
+    var accumulatedData: String = ""
 
     init(with store: MailStore) {
+        logger = Logger(label: "SMTPSessionState")
+        logger.logLevel = .info
+        logger[metadataKey: "origin"] = "[SMTP]"
         inputLine = ""
         mailstore = store
         workingMessage = MemoryMessage()

@@ -29,11 +29,11 @@
 		7C815AD725A280BC0031F3B3 /* POPState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815AD625A280BC0031F3B3 /* POPState.swift */; };
 		7C815ADB25A38D480031F3B3 /* POPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815ADA25A38D480031F3B3 /* POPResponse.swift */; };
 		7C815ADF25A38E350031F3B3 /* POPAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815ADE25A38E350031F3B3 /* POPAction.swift */; };
+		7CAEEEEE279B707A00AACE09 /* DebugLoggingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAEEEED279B707A00AACE09 /* DebugLoggingHandler.swift */; };
 		7CB6B1822793E95B00530A04 /* NIO in Frameworks */ = {isa = PBXBuildFile; productRef = 7CB6B1812793E95B00530A04 /* NIO */; };
 		7CB6B18527948CBB00530A04 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 7CB6B18427948CBB00530A04 /* Logging */; };
 		7CB6B1872795292E00530A04 /* SMTPSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B1862795292E00530A04 /* SMTPSessionState.swift */; };
 		7CB6B189279536A700530A04 /* SMTPSessionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B188279536A700530A04 /* SMTPSessionHandler.swift */; };
-		7CB6B18B27960D6500530A04 /* SMTPParseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B18A27960D6500530A04 /* SMTPParseHandler.swift */; };
 		7CB6B18D27962BC200530A04 /* SMTPActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B18C27962BC200530A04 /* SMTPActionHandler.swift */; };
 		7CB6B18F2797354400530A04 /* POPSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B18E2797354400530A04 /* POPSessionState.swift */; };
 		7CB6B1912797359100530A04 /* POPSessionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B1902797359100530A04 /* POPSessionHandler.swift */; };
@@ -87,9 +87,9 @@
 		7C815AD625A280BC0031F3B3 /* POPState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPState.swift; sourceTree = "<group>"; };
 		7C815ADA25A38D480031F3B3 /* POPResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPResponse.swift; sourceTree = "<group>"; };
 		7C815ADE25A38E350031F3B3 /* POPAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POPAction.swift; sourceTree = "<group>"; };
+		7CAEEEED279B707A00AACE09 /* DebugLoggingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLoggingHandler.swift; sourceTree = "<group>"; };
 		7CB6B1862795292E00530A04 /* SMTPSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPSessionState.swift; sourceTree = "<group>"; };
 		7CB6B188279536A700530A04 /* SMTPSessionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPSessionHandler.swift; sourceTree = "<group>"; };
-		7CB6B18A27960D6500530A04 /* SMTPParseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPParseHandler.swift; sourceTree = "<group>"; };
 		7CB6B18C27962BC200530A04 /* SMTPActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPActionHandler.swift; sourceTree = "<group>"; };
 		7CB6B18E2797354400530A04 /* POPSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPSessionState.swift; sourceTree = "<group>"; };
 		7CB6B1902797359100530A04 /* POPSessionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPSessionHandler.swift; sourceTree = "<group>"; };
@@ -226,7 +226,7 @@
 				7C815A61259FF72C0031F3B3 /* README.md */,
 				7C64345825926C5500DE1AC8 /* SMTPServer.swift */,
 				7CB6B188279536A700530A04 /* SMTPSessionHandler.swift */,
-				7CB6B18A27960D6500530A04 /* SMTPParseHandler.swift */,
+				7CAEEEED279B707A00AACE09 /* DebugLoggingHandler.swift */,
 				7CB6B18C27962BC200530A04 /* SMTPActionHandler.swift */,
 				7CB6B1862795292E00530A04 /* SMTPSessionState.swift */,
 				7C815A66259FFFC40031F3B3 /* SMTPState.swift */,
@@ -401,7 +401,6 @@
 				7C815A3F259E54EA0031F3B3 /* MailMessage.swift in Sources */,
 				7C815AD725A280BC0031F3B3 /* POPState.swift in Sources */,
 				7CF76EB625A8121800CA9238 /* DataController.swift in Sources */,
-				7CB6B18B27960D6500530A04 /* SMTPParseHandler.swift in Sources */,
 				7CB6B18D27962BC200530A04 /* SMTPActionHandler.swift in Sources */,
 				7C64345925926C5500DE1AC8 /* SMTPServer.swift in Sources */,
 				7C815A67259FFFC40031F3B3 /* SMTPState.swift in Sources */,
@@ -417,6 +416,7 @@
 				7CCB86F825A5340600C9FB6F /* Data-Lines.swift in Sources */,
 				7CB6B1872795292E00530A04 /* SMTPSessionState.swift in Sources */,
 				7C64344125926BAF00DE1AC8 /* AppDelegate.swift in Sources */,
+				7CAEEEEE279B707A00AACE09 /* DebugLoggingHandler.swift in Sources */,
 				7C815ADF25A38E350031F3B3 /* POPAction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -588,7 +588,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.qbcps.Stumpy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -616,7 +616,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.qbcps.Stumpy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

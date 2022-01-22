@@ -20,5 +20,6 @@ class DataExtensionTest: XCTestCase {
 
         let lines: [String] = testData.lines()
         XCTAssert(lines.count == 5, "Expected 5 lines but got \(lines.count)")
+        XCTAssertEqual(lines.last, ".")
     }
 }
