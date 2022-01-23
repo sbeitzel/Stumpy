@@ -90,7 +90,7 @@ final class POPActionHandler: ChannelInboundHandler {
             let messageCount = await state.mailStore.messageCount()
             if index > 0 && index <= messageCount {
                 do {
-                    let message = try await state.mailStore.get(message: index)
+                    let message = try await state.mailStore.get(message: index-1)
                     let messageString = message.byteStuff()
                     let bytes = messageString.maximumLengthOfBytes(using: .utf8)
                     response = "+OK \(bytes) octets\r\n\(messageString)"

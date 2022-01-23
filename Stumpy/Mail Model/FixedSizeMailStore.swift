@@ -32,10 +32,12 @@ public actor FixedSizeMailStore: MailStore, ObservableObject, Identifiable {
     /// in the store will be evicted at the same time, making room for the new one.
     /// - Parameter message: the new message to add to the store
     public func add(message: MailMessage) async {
-        objectWillChange.send()
         messages.append(message)
         while messages.count > maxSize {
             messages.remove(at: 0)
+        }
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
         }
     }
 
@@ -50,13 +52,17 @@ public actor FixedSizeMailStore: MailStore, ObservableObject, Identifiable {
     }
 
     public func clear() async {
-        objectWillChange.send()
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
         messages.removeAll()
     }
 
     public func delete(message: Int) async throws {
         guard message >= 0 && message < messages.count else { throw MailStoreError.invalidIndex }
         _ = messages.remove(at: message)
-        objectWillChange.send()
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
     }
 }

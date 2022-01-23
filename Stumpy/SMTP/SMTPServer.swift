@@ -13,9 +13,9 @@ class NSMTPServer: ObservableObject {
         get {
             port
         }
-        set(newPort) {
+        set {
             if isRunning == false {
-                port = newPort
+                port = newValue
             } else {
                 logger.warning("Attempted to change port while server is running! Port not changed.")
             }
@@ -25,10 +25,13 @@ class NSMTPServer: ObservableObject {
     private var serverChannel: Channel?
 
     @Published var isRunning: Bool = false
+    let serverStats: ServerStats
 
     init(group: EventLoopGroup, port: Int, store: MailStore = FixedSizeMailStore(size: 10)) {
         logger = Logger(label: "SMTPServer")
         logger[metadataKey: "origin"] = "[SMTP]"
+        let stats = ServerStats()
+        serverStats = stats
         self.port = port
         self.mailStore = store
         self.bootstrap = ServerBootstrap(group: group)
@@ -37,8 +40,9 @@ class NSMTPServer: ObservableObject {
             .childChannelInitializer { channel in
                 channel.pipeline.addHandlers([
                     BackPressureHandler(),
+                    StatsHandler(stats),
+                    DebugLoggingHandler(),
                     SMTPSessionHandler(with: store),
-                    SMTPParseHandler(),
                     SMTPActionHandler()
                 ])
             }
@@ -53,7 +57,7 @@ class NSMTPServer: ObservableObject {
             isRunning = true
             Task {
                 do {
-                    serverChannel = try bootstrap.bind(host: "::1", port: port).wait()
+                    serverChannel = try bootstrap.bind(host: "localhost", port: port).wait()
                     logger.info("Server started, listening on address: \(serverChannel!.localAddress!.description)")
                     try serverChannel!.closeFuture.wait()
                     logger.info("Server stopped.")

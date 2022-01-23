@@ -6,20 +6,35 @@
 //
 
 import Foundation
+import Logging
 
 class SMTPSessionState {
-    var smtpState: SMTPState
+    private var logger: Logger
+
+    var smtpState: SMTPState {
+        get { theState }
+        set {
+            logger.trace("State set to \(newValue)")
+            theState = newValue
+        }
+    }
+    private var theState: SMTPState
+    var mailEndState: SMTPState = .quit
     var workingMessage: MailMessage
     var lastHeader: String = ""
     let mailstore: MailStore
     var inputLine: String
     var command: SMTPCommand?
+    var accumulatedData: String = ""
 
     init(with store: MailStore) {
+        logger = Logger(label: "SMTPSessionState")
+        logger.logLevel = .info
+        logger[metadataKey: "origin"] = "[SMTP]"
         inputLine = ""
         mailstore = store
         workingMessage = MemoryMessage()
-        smtpState = .connect
+        theState = .connect
     }
 }
 

@@ -36,5 +36,6 @@ final class SMTPSessionHandler: ChannelInboundHandler {
 
         context.writeAndFlush(NIOAny(outBuff), promise: nil)
         sessionState.smtpState = .greet
+        context.fireChannelActive()
     }
 }
