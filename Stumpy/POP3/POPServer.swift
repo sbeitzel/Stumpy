@@ -42,6 +42,7 @@ class NPOPServer: ObservableObject {
             .childChannelInitializer { channel in
                 channel.pipeline.addHandlers([
                     BackPressureHandler(),
+                    DebugLoggingHandler(),
                     POPSessionHandler(with: store,
                                       increment: stats.increaseConnectionCount,
                                       decrement: stats.decreaseConnectionCount,
