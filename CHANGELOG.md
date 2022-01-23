@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * SMTP now accumulates message data until the termination sequence. [Fixes issue #3](https://github.com/sbeitzel/Stumpy/issues/3)
+* POP greeting fixed
 
 
 ## Version [2.0] - 2022-01-19

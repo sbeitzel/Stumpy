@@ -42,10 +42,9 @@ class NPOPServer: ObservableObject {
             .childChannelInitializer { channel in
                 channel.pipeline.addHandlers([
                     BackPressureHandler(),
+                    StatsHandler(stats),
                     DebugLoggingHandler(),
                     POPSessionHandler(with: store,
-                                      increment: stats.increaseConnectionCount,
-                                      decrement: stats.decreaseConnectionCount,
                                       hostName: "stumpy.local"), // hostname is for the APOP header
                     POPParseHandler(),
                     POPActionHandler()

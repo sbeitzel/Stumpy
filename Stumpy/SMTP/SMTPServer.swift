@@ -40,10 +40,9 @@ class NSMTPServer: ObservableObject {
             .childChannelInitializer { channel in
                 channel.pipeline.addHandlers([
                     BackPressureHandler(),
+                    StatsHandler(stats),
                     DebugLoggingHandler(),
-                    SMTPSessionHandler(with: store,
-                                       increment: stats.increaseConnectionCount,
-                                       decrement: stats.decreaseConnectionCount),
+                    SMTPSessionHandler(with: store),
                     SMTPActionHandler()
                 ])
             }

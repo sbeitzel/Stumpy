@@ -22,7 +22,7 @@ final class SMTPActionHandler: ChannelInboundHandler {
 
     init() {
         logger = Logger(label: "SMTPActionHandler")
-        logger.logLevel = .trace
+        logger.logLevel = .info
         logger[metadataKey: "origin"] = "[SMTP]"
     }
 
@@ -214,9 +214,9 @@ final class SMTPActionHandler: ChannelInboundHandler {
 
             case .dataEnd:
                 if state.smtpState == .dataBody || state.smtpState == .dataHeader {
-                    state.smtpState = .mail
+                    state.smtpState = state.mailEndState
                     return SMTPResponse(code: 250,
-                                        message: "OK")
+                                        message: "OK, message accepted for delivery: queued as 1")
                 } else {
                     return .badSequence
                 }

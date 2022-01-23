@@ -19,6 +19,7 @@ class SMTPSessionState {
         }
     }
     private var theState: SMTPState
+    var mailEndState: SMTPState = .quit
     var workingMessage: MailMessage
     var lastHeader: String = ""
     let mailstore: MailStore
