@@ -52,13 +52,17 @@ public actor FixedSizeMailStore: MailStore, ObservableObject, Identifiable {
     }
 
     public func clear() async {
-        objectWillChange.send()
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
         messages.removeAll()
     }
 
     public func delete(message: Int) async throws {
         guard message >= 0 && message < messages.count else { throw MailStoreError.invalidIndex }
         _ = messages.remove(at: message)
-        objectWillChange.send()
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
     }
 }

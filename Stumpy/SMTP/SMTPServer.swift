@@ -13,9 +13,9 @@ class NSMTPServer: ObservableObject {
         get {
             port
         }
-        set(newPort) {
+        set {
             if isRunning == false {
-                port = newPort
+                port = newValue
             } else {
                 logger.warning("Attempted to change port while server is running! Port not changed.")
             }
@@ -25,10 +25,13 @@ class NSMTPServer: ObservableObject {
     private var serverChannel: Channel?
 
     @Published var isRunning: Bool = false
+    let serverStats: ServerStats
 
     init(group: EventLoopGroup, port: Int, store: MailStore = FixedSizeMailStore(size: 10)) {
         logger = Logger(label: "SMTPServer")
         logger[metadataKey: "origin"] = "[SMTP]"
+        let stats = ServerStats()
+        serverStats = stats
         self.port = port
         self.mailStore = store
         self.bootstrap = ServerBootstrap(group: group)
@@ -38,7 +41,9 @@ class NSMTPServer: ObservableObject {
                 channel.pipeline.addHandlers([
                     BackPressureHandler(),
                     DebugLoggingHandler(),
-                    SMTPSessionHandler(with: store),
+                    SMTPSessionHandler(with: store,
+                                       increment: stats.increaseConnectionCount,
+                                       decrement: stats.decreaseConnectionCount),
                     SMTPActionHandler()
                 ])
             }

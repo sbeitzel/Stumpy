@@ -13,9 +13,16 @@ final class POPSessionHandler: ChannelInboundHandler {
     typealias InboundOut = POPSessionState
 
     let sessionState: POPSessionState
+    let incrementCallback: () -> Void
+    let decrementCallback: () -> Void
 
-    init(with store: MailStore, hostName: String) {
+    init(with store: MailStore,
+         increment: @escaping () -> Void,
+         decrement: @escaping () -> Void,
+         hostName: String) {
         sessionState = POPSessionState(with: store, hostName: hostName)
+        incrementCallback = increment
+        decrementCallback = decrement
     }
 
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
@@ -45,5 +52,16 @@ final class POPSessionHandler: ChannelInboundHandler {
 
         context.writeAndFlush(NIOAny(outBuff), promise: nil)
         sessionState.popState = .authorization
+        Task {
+            self.incrementCallback()
+        }
+        context.fireChannelActive()
+    }
+
+    func channelInactive(context: ChannelHandlerContext) {
+        Task {
+            self.decrementCallback()
+        }
+        context.fireChannelInactive()
     }
 }

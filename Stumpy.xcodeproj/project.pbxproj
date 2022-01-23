@@ -45,6 +45,7 @@
 		7CF76EB025A803B600CA9238 /* Stumpy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7CF76EAE25A803B600CA9238 /* Stumpy.xcdatamodeld */; };
 		7CF76EB625A8121800CA9238 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF76EB525A8121800CA9238 /* DataController.swift */; };
 		7CF76EE025A8F7BC00CA9238 /* ServerSpec-CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF76EDF25A8F7BC00CA9238 /* ServerSpec-CoreDataHelpers.swift */; };
+		7CF97F99279CDBC9003A2101 /* ServerStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF97F98279CDBC9003A2101 /* ServerStats.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,7 @@
 		7CF76EAF25A803B600CA9238 /* Stumpy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Stumpy.xcdatamodel; sourceTree = "<group>"; };
 		7CF76EB525A8121800CA9238 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		7CF76EDF25A8F7BC00CA9238 /* ServerSpec-CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerSpec-CoreDataHelpers.swift"; sourceTree = "<group>"; };
+		7CF97F98279CDBC9003A2101 /* ServerStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerStats.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +234,7 @@
 				7C815A66259FFFC40031F3B3 /* SMTPState.swift */,
 				7C815A7425A006C70031F3B3 /* SMTPAction.swift */,
 				7C815A7025A001820031F3B3 /* SMTPResponse.swift */,
+				7CF97F98279CDBC9003A2101 /* ServerStats.swift */,
 			);
 			path = SMTP;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 				7C64345925926C5500DE1AC8 /* SMTPServer.swift in Sources */,
 				7C815A67259FFFC40031F3B3 /* SMTPState.swift in Sources */,
 				7CB6B19327973C2400530A04 /* POPParseHandler.swift in Sources */,
+				7CF97F99279CDBC9003A2101 /* ServerStats.swift in Sources */,
 				7C643462259270CB00DE1AC8 /* Servers.swift in Sources */,
 				7C815A7125A001820031F3B3 /* SMTPResponse.swift in Sources */,
 				7C815A7525A006C70031F3B3 /* SMTPAction.swift in Sources */,

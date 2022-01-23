@@ -13,9 +13,15 @@ final class SMTPSessionHandler: ChannelInboundHandler {
     typealias InboundOut = SMTPSessionState
 
     let sessionState: SMTPSessionState
+    let incrementCallback: () -> Void
+    let decrementCallback: () -> Void
 
-    init(with store: MailStore) {
+    init(with store: MailStore,
+         increment: @escaping () -> Void,
+         decrement: @escaping () -> Void) {
         sessionState = SMTPSessionState(with: store)
+        incrementCallback = increment
+        decrementCallback = decrement
     }
 
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
@@ -36,5 +42,16 @@ final class SMTPSessionHandler: ChannelInboundHandler {
 
         context.writeAndFlush(NIOAny(outBuff), promise: nil)
         sessionState.smtpState = .greet
+        Task {
+            self.incrementCallback()
+        }
+        context.fireChannelActive()
+    }
+
+    func channelInactive(context: ChannelHandlerContext) {
+        Task {
+            self.decrementCallback()
+        }
+        context.fireChannelInactive()
     }
 }

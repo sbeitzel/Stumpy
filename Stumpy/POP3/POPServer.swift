@@ -13,6 +13,7 @@ class NPOPServer: ObservableObject {
     private var serverChannel: Channel?
 
     @Published var isRunning = false
+    let serverStats: ServerStats
 
     private var port: Int
     var serverPort: Int {
@@ -31,6 +32,8 @@ class NPOPServer: ObservableObject {
     init(group: EventLoopGroup, port: Int, store: MailStore = FixedSizeMailStore(size: 10)) {
         logger = Logger(label: "POP3Server")
         logger[metadataKey: "origin"] = "[POP3]"
+        let stats = ServerStats()
+        self.serverStats = stats
         self.port = port
         self.mailStore = store
         self.bootstrap = ServerBootstrap(group: group)
@@ -39,7 +42,10 @@ class NPOPServer: ObservableObject {
             .childChannelInitializer { channel in
                 channel.pipeline.addHandlers([
                     BackPressureHandler(),
-                    POPSessionHandler(with: store, hostName: "stumpy.local"), // hostname is for the APOP header
+                    POPSessionHandler(with: store,
+                                      increment: stats.increaseConnectionCount,
+                                      decrement: stats.decreaseConnectionCount,
+                                      hostName: "stumpy.local"), // hostname is for the APOP header
                     POPParseHandler(),
                     POPActionHandler()
                 ])

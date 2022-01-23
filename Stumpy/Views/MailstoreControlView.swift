@@ -10,12 +10,16 @@ import SwiftUI
 struct MailstoreControlView: View {
     @ObservedObject var mailStore: FixedSizeMailStore
     @ObservedObject var smtpServer: NSMTPServer
+    @ObservedObject var smtpStats: ServerStats
     @ObservedObject var popServer: NPOPServer
+    @ObservedObject var popStats: ServerStats
     @ObservedObject var serverSpec: ServerSpec
 
     @State private var smtpPortString: String
     @State private var popPortString: String
     @State private var messageCountString: String
+    @State private var smtpConnected = 0
+    @State private var popConnected = 0
 
     init(store: FixedSizeMailStore,
          smtpServer: NSMTPServer,
@@ -23,7 +27,9 @@ struct MailstoreControlView: View {
          serverSpec: ServerSpec) {
         mailStore = store
         self.smtpServer = smtpServer
+        self.smtpStats = smtpServer.serverStats
         self.popServer = popServer
+        self.popStats = popServer.serverStats
         _smtpPortString = State(wrappedValue: String(smtpServer.serverPort))
         _popPortString = State(wrappedValue: String(popServer.serverPort))
         _messageCountString = State(wrappedValue: "0")
@@ -63,24 +69,40 @@ struct MailstoreControlView: View {
                 }
             }
             .padding(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 0))
-//            VStack(alignment: .leading) {
-//                Text("\(smtpServer.numberConnected) SMTP connections")
-//                    .padding(EdgeInsets(top: 0,
-//                                        leading: 0,
-//                                        bottom: 5,
-//                                        trailing: 5))
-//                Text("\(popServer.numberConnected) POP3 connections")
-//                    .padding(EdgeInsets(top: 0,
-//                                        leading: 0,
-//                                        bottom: 5,
-//                                        trailing: 5))
-//                Text("\(messageCountString) messages")
-//                    .padding(EdgeInsets(top: 0,
-//                                        leading: 0,
-//                                        bottom: 5,
-//                                        trailing: 5))
-//            }
-//            .padding()
+            VStack(alignment: .leading) {
+                Text("\(smtpConnected) SMTP connections")
+                    .onReceive(smtpStats.objectWillChange) {
+                        Task {
+                            smtpConnected = smtpStats.connections
+                        }
+                    }
+                    .padding(EdgeInsets(top: 0,
+                                        leading: 0,
+                                        bottom: 5,
+                                        trailing: 5))
+                Text("\(popConnected) POP3 connections")
+                    .onReceive(popStats.objectWillChange) {
+                        Task {
+                            popConnected = popStats.connections
+                        }
+                    }
+                    .padding(EdgeInsets(top: 0,
+                                        leading: 0,
+                                        bottom: 5,
+                                        trailing: 5))
+                Text("\(messageCountString) messages")
+                    .onReceive(mailStore.objectWillChange) {
+                        Task {
+                            let messageCount = await mailStore.messageCount()
+                            messageCountString = "\(messageCount)"
+                        }
+                    }
+                    .padding(EdgeInsets(top: 0,
+                                        leading: 0,
+                                        bottom: 5,
+                                        trailing: 5))
+            }
+            .padding()
             Spacer()
         }
     }

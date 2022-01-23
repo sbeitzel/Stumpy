@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * lots of debugging logging
+* Display connection details and mail store details on the server screen
 
 ### Fixed
 
