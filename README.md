@@ -4,7 +4,7 @@ An SMTP and POP3 server for local testing of email services.
 
 ## Installation
 
-You may build the application from source, or download a pre-built version from the App Store.
+You may build the application from source, or download a pre-built version from the [App Store](https://apps.apple.com/us/app/stumpy/id1605418054?mt=12).
 
 ## Operation
 
