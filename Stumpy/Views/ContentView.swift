@@ -55,23 +55,23 @@ struct ContentView: View {
                 Spacer()
             }
             .padding()
-            // So, check it out, if you wrap this in a List,
-            // then the TextFields stop being editable.
-            ForEach(servers.stores) { triad in
-                HStack {
-                    MailstoreControlView(store: triad.mailStore,
-                                         smtpServer: triad.smtpServer,
-                                         popServer: triad.popServer,
-                                         serverSpec: triad.spec)
-                    VStack {
-                        Button(action: {
-                            servers.remove(triad: triad)
-                            dataController.delete(triad.spec)
-                        }, label: {
-                            Text("Delete")
-                        })
-                        .padding(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
-                        Spacer()
+            ScrollView {
+                ForEach(servers.stores) { triad in
+                    HStack {
+                        MailstoreControlView(store: triad.mailStore,
+                                             smtpServer: triad.smtpServer,
+                                             popServer: triad.popServer,
+                                             serverSpec: triad.spec)
+                        VStack {
+                            Button(action: {
+                                servers.remove(triad: triad)
+                                dataController.delete(triad.spec)
+                            }, label: {
+                                Text("Delete")
+                            })
+                                .padding(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+                            Spacer()
+                        }
                     }
                 }
             }
