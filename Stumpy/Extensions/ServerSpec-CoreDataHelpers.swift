@@ -14,4 +14,11 @@ extension ServerSpec {
         }
         return uid.uuidString
     }
+
+    var nameString: String {
+        guard let name = name else {
+            return "Unnamed server, capacity/SMTP/POP: \(mailSlots)/\(smtpPort)/\(popPort)"
+        }
+        return name
+    }
 }
