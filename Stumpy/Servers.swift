@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreData
 import NIO
+import StumpyNIO
 
 class Servers: ObservableObject {
     @Published var stores: [ServiceTriad]
@@ -30,7 +31,7 @@ class Servers: ObservableObject {
                                                            store: store),
                                    popServer: NPOPServer(group: dataController.popGroup,
                                                          port: Int(spec.popPort),
-                                                        store: store),
+                                                         store: store),
                                    mailStore: store,
                                    spec: spec)
         )

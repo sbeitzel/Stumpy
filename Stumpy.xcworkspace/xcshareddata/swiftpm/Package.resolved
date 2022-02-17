@@ -2,12 +2,30 @@
   "object": {
     "pins": [
       {
+        "package": "OpenCombine",
+        "repositoryURL": "https://github.com/OpenCombine/OpenCombine.git",
+        "state": {
+          "branch": null,
+          "revision": "9cf67e363738dbab61b47fb5eaed78d3db31e5ee",
+          "version": "0.13.0"
+        }
+      },
+      {
+        "package": "StumpyNIO",
+        "repositoryURL": "https://github.com/sbeitzel/StumpyNIO",
+        "state": {
+          "branch": null,
+          "revision": "056f5e2c9220dfd56cd57b948cc8b218ad6da85e",
+          "version": "1.0.1"
+        }
+      },
+      {
         "package": "swift-log",
         "repositoryURL": "https://github.com/apple/swift-log.git",
         "state": {
-          "branch": null,
-          "revision": "5d66f7ba25daf4f94100e7022febf3c75e37a6c7",
-          "version": "1.4.2"
+          "branch": "main",
+          "revision": "dc6dd5caaadcd7e8c3cb00ac2a6aed10c22e1f0f",
+          "version": null
         }
       },
       {
@@ -15,8 +33,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "51c3fc2e4a0fcdf4a25089b288dd65b73df1b0ef",
-          "version": "2.37.0"
+          "revision": "154f1d32366449dcccf6375a173adf4ed2a74429",
+          "version": "2.38.0"
         }
       }
     ]

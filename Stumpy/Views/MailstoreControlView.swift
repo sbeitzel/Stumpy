@@ -5,6 +5,7 @@
 //  Created by Stephen Beitzel on 1/7/21.
 //
 
+import StumpyNIO
 import SwiftUI
 
 struct MailstoreControlView: View {
@@ -41,7 +42,7 @@ struct MailstoreControlView: View {
             VStack {
                 HStack {
                     Button(action: buttonAction) { buttonLabel }
-                        .frame(width: 55, height: 30)
+                    .frame(width: 55, height: 30)
                     Text("SMTP Port:")
                     TextField("SMTP Port", text: $smtpPortString.onChange(setSMTPPort).validate(validateSMTPPort))
                         .frame(minWidth: 60,
