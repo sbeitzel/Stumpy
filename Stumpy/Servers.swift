@@ -24,18 +24,21 @@ class Servers: ObservableObject {
             return
         }
 
-        objectWillChange.send()
-        let store = FixedSizeMailStore(size: Int(spec.mailSlots), id: spec.idString)
-        stores.append(ServiceTriad(smtpServer: NSMTPServer(group: dataController.smtpGroup,
-                                                           port: Int(spec.smtpPort),
-                                                           store: store,
-                                                           acceptMultipleMails: spec.allowMultiMail),
-                                   popServer: NPOPServer(group: dataController.popGroup,
-                                                         port: Int(spec.popPort),
-                                                         store: store),
-                                   mailStore: store,
-                                   spec: spec)
-        )
+        // before adding the triad, check to see if we've already got this one
+        if stores.filter({ $0.id == spec.idString }).isEmpty {
+            objectWillChange.send()
+            let store = FixedSizeMailStore(size: Int(spec.mailSlots), id: spec.idString)
+            stores.append(ServiceTriad(smtpServer: NSMTPServer(group: dataController.smtpGroup,
+                                                               port: Int(spec.smtpPort),
+                                                               store: store,
+                                                               acceptMultipleMails: spec.allowMultiMail),
+                                       popServer: NPOPServer(group: dataController.popGroup,
+                                                             port: Int(spec.popPort),
+                                                             store: store),
+                                       mailStore: store,
+                                       spec: spec)
+            )
+        }
     }
 
     func remove(triad: ServiceTriad) {

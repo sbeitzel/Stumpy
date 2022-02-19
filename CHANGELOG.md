@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated server to listen on both IPv6 and IPv4 sockets
 * Added UI support for non-standard email clients
 
+### Fixed
+
+* add check for duplicate server definitions. Fix [issue #8](https://github.com/sbeitzel/Stumpy/issues/8)
+
 ## [2.0.2] - 2022-01-23
 
 ### Fixed
@@ -40,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Removed the [BlueSocket](https://github.com/Kitura/BlueSocket) dependency and reimplemented the networking code on top of [Swift-NIO](https://github.com/apple/swift-nio) directly
+* Removed the [BlueSocket](https://github.com/Kitura/BlueSocket) dependency and reimplemented the networking code on top of [Swift-NIO] directly
 
 
 ## Version [1.0.1] - 2021-01-13
@@ -60,3 +64,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0]: https://github.com/sbeitzel/Stumpy/releases/tag/1.0
 [StumpyNIO]: https://github.com/sbeitzel/StumpyNIO
 [clStumpy]: https://github.com/sbeitzel/clStumpy
+[Swift-NIO]: https://github.com/apple/swift-nio
