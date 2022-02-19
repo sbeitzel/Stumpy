@@ -57,7 +57,7 @@ struct ContentView: View {
             .padding()
             ScrollView {
                 ForEach(servers.stores) { triad in
-                    HStack {
+                    HStack(alignment: .top) {
                         MailstoreControlView(store: triad.mailStore,
                                              smtpServer: triad.smtpServer,
                                              popServer: triad.popServer,
@@ -69,7 +69,7 @@ struct ContentView: View {
                             }, label: {
                                 Text("Delete")
                             })
-                                .padding(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+                                .padding(EdgeInsets(top: 15, leading: 0, bottom: 5, trailing: 5))
                             Spacer()
                         }
                     }

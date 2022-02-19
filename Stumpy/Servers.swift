@@ -28,7 +28,8 @@ class Servers: ObservableObject {
         let store = FixedSizeMailStore(size: Int(spec.mailSlots), id: spec.idString)
         stores.append(ServiceTriad(smtpServer: NSMTPServer(group: dataController.smtpGroup,
                                                            port: Int(spec.smtpPort),
-                                                           store: store),
+                                                           store: store,
+                                                           acceptMultipleMails: spec.allowMultiMail),
                                    popServer: NPOPServer(group: dataController.popGroup,
                                                          port: Int(spec.popPort),
                                                          store: store),

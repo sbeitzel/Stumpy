@@ -14,9 +14,9 @@
         "package": "StumpyNIO",
         "repositoryURL": "https://github.com/sbeitzel/StumpyNIO",
         "state": {
-          "branch": null,
-          "revision": "056f5e2c9220dfd56cd57b948cc8b218ad6da85e",
-          "version": "1.0.1"
+          "branch": "main",
+          "revision": "c759bae3656ec079514c20b0364e1c87c9a729bd",
+          "version": null
         }
       },
       {

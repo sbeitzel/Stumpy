@@ -16,8 +16,9 @@
 		7C64344B25926BB000DE1AC8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C64344925926BB000DE1AC8 /* Main.storyboard */; };
 		7C64345D2592706F00DE1AC8 /* Binding-Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C64345C2592706F00DE1AC8 /* Binding-Validate.swift */; };
 		7C643462259270CB00DE1AC8 /* Servers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C643461259270CB00DE1AC8 /* Servers.swift */; };
+		7C6ABAE027C024D90079F624 /* Binding-MaybeChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6ABADF27C024D90079F624 /* Binding-MaybeChange.swift */; };
+		7C6ABAE327C027DA0079F624 /* StumpyNIO in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6ABAE227C027DA0079F624 /* StumpyNIO */; };
 		7C815A8A25A25D540031F3B3 /* Binding-OnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A8925A25D540031F3B3 /* Binding-OnChange.swift */; };
-		7C8CF84B27BDD5B200A9E6B8 /* StumpyNIO in Frameworks */ = {isa = PBXBuildFile; productRef = 7C8CF84A27BDD5B200A9E6B8 /* StumpyNIO */; };
 		7CF76EAB25A7D05100CA9238 /* MailstoreControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF76EAA25A7D05100CA9238 /* MailstoreControlView.swift */; };
 		7CF76EB025A803B600CA9238 /* Stumpy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7CF76EAE25A803B600CA9238 /* Stumpy.xcdatamodeld */; };
 		7CF76EB625A8121800CA9238 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF76EB525A8121800CA9238 /* DataController.swift */; };
@@ -36,6 +37,7 @@
 		7C64344D25926BB000DE1AC8 /* Stumpy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stumpy.entitlements; sourceTree = "<group>"; };
 		7C64345C2592706F00DE1AC8 /* Binding-Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding-Validate.swift"; sourceTree = "<group>"; };
 		7C643461259270CB00DE1AC8 /* Servers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Servers.swift; sourceTree = "<group>"; };
+		7C6ABADF27C024D90079F624 /* Binding-MaybeChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding-MaybeChange.swift"; sourceTree = "<group>"; };
 		7C815A8925A25D540031F3B3 /* Binding-OnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding-OnChange.swift"; sourceTree = "<group>"; };
 		7CB88B822798DD6600C930E8 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		7CB88B832798DD6D00C930E8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -53,7 +55,7 @@
 			files = (
 				7C3F3C2727A091330029816E /* Logging in Frameworks */,
 				7C3F3C2427A090D20029816E /* NIO in Frameworks */,
-				7C8CF84B27BDD5B200A9E6B8 /* StumpyNIO in Frameworks */,
+				7C6ABAE327C027DA0079F624 /* StumpyNIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,6 +124,7 @@
 			children = (
 				7C64345C2592706F00DE1AC8 /* Binding-Validate.swift */,
 				7C815A8925A25D540031F3B3 /* Binding-OnChange.swift */,
+				7C6ABADF27C024D90079F624 /* Binding-MaybeChange.swift */,
 				7CF76EDF25A8F7BC00CA9238 /* ServerSpec-CoreDataHelpers.swift */,
 			);
 			path = Extensions;
@@ -161,7 +164,7 @@
 			packageProductDependencies = (
 				7C3F3C2327A090D20029816E /* NIO */,
 				7C3F3C2627A091330029816E /* Logging */,
-				7C8CF84A27BDD5B200A9E6B8 /* StumpyNIO */,
+				7C6ABAE227C027DA0079F624 /* StumpyNIO */,
 			);
 			productName = Stumpy;
 			productReference = 7C64343D25926BAF00DE1AC8 /* Stumpy.app */;
@@ -193,7 +196,7 @@
 			packageReferences = (
 				7C3F3C2227A090D20029816E /* XCRemoteSwiftPackageReference "swift-nio" */,
 				7C3F3C2527A091330029816E /* XCRemoteSwiftPackageReference "swift-log" */,
-				7C8CF84927BDD5B200A9E6B8 /* XCRemoteSwiftPackageReference "StumpyNIO" */,
+				7C6ABAE127C027DA0079F624 /* XCRemoteSwiftPackageReference "StumpyNIO" */,
 			);
 			productRefGroup = 7C64343E25926BAF00DE1AC8 /* Products */;
 			projectDirPath = "";
@@ -249,6 +252,7 @@
 				7C64344325926BAF00DE1AC8 /* ContentView.swift in Sources */,
 				7CF76EB625A8121800CA9238 /* DataController.swift in Sources */,
 				7C643462259270CB00DE1AC8 /* Servers.swift in Sources */,
+				7C6ABAE027C024D90079F624 /* Binding-MaybeChange.swift in Sources */,
 				7CF76EAB25A7D05100CA9238 /* MailstoreControlView.swift in Sources */,
 				7CF76EE025A8F7BC00CA9238 /* ServerSpec-CoreDataHelpers.swift in Sources */,
 				7C64344125926BAF00DE1AC8 /* AppDelegate.swift in Sources */,
@@ -482,12 +486,12 @@
 				kind = branch;
 			};
 		};
-		7C8CF84927BDD5B200A9E6B8 /* XCRemoteSwiftPackageReference "StumpyNIO" */ = {
+		7C6ABAE127C027DA0079F624 /* XCRemoteSwiftPackageReference "StumpyNIO" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sbeitzel/StumpyNIO";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -503,9 +507,9 @@
 			package = 7C3F3C2527A091330029816E /* XCRemoteSwiftPackageReference "swift-log" */;
 			productName = Logging;
 		};
-		7C8CF84A27BDD5B200A9E6B8 /* StumpyNIO */ = {
+		7C6ABAE227C027DA0079F624 /* StumpyNIO */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7C8CF84927BDD5B200A9E6B8 /* XCRemoteSwiftPackageReference "StumpyNIO" */;
+			package = 7C6ABAE127C027DA0079F624 /* XCRemoteSwiftPackageReference "StumpyNIO" */;
 			productName = StumpyNIO;
 		};
 /* End XCSwiftPackageProductDependency section */

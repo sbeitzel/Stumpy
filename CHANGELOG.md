@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Core server functionality has been extracted to a library, [StumpyNIO], now available as a command line tool: [clStumpy]
+* Updated server to listen on both IPv6 and IPv4 sockets
+* Added UI support for non-standard email clients
 
 ## [2.0.2] - 2022-01-23
 

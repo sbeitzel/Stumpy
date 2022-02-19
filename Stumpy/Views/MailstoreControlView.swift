@@ -21,6 +21,7 @@ struct MailstoreControlView: View {
     @State private var messageCountString: String
     @State private var smtpConnected = 0
     @State private var popConnected = 0
+    @State private var allowMultipleMail = true
 
     init(store: FixedSizeMailStore,
          smtpServer: NSMTPServer,
@@ -31,6 +32,7 @@ struct MailstoreControlView: View {
         self.smtpStats = smtpServer.serverStats
         self.popServer = popServer
         self.popStats = popServer.serverStats
+        self.allowMultipleMail = serverSpec.allowMultiMail
         _smtpPortString = State(wrappedValue: String(smtpServer.serverPort))
         _popPortString = State(wrappedValue: String(popServer.serverPort))
         _messageCountString = State(wrappedValue: "0")
@@ -40,18 +42,30 @@ struct MailstoreControlView: View {
     var body: some View {
         HStack {
             VStack {
-                HStack {
+                HStack(alignment: .top) {
                     Button(action: buttonAction) { buttonLabel }
                     .frame(width: 55, height: 30)
-                    Text("SMTP Port:")
-                    TextField("SMTP Port", text: $smtpPortString.onChange(setSMTPPort).validate(validateSMTPPort))
-                        .frame(minWidth: 60,
-                               idealWidth: 80,
-                               maxWidth: 80,
-                               minHeight: 20,
-                               idealHeight: 25,
-                               maxHeight: 30,
-                               alignment: .center)
+                    VStack {
+                        Toggle(isOn: $allowMultipleMail.maybeChange({ newValue in
+                            return smtpServer.allowMultipleEmails(newValue)
+                        }).onChange {
+                            setAllowMultipleMail()
+                        }) {
+                            Text("Allow multiple MAIL transactions per session")
+                        }.disabled(smtpServer.isRunning)
+                        HStack {
+                            Text("SMTP Port:")
+                            TextField("SMTP Port",
+                                      text: $smtpPortString.onChange(setSMTPPort).validate(validateSMTPPort))
+                                .frame(minWidth: 60,
+                                       idealWidth: 80,
+                                       maxWidth: 80,
+                                       minHeight: 20,
+                                       idealHeight: 25,
+                                       maxHeight: 30,
+                                       alignment: .center)
+                        }
+                    }
                 }
                 HStack {
                     Circle()
@@ -106,6 +120,12 @@ struct MailstoreControlView: View {
             .padding()
             Spacer()
         }
+        .border(Color.gray, width: 1)
+        .padding()
+    }
+
+    private func setAllowMultipleMail() {
+        serverSpec.allowMultiMail = allowMultipleMail
     }
 
     private func setSMTPPort() {
