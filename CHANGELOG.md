@@ -11,11 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Core server functionality has been extracted to a library, [StumpyNIO], now available as a command line tool: [clStumpy]
 * Updated server to listen on both IPv6 and IPv4 sockets
-* Added UI support for non-standard email clients
+* Added UI support for non-standard email clients (quit session after only one message)
 
 ### Fixed
 
 * add check for duplicate server definitions. Fix [issue #8](https://github.com/sbeitzel/Stumpy/issues/8)
+* Added UI to allow changing number of slots in the mail store. Fix [issue #5](https://github.com/sbeitzel/Stumpy/issues/5)
 
 ## [2.0.2] - 2022-01-23
 
