@@ -7,57 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C3F3C2427A090D20029816E /* NIO in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3F3C2327A090D20029816E /* NIO */; };
+		7C3F3C2727A091330029816E /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3F3C2627A091330029816E /* Logging */; };
 		7C64344125926BAF00DE1AC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C64344025926BAF00DE1AC8 /* AppDelegate.swift */; };
 		7C64344325926BAF00DE1AC8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C64344225926BAF00DE1AC8 /* ContentView.swift */; };
 		7C64344525926BB000DE1AC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C64344425926BB000DE1AC8 /* Assets.xcassets */; };
 		7C64344825926BB000DE1AC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C64344725926BB000DE1AC8 /* Preview Assets.xcassets */; };
 		7C64344B25926BB000DE1AC8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C64344925926BB000DE1AC8 /* Main.storyboard */; };
-		7C64345925926C5500DE1AC8 /* SMTPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C64345825926C5500DE1AC8 /* SMTPServer.swift */; };
 		7C64345D2592706F00DE1AC8 /* Binding-Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C64345C2592706F00DE1AC8 /* Binding-Validate.swift */; };
 		7C643462259270CB00DE1AC8 /* Servers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C643461259270CB00DE1AC8 /* Servers.swift */; };
-		7C815A3C259E53190031F3B3 /* MailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A3B259E53190031F3B3 /* MailStore.swift */; };
-		7C815A3F259E54EA0031F3B3 /* MailMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A3E259E54EA0031F3B3 /* MailMessage.swift */; };
-		7C815A42259E58D50031F3B3 /* FixedSizeMailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A41259E58D50031F3B3 /* FixedSizeMailStore.swift */; };
-		7C815A45259E69F70031F3B3 /* MemoryMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A44259E69F70031F3B3 /* MemoryMessage.swift */; };
-		7C815A4E259E79FF0031F3B3 /* MailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A4D259E79FF0031F3B3 /* MailTests.swift */; };
-		7C815A5B259EE2D10031F3B3 /* MailStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A5A259EE2D10031F3B3 /* MailStoreTests.swift */; };
-		7C815A67259FFFC40031F3B3 /* SMTPState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A66259FFFC40031F3B3 /* SMTPState.swift */; };
-		7C815A7125A001820031F3B3 /* SMTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A7025A001820031F3B3 /* SMTPResponse.swift */; };
-		7C815A7525A006C70031F3B3 /* SMTPAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A7425A006C70031F3B3 /* SMTPAction.swift */; };
-		7C815A7E25A24D750031F3B3 /* POPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A7D25A24D750031F3B3 /* POPServer.swift */; };
+		7C6ABAE027C024D90079F624 /* Binding-MaybeChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6ABADF27C024D90079F624 /* Binding-MaybeChange.swift */; };
+		7C6ABB2F27C82DE70079F624 /* StumpyNIO in Frameworks */ = {isa = PBXBuildFile; productRef = 7C6ABB2E27C82DE70079F624 /* StumpyNIO */; };
 		7C815A8A25A25D540031F3B3 /* Binding-OnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815A8925A25D540031F3B3 /* Binding-OnChange.swift */; };
-		7C815AD725A280BC0031F3B3 /* POPState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815AD625A280BC0031F3B3 /* POPState.swift */; };
-		7C815ADB25A38D480031F3B3 /* POPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815ADA25A38D480031F3B3 /* POPResponse.swift */; };
-		7C815ADF25A38E350031F3B3 /* POPAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C815ADE25A38E350031F3B3 /* POPAction.swift */; };
-		7CAEEEEE279B707A00AACE09 /* DebugLoggingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAEEEED279B707A00AACE09 /* DebugLoggingHandler.swift */; };
-		7CB6B1822793E95B00530A04 /* NIO in Frameworks */ = {isa = PBXBuildFile; productRef = 7CB6B1812793E95B00530A04 /* NIO */; };
-		7CB6B18527948CBB00530A04 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 7CB6B18427948CBB00530A04 /* Logging */; };
-		7CB6B1872795292E00530A04 /* SMTPSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B1862795292E00530A04 /* SMTPSessionState.swift */; };
-		7CB6B189279536A700530A04 /* SMTPSessionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B188279536A700530A04 /* SMTPSessionHandler.swift */; };
-		7CB6B18D27962BC200530A04 /* SMTPActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B18C27962BC200530A04 /* SMTPActionHandler.swift */; };
-		7CB6B18F2797354400530A04 /* POPSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B18E2797354400530A04 /* POPSessionState.swift */; };
-		7CB6B1912797359100530A04 /* POPSessionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B1902797359100530A04 /* POPSessionHandler.swift */; };
-		7CB6B19327973C2400530A04 /* POPParseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B19227973C2400530A04 /* POPParseHandler.swift */; };
-		7CB6B195279741AB00530A04 /* POPActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6B194279741AB00530A04 /* POPActionHandler.swift */; };
-		7CCB86F425A530EA00C9FB6F /* DataExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB86F325A530EA00C9FB6F /* DataExtensionTest.swift */; };
-		7CCB86F825A5340600C9FB6F /* Data-Lines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCB86F725A5340600C9FB6F /* Data-Lines.swift */; };
 		7CF76EAB25A7D05100CA9238 /* MailstoreControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF76EAA25A7D05100CA9238 /* MailstoreControlView.swift */; };
 		7CF76EB025A803B600CA9238 /* Stumpy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7CF76EAE25A803B600CA9238 /* Stumpy.xcdatamodeld */; };
 		7CF76EB625A8121800CA9238 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF76EB525A8121800CA9238 /* DataController.swift */; };
 		7CF76EE025A8F7BC00CA9238 /* ServerSpec-CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF76EDF25A8F7BC00CA9238 /* ServerSpec-CoreDataHelpers.swift */; };
-		7CF97F99279CDBC9003A2101 /* ServerStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF97F98279CDBC9003A2101 /* ServerStats.swift */; };
-		7CF97F9C279DDFE8003A2101 /* StatsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF97F9B279DDFE8003A2101 /* StatsHandler.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		7C815A50259E79FF0031F3B3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7C64343525926BAF00DE1AC8 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7C64343C25926BAF00DE1AC8;
-			remoteInfo = Stumpy;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		7C0349AC25E03FC000EBA2FF /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -69,45 +35,17 @@
 		7C64344A25926BB000DE1AC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7C64344C25926BB000DE1AC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C64344D25926BB000DE1AC8 /* Stumpy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stumpy.entitlements; sourceTree = "<group>"; };
-		7C64345825926C5500DE1AC8 /* SMTPServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SMTPServer.swift; sourceTree = "<group>"; };
 		7C64345C2592706F00DE1AC8 /* Binding-Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding-Validate.swift"; sourceTree = "<group>"; };
 		7C643461259270CB00DE1AC8 /* Servers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Servers.swift; sourceTree = "<group>"; };
-		7C815A3B259E53190031F3B3 /* MailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailStore.swift; sourceTree = "<group>"; };
-		7C815A3E259E54EA0031F3B3 /* MailMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailMessage.swift; sourceTree = "<group>"; };
-		7C815A41259E58D50031F3B3 /* FixedSizeMailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedSizeMailStore.swift; sourceTree = "<group>"; };
-		7C815A44259E69F70031F3B3 /* MemoryMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryMessage.swift; sourceTree = "<group>"; };
-		7C815A4B259E79FE0031F3B3 /* MailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C815A4D259E79FF0031F3B3 /* MailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailTests.swift; sourceTree = "<group>"; };
-		7C815A4F259E79FF0031F3B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7C815A5A259EE2D10031F3B3 /* MailStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailStoreTests.swift; sourceTree = "<group>"; };
-		7C815A61259FF72C0031F3B3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		7C815A66259FFFC40031F3B3 /* SMTPState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPState.swift; sourceTree = "<group>"; };
-		7C815A7025A001820031F3B3 /* SMTPResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPResponse.swift; sourceTree = "<group>"; };
-		7C815A7425A006C70031F3B3 /* SMTPAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPAction.swift; sourceTree = "<group>"; };
-		7C815A7D25A24D750031F3B3 /* POPServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = POPServer.swift; path = /Users/sbeitzel/Desktop/Stumpy/Stumpy/POP3/POPServer.swift; sourceTree = "<absolute>"; };
+		7C6ABADF27C024D90079F624 /* Binding-MaybeChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding-MaybeChange.swift"; sourceTree = "<group>"; };
 		7C815A8925A25D540031F3B3 /* Binding-OnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding-OnChange.swift"; sourceTree = "<group>"; };
-		7C815AD625A280BC0031F3B3 /* POPState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPState.swift; sourceTree = "<group>"; };
-		7C815ADA25A38D480031F3B3 /* POPResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPResponse.swift; sourceTree = "<group>"; };
-		7C815ADE25A38E350031F3B3 /* POPAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POPAction.swift; sourceTree = "<group>"; };
-		7CAEEEED279B707A00AACE09 /* DebugLoggingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLoggingHandler.swift; sourceTree = "<group>"; };
-		7CB6B1862795292E00530A04 /* SMTPSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPSessionState.swift; sourceTree = "<group>"; };
-		7CB6B188279536A700530A04 /* SMTPSessionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPSessionHandler.swift; sourceTree = "<group>"; };
-		7CB6B18C27962BC200530A04 /* SMTPActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPActionHandler.swift; sourceTree = "<group>"; };
-		7CB6B18E2797354400530A04 /* POPSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPSessionState.swift; sourceTree = "<group>"; };
-		7CB6B1902797359100530A04 /* POPSessionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPSessionHandler.swift; sourceTree = "<group>"; };
-		7CB6B19227973C2400530A04 /* POPParseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPParseHandler.swift; sourceTree = "<group>"; };
-		7CB6B194279741AB00530A04 /* POPActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POPActionHandler.swift; sourceTree = "<group>"; };
 		7CB88B822798DD6600C930E8 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		7CB88B832798DD6D00C930E8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7CB88B852798DDD500C930E8 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
-		7CCB86F325A530EA00C9FB6F /* DataExtensionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtensionTest.swift; sourceTree = "<group>"; };
-		7CCB86F725A5340600C9FB6F /* Data-Lines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data-Lines.swift"; sourceTree = "<group>"; };
 		7CF76EAA25A7D05100CA9238 /* MailstoreControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailstoreControlView.swift; sourceTree = "<group>"; };
 		7CF76EAF25A803B600CA9238 /* Stumpy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Stumpy.xcdatamodel; sourceTree = "<group>"; };
 		7CF76EB525A8121800CA9238 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		7CF76EDF25A8F7BC00CA9238 /* ServerSpec-CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerSpec-CoreDataHelpers.swift"; sourceTree = "<group>"; };
-		7CF97F98279CDBC9003A2101 /* ServerStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerStats.swift; sourceTree = "<group>"; };
-		7CF97F9B279DDFE8003A2101 /* StatsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,15 +53,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7CB6B18527948CBB00530A04 /* Logging in Frameworks */,
-				7CB6B1822793E95B00530A04 /* NIO in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7C815A48259E79FE0031F3B3 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				7C3F3C2727A091330029816E /* Logging in Frameworks */,
+				7C3F3C2427A090D20029816E /* NIO in Frameworks */,
+				7C6ABB2F27C82DE70079F624 /* StumpyNIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,14 +65,14 @@
 		7C64343425926BAF00DE1AC8 = {
 			isa = PBXGroup;
 			children = (
+				7C774BEB27B99D44004F7A6D /* Packages */,
 				7CB88B852798DDD500C930E8 /* CHANGELOG.md */,
 				7CB88B822798DD6600C930E8 /* LICENSE */,
 				7CB88B832798DD6D00C930E8 /* README.md */,
 				7C0349AC25E03FC000EBA2FF /* .swiftlint.yml */,
 				7C64343F25926BAF00DE1AC8 /* Stumpy */,
-				7C815A4C259E79FF0031F3B3 /* MailTests */,
 				7C64343E25926BAF00DE1AC8 /* Products */,
-				81DC77A80D7077D3D0AE955A /* Frameworks */,
+				7C88528327A09B540033449E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -148,7 +80,6 @@
 			isa = PBXGroup;
 			children = (
 				7C64343D25926BAF00DE1AC8 /* Stumpy.app */,
-				7C815A4B259E79FE0031F3B3 /* MailTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -156,12 +87,8 @@
 		7C64343F25926BAF00DE1AC8 /* Stumpy */ = {
 			isa = PBXGroup;
 			children = (
-				7CF97F9A279DDF29003A2101 /* Server */,
 				7C6434602592707F00DE1AC8 /* Extensions */,
 				7C64345B25926CE700DE1AC8 /* Views */,
-				7C815A7C25A24C520031F3B3 /* POP3 */,
-				7C815A5E259FF6C90031F3B3 /* SMTP */,
-				7C815A57259E84440031F3B3 /* Mail Model */,
 				7C64344025926BAF00DE1AC8 /* AppDelegate.swift */,
 				7C643461259270CB00DE1AC8 /* Servers.swift */,
 				7CF76EB525A8121800CA9238 /* DataController.swift */,
@@ -197,75 +124,20 @@
 			children = (
 				7C64345C2592706F00DE1AC8 /* Binding-Validate.swift */,
 				7C815A8925A25D540031F3B3 /* Binding-OnChange.swift */,
-				7CCB86F725A5340600C9FB6F /* Data-Lines.swift */,
+				7C6ABADF27C024D90079F624 /* Binding-MaybeChange.swift */,
 				7CF76EDF25A8F7BC00CA9238 /* ServerSpec-CoreDataHelpers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		7C815A4C259E79FF0031F3B3 /* MailTests */ = {
+		7C774BEB27B99D44004F7A6D /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				7C815A4D259E79FF0031F3B3 /* MailTests.swift */,
-				7CCB86F325A530EA00C9FB6F /* DataExtensionTest.swift */,
-				7C815A4F259E79FF0031F3B3 /* Info.plist */,
-				7C815A5A259EE2D10031F3B3 /* MailStoreTests.swift */,
 			);
-			path = MailTests;
+			name = Packages;
 			sourceTree = "<group>";
 		};
-		7C815A57259E84440031F3B3 /* Mail Model */ = {
-			isa = PBXGroup;
-			children = (
-				7C815A44259E69F70031F3B3 /* MemoryMessage.swift */,
-				7C815A3B259E53190031F3B3 /* MailStore.swift */,
-				7C815A3E259E54EA0031F3B3 /* MailMessage.swift */,
-				7C815A41259E58D50031F3B3 /* FixedSizeMailStore.swift */,
-			);
-			path = "Mail Model";
-			sourceTree = "<group>";
-		};
-		7C815A5E259FF6C90031F3B3 /* SMTP */ = {
-			isa = PBXGroup;
-			children = (
-				7C815A61259FF72C0031F3B3 /* README.md */,
-				7C64345825926C5500DE1AC8 /* SMTPServer.swift */,
-				7CB6B188279536A700530A04 /* SMTPSessionHandler.swift */,
-				7CAEEEED279B707A00AACE09 /* DebugLoggingHandler.swift */,
-				7CB6B18C27962BC200530A04 /* SMTPActionHandler.swift */,
-				7CB6B1862795292E00530A04 /* SMTPSessionState.swift */,
-				7C815A66259FFFC40031F3B3 /* SMTPState.swift */,
-				7C815A7425A006C70031F3B3 /* SMTPAction.swift */,
-				7C815A7025A001820031F3B3 /* SMTPResponse.swift */,
-			);
-			path = SMTP;
-			sourceTree = "<group>";
-		};
-		7C815A7C25A24C520031F3B3 /* POP3 */ = {
-			isa = PBXGroup;
-			children = (
-				7C815ADE25A38E350031F3B3 /* POPAction.swift */,
-				7C815A7D25A24D750031F3B3 /* POPServer.swift */,
-				7CB6B18E2797354400530A04 /* POPSessionState.swift */,
-				7CB6B1902797359100530A04 /* POPSessionHandler.swift */,
-				7CB6B19227973C2400530A04 /* POPParseHandler.swift */,
-				7CB6B194279741AB00530A04 /* POPActionHandler.swift */,
-				7C815AD625A280BC0031F3B3 /* POPState.swift */,
-				7C815ADA25A38D480031F3B3 /* POPResponse.swift */,
-			);
-			path = POP3;
-			sourceTree = "<group>";
-		};
-		7CF97F9A279DDF29003A2101 /* Server */ = {
-			isa = PBXGroup;
-			children = (
-				7CF97F98279CDBC9003A2101 /* ServerStats.swift */,
-				7CF97F9B279DDFE8003A2101 /* StatsHandler.swift */,
-			);
-			path = Server;
-			sourceTree = "<group>";
-		};
-		81DC77A80D7077D3D0AE955A /* Frameworks */ = {
+		7C88528327A09B540033449E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -290,30 +162,13 @@
 			);
 			name = Stumpy;
 			packageProductDependencies = (
-				7CB6B1812793E95B00530A04 /* NIO */,
-				7CB6B18427948CBB00530A04 /* Logging */,
+				7C3F3C2327A090D20029816E /* NIO */,
+				7C3F3C2627A091330029816E /* Logging */,
+				7C6ABB2E27C82DE70079F624 /* StumpyNIO */,
 			);
 			productName = Stumpy;
 			productReference = 7C64343D25926BAF00DE1AC8 /* Stumpy.app */;
 			productType = "com.apple.product-type.application";
-		};
-		7C815A4A259E79FE0031F3B3 /* MailTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7C815A52259E79FF0031F3B3 /* Build configuration list for PBXNativeTarget "MailTests" */;
-			buildPhases = (
-				7C815A47259E79FE0031F3B3 /* Sources */,
-				7C815A48259E79FE0031F3B3 /* Frameworks */,
-				7C815A49259E79FE0031F3B3 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				7C815A51259E79FF0031F3B3 /* PBXTargetDependency */,
-			);
-			name = MailTests;
-			productName = MailTests;
-			productReference = 7C815A4B259E79FE0031F3B3 /* MailTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -327,10 +182,6 @@
 					7C64343C25926BAF00DE1AC8 = {
 						CreatedOnToolsVersion = 12.3;
 					};
-					7C815A4A259E79FE0031F3B3 = {
-						CreatedOnToolsVersion = 12.3;
-						TestTargetID = 7C64343C25926BAF00DE1AC8;
-					};
 				};
 			};
 			buildConfigurationList = 7C64343825926BAF00DE1AC8 /* Build configuration list for PBXProject "Stumpy" */;
@@ -343,15 +194,15 @@
 			);
 			mainGroup = 7C64343425926BAF00DE1AC8;
 			packageReferences = (
-				7CB6B1802793E95B00530A04 /* XCRemoteSwiftPackageReference "swift-nio" */,
-				7CB6B18327948CBB00530A04 /* XCRemoteSwiftPackageReference "swift-log" */,
+				7C3F3C2227A090D20029816E /* XCRemoteSwiftPackageReference "swift-nio" */,
+				7C3F3C2527A091330029816E /* XCRemoteSwiftPackageReference "swift-log" */,
+				7C6ABB2D27C82DE70079F624 /* XCRemoteSwiftPackageReference "StumpyNIO" */,
 			);
 			productRefGroup = 7C64343E25926BAF00DE1AC8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				7C64343C25926BAF00DE1AC8 /* Stumpy */,
-				7C815A4A259E79FE0031F3B3 /* MailTests */,
 			);
 		};
 /* End PBXProject section */
@@ -364,13 +215,6 @@
 				7C64344B25926BB000DE1AC8 /* Main.storyboard in Resources */,
 				7C64344825926BB000DE1AC8 /* Preview Assets.xcassets in Resources */,
 				7C64344525926BB000DE1AC8 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7C815A49259E79FE0031F3B3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,60 +246,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C815A7E25A24D750031F3B3 /* POPServer.swift in Sources */,
-				7C815ADB25A38D480031F3B3 /* POPResponse.swift in Sources */,
-				7C815A45259E69F70031F3B3 /* MemoryMessage.swift in Sources */,
 				7C815A8A25A25D540031F3B3 /* Binding-OnChange.swift in Sources */,
 				7CF76EB025A803B600CA9238 /* Stumpy.xcdatamodeld in Sources */,
-				7CB6B195279741AB00530A04 /* POPActionHandler.swift in Sources */,
 				7C64345D2592706F00DE1AC8 /* Binding-Validate.swift in Sources */,
-				7CB6B18F2797354400530A04 /* POPSessionState.swift in Sources */,
-				7CB6B1912797359100530A04 /* POPSessionHandler.swift in Sources */,
 				7C64344325926BAF00DE1AC8 /* ContentView.swift in Sources */,
-				7C815A3F259E54EA0031F3B3 /* MailMessage.swift in Sources */,
-				7C815AD725A280BC0031F3B3 /* POPState.swift in Sources */,
 				7CF76EB625A8121800CA9238 /* DataController.swift in Sources */,
-				7CB6B18D27962BC200530A04 /* SMTPActionHandler.swift in Sources */,
-				7C64345925926C5500DE1AC8 /* SMTPServer.swift in Sources */,
-				7C815A67259FFFC40031F3B3 /* SMTPState.swift in Sources */,
-				7CB6B19327973C2400530A04 /* POPParseHandler.swift in Sources */,
-				7CF97F99279CDBC9003A2101 /* ServerStats.swift in Sources */,
 				7C643462259270CB00DE1AC8 /* Servers.swift in Sources */,
-				7C815A7125A001820031F3B3 /* SMTPResponse.swift in Sources */,
-				7C815A7525A006C70031F3B3 /* SMTPAction.swift in Sources */,
-				7C815A3C259E53190031F3B3 /* MailStore.swift in Sources */,
+				7C6ABAE027C024D90079F624 /* Binding-MaybeChange.swift in Sources */,
 				7CF76EAB25A7D05100CA9238 /* MailstoreControlView.swift in Sources */,
 				7CF76EE025A8F7BC00CA9238 /* ServerSpec-CoreDataHelpers.swift in Sources */,
-				7C815A42259E58D50031F3B3 /* FixedSizeMailStore.swift in Sources */,
-				7CB6B189279536A700530A04 /* SMTPSessionHandler.swift in Sources */,
-				7CF97F9C279DDFE8003A2101 /* StatsHandler.swift in Sources */,
-				7CCB86F825A5340600C9FB6F /* Data-Lines.swift in Sources */,
-				7CB6B1872795292E00530A04 /* SMTPSessionState.swift in Sources */,
 				7C64344125926BAF00DE1AC8 /* AppDelegate.swift in Sources */,
-				7CAEEEEE279B707A00AACE09 /* DebugLoggingHandler.swift in Sources */,
-				7C815ADF25A38E350031F3B3 /* POPAction.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		7C815A47259E79FE0031F3B3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				7C815A5B259EE2D10031F3B3 /* MailStoreTests.swift in Sources */,
-				7C815A4E259E79FF0031F3B3 /* MailTests.swift in Sources */,
-				7CCB86F425A530EA00C9FB6F /* DataExtensionTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		7C815A51259E79FF0031F3B3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 7C64343C25926BAF00DE1AC8 /* Stumpy */;
-			targetProxy = 7C815A50259E79FF0031F3B3 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7C64344925926BB000DE1AC8 /* Main.storyboard */ = {
@@ -527,6 +331,7 @@
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -581,6 +386,7 @@
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -604,7 +410,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.qbcps.Stumpy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -632,51 +438,11 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.qbcps.Stumpy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		7C815A53259E79FF0031F3B3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = D3DPVGA48J;
-				INFOPLIST_FILE = MailTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.qbcps.MailTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Stumpy.app/Contents/MacOS/Stumpy";
-			};
-			name = Debug;
-		};
-		7C815A54259E79FF0031F3B3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = D3DPVGA48J;
-				INFOPLIST_FILE = MailTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.qbcps.MailTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Stumpy.app/Contents/MacOS/Stumpy";
 			};
 			name = Release;
 		};
@@ -701,19 +467,10 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7C815A52259E79FF0031F3B3 /* Build configuration list for PBXNativeTarget "MailTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				7C815A53259E79FF0031F3B3 /* Debug */,
-				7C815A54259E79FF0031F3B3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		7CB6B1802793E95B00530A04 /* XCRemoteSwiftPackageReference "swift-nio" */ = {
+		7C3F3C2227A090D20029816E /* XCRemoteSwiftPackageReference "swift-nio" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-nio.git";
 			requirement = {
@@ -721,26 +478,39 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		7CB6B18327948CBB00530A04 /* XCRemoteSwiftPackageReference "swift-log" */ = {
+		7C3F3C2527A091330029816E /* XCRemoteSwiftPackageReference "swift-log" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-log.git";
 			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		7C6ABB2D27C82DE70079F624 /* XCRemoteSwiftPackageReference "StumpyNIO" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sbeitzel/StumpyNIO";
+			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 1.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7CB6B1812793E95B00530A04 /* NIO */ = {
+		7C3F3C2327A090D20029816E /* NIO */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7CB6B1802793E95B00530A04 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			package = 7C3F3C2227A090D20029816E /* XCRemoteSwiftPackageReference "swift-nio" */;
 			productName = NIO;
 		};
-		7CB6B18427948CBB00530A04 /* Logging */ = {
+		7C3F3C2627A091330029816E /* Logging */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7CB6B18327948CBB00530A04 /* XCRemoteSwiftPackageReference "swift-log" */;
+			package = 7C3F3C2527A091330029816E /* XCRemoteSwiftPackageReference "swift-log" */;
 			productName = Logging;
+		};
+		7C6ABB2E27C82DE70079F624 /* StumpyNIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C6ABB2D27C82DE70079F624 /* XCRemoteSwiftPackageReference "StumpyNIO" */;
+			productName = StumpyNIO;
 		};
 /* End XCSwiftPackageProductDependency section */
 
